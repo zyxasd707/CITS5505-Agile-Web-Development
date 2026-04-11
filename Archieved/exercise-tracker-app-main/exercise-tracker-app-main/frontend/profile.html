@@ -1,0 +1,356 @@
+{% extends 'main-base.html' %}
+
+{% block title %}Profile - Exercise Tracker{% endblock %}
+
+{% block page_title %}Profile{% endblock %}
+
+{% block content %}
+<div class="main-content-boxes profile">
+    <!-- Display Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="alert-container">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="container mw-100 mt-4">
+        <form method="POST" id="updateForm" enctype="multipart/form-data">
+            <!-- Add CSRF Token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="row">
+                <div class="col-md-3 common-container justify-content-center align-items-center">
+                    <div class="avatar-wrapper position-relative">
+                        <i class="fa-solid fa-pen-to-square position-absolute d-none"></i>
+                        <img
+                            id="profile-img"
+                            class="avatar mb-4"
+                            width="150"
+                            src="{{ url_for('static', filename=user.avatar_path) }}"
+                            alt="No image"
+                        />
+                    </div>
+                    <div class="dataset-title text-center position-relative">
+                        <input type="file" id="file-input" name="profile_image" accept="image/*">
+                        <h2>{{ user.username }}</h2>
+                        <p class="joined-date">Member since {{ user.created_at.strftime('%d-%m-%Y') }}</p>
+                    </div>
+                </div>
+                <div class="col-md-5 profile-container">
+                    <h4 class="ps-3"><span class="trophy">ℹ️</span> Details</h4>
+                    <!-- Username -->
+                    <div class="form-group row mb-2 d-flex align-items-center">
+                        <label class="col-sm-3 col-form-label" for="username"><strong>Username:</strong></label>
+                        <div class="col-sm-9">
+                            <span class="view-mode">{{ user.username }}</span>
+                            <input id="username" type="text" class="form-control edit-mode d-none" name="username" value="{{ user.username }}">
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group row mb-2 d-flex align-items-center">
+                        <label class="col-sm-3 col-form-label" for="email"><strong>Email:</strong></label>
+                        <div class="col-sm-9">
+                            <span class="view-mode">{{ user.email }}</span>
+                            <input id="email" type="email" class="form-control edit-mode d-none" name="email" value="{{ user.email }}">
+                        </div>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="form-group row mb-2 d-flex align-items-center">
+                        <label class="col-sm-3 col-form-label" for="full_name"><strong>Full Name:</strong></label>
+                        <div class="col-sm-9">
+                            <span class="view-mode">{{ user.full_name or 'N/A' }}</span>
+                            <input id="full_name" type="text" class="form-control edit-mode d-none" name="full_name" value="{{ user.full_name }}">
+                        </div>
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="form-group row mb-2 d-flex align-items-center">
+                        <label class="col-sm-3 col-form-label" for="dob"><strong>Date of Birth:</strong></label>
+                        <div class="col-sm-9">
+                            <span class="view-mode">{{ user.dob.strftime('%d-%m-%Y') if user.dob else 'N/A' }}</span>
+                            <input id="dob" type="date" class="form-control edit-mode d-none" name="dob" value="{{ user.dob.strftime('%Y-%m-%d') if user.dob else '' }}">
+                        </div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="form-group row mb-2 d-flex align-items-center">
+                        <label class="col-sm-3 col-form-label" for="gender"><strong>Gender:</strong></label>
+                        <div class="col-sm-9">
+                            <span class="view-mode">{{ user.gender or 'N/A' }}</span>
+                            <select id="gender" class="form-control edit-mode d-none" name="gender">
+                                <option value="">Select</option>
+                                <option value="Male" {% if user.gender == 'Male' %}selected{% endif %}>Male</option>
+                                <option value="Female" {% if user.gender == 'Female' %}selected{% endif %}>Female</option>
+                                <option value="Other" {% if user.gender == 'Other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Height -->
+                    <div class="form-group row mb-2 d-flex align-items-center">
+                        <label class="col-sm-3 col-form-label" for="height_cm"><strong>Height (cm):</strong></label>
+                        <div class="col-sm-9">
+                            <span class="view-mode">{{ user.height_cm or 'N/A' }}</span>
+                            <input id="height_cm" type="number" class="form-control edit-mode d-none" name="height_cm" step="0.1" min="0" value="{{ user.height_cm }}">
+                        </div>
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="form-group row mb-2 d-flex align-items-center">
+                        <label class="col-sm-3 col-form-label" for="weight_kg"><strong>Weight (kg):</strong></label>
+                        <div class="col-sm-9">
+                            <span class="view-mode">{{ user.weight_kg or 'N/A' }}</span>
+                            <input id="weight_kg" type="number" class="form-control edit-mode d-none" name="weight_kg" step="0.1" min="0" value="{{ user.weight_kg }}">
+                        </div>
+                    </div>
+
+                    <!-- Sharing -->
+                    <div class="form-group row mb-2 d-flex align-items-center">
+                        <label class="col-sm-3 col-form-label" for="weight_kg"><strong>Sharing:</strong></label>
+                        <div class="col-sm-9">
+                            <span class="view-mode">{{ user.sharings }}</span>
+                            <div class="dropdown edit-mode d-none">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="sharingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Sharing Options
+                                </button>
+                                <div class="dropdown-menu p-3" aria-labelledby="sharingDropdown" style="min-width: 250px;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="share_details" id="share_details" {% if user.share_details %}checked{% endif %}>
+                                        <label class="form-check-label" for="share_details">Share details</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="share_achievements" id="share_achievements" {% if user.share_achievements %}checked{% endif %}>
+                                        <label class="form-check-label" for="share_achievements">Share achievements</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="share_calories" id="share_calories" {% if user.share_calories %}checked{% endif %}>
+                                        <label class="form-check-label" for="share_calories">Share calories</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="share_minutes" id="share_minutes" {% if user.share_minutes %}checked{% endif %}>
+                                        <label class="form-check-label" for="share_minutes">Share minutes</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Last Login -->
+                    <div class="form-group row mb-2 d-flex align-items-center view-mode">
+                        <label class="col-sm-3 col-form-label"><strong>Last Login:</strong></label>
+                        <div class="col-sm-9 last-login-container">
+                            <span>{{ user.last_login.strftime('%d-%m-%Y %H:%M') if user.last_login else 'Never' }}</span>
+                            <span class="d-flex">
+                                {% if user.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactive</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Current Password -->
+                    <div class="form-group row edit-mode d-none mb-2">
+                        <label for="current_password" class="col-sm-3 col-form-label"><strong>Password:</strong></label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="current_password" name="current_password" required>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="form-group row mb-2 d-flex align-items-center">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button type="button" id="editBtn" class="btn btn-primary">Edit</button>
+                            <button type="submit" id="saveBtn" class="btn btn-success d-none">Save</button>
+                            <button type="button" id="cancelBtn" class="btn btn-secondary d-none">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 profile-container">
+                    <h4><span class="trophy">🏆</span> Achievements</h4>
+                    <div class="achievement-section">
+                        {% if achievements %}
+                            {% for achievement in achievements %}
+                            <div class="card {{ achievement.exercise_type|lower }}">
+                                <div class="icon">{{ achievement.icon }}</div>
+                                <div class="content">
+                                    <div><strong>{{ achievement.description }}</strong></div>
+                                    <div class="date">({{ achievement.achieved_at.strftime('%Y-%m-%d %H:%M') }})</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted">No achievements found.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container mw-100 mt-5">
+        <div class="row">
+            <!-- Left column: BMI Chart -->
+            <div class="col-md-6 mb-4 col-md-6-left">
+                <h4 class="fw-bold mb-4">BMI CALCULATOR CHART</h4>
+                <table class="table table-bordered table-bmi">
+                    <thead class="table-light">
+                    <tr>
+                        <th>BMI</th>
+                        <th>Weight Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bmi-underweight">
+                            <td>Below 18.5</td>
+                            <td>Underweight</td>
+                        </tr>
+                        <tr class="bmi-healthy">
+                            <td>18.5 - 24.9</td>
+                            <td>Healthy</td>
+                        </tr>
+                        <tr class="bmi-overweight">
+                            <td>25.0 - 29.9</td>
+                            <td>Overweight</td>
+                        </tr>
+                        <tr class="bmi-obese">
+                            <td>30.0 and Above</td>
+                            <td>Obese</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Right column: BMI Form -->
+            <div class="col-md-6 col-md-6-right">
+                <h4 class="fw-bold mb-3">CALCULATE YOUR BMI</h4>
+                <div id="bmi-result-container" class="alert d-none">Your BMI: <span id="bmi-result"></span></div>
+                <div class="row mb-3">
+                    <div class="col input-group">
+                      <input id="heightInput" type="number" class="form-control" placeholder="Height">
+                      <span class="input-group-text">cm</span>
+                    </div>
+                    <div class="col input-group">
+                      <input id="weightInput" type="number" class="form-control" placeholder="Weight">
+                      <span class="input-group-text">kg</span>
+                    </div>
+                </div>
+                <button id="btn-calc-bmi" class="btn btn-primary w-100">Calculate</button>
+                <div class="mt-2 text-end">
+                    <strong>BMI</strong>: Body Mass Index</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+{% include 'modals/invalidImage.html' %}
+
+<script>
+    $(document).ready(function () {
+        const $editBtn = $("#editBtn");
+        const $saveBtn = $("#saveBtn");
+        const $cancelBtn = $("#cancelBtn");
+        const $viewElements = $(".view-mode");
+        const $editElements = $(".edit-mode");
+        const $editIcon = $(".fa-pen-to-square");
+        const $profileImg = $('#profile-img');
+        const $fileInput = $('#file-input');
+        let originalSrc = $profileImg.attr('src');
+
+        $editBtn.click(function () {
+            toggleEditMode(true);
+        });
+
+        $cancelBtn.click(function () {
+            $profileImg.attr('src', originalSrc);
+            toggleEditMode(false);
+        });
+
+        function toggleEditMode(isEditing) {
+            $viewElements.toggleClass("d-none", isEditing);
+            $editElements.toggleClass("d-none", !isEditing);
+
+            $editBtn.toggleClass("d-none", isEditing);
+            $saveBtn.toggleClass("d-none", !isEditing);
+            $cancelBtn.toggleClass("d-none", !isEditing);
+
+            $editIcon.toggleClass("d-none", !isEditing);
+            $profileImg.toggleClass("edit-mode", isEditing);
+        }
+
+        // Process avatar image upload
+        $profileImg.on('click', function() {
+            $fileInput.val(""); // Reset input
+            $fileInput.click();
+        });
+
+        $fileInput.on('change', function(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    const modal = new bootstrap.Modal(document.getElementById('invalidImageModal'));
+                    modal.show();
+                    $fileInput.val('');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $profileImg.attr('src', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                $profileImg.attr('src', originalSrc);
+            }
+        });
+
+        // Calculate BMI
+        $('#btn-calc-bmi').on('click', function () {
+            const weight = parseFloat($('#weightInput').val());
+            let height = parseFloat($('#heightInput').val());
+            height = height / 100;
+
+            const $container = $('#bmi-result-container');
+            const $result = $('#bmi-result');
+
+            $container.removeClass('d-none bmi-underweight bmi-healthy bmi-overweight bmi-obese');
+
+            if (weight > 0 && height > 0) {
+              const bmi = weight / (height * height);
+              const rounded = bmi.toFixed(2);
+              $result.text(`BMI: ${rounded}`);
+
+              if (bmi < 18.5) {
+                $container.addClass('bmi-underweight');
+              } else if (bmi < 25) {
+                $container.addClass('bmi-healthy');
+              } else if (bmi < 30) {
+                $container.addClass('bmi-overweight');
+              } else {
+                $container.addClass('bmi-obese');
+              }
+            } else {
+              $result.text('Please enter valid weight and height');
+            }
+
+            $container.removeClass('d-none');
+        });
+
+        document.querySelectorAll('.dropdown-menu')
+            .forEach(el => {
+            el.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+    });
+</script>
+{% endblock %}

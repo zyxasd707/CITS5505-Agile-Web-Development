@@ -1,0 +1,75 @@
+{% extends 'main-base.html' %}
+
+{% block title %}Sharing - Exercise Tracker{% endblock %}
+
+{% block page_title %}Sharing{% endblock %}
+
+{% block content %}
+<div class="main-content-boxes sharing h-100">
+    {% if shared_data|length == 0 %}
+    <div class="d-flex flex-column justify-content-center align-items-center gap-4" style="height: calc(100vh - 200px);">
+        <i class="fa-solid fa-user-group" style="font-size: 6rem;"></i>
+        <h5 class="text-secondary">Your friend list is empty</h5>
+    </div>
+    {% else %}
+    <div class="container py-5">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h4 class="mb-0">User List</h4>
+            </div>
+            <div class="col-auto">
+                <div class="col input-group searchInput-wrapper">
+                    <input id="searchInput" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid-container">
+            {% for user in shared_data %}
+            <div class="profile-card card card-hover" data-username="{{ user.username }}">
+                <div class="dataset-title text-center">
+                    <img
+                        class="avatar mb-3 rounded-circle"
+                        width="100"
+                        src="{{ url_for('static', filename=user.avatar_path) }}"
+                        alt="No image"
+                    />
+                    <h4>{{ user.username }}</h4>
+                    <p>{{ user.email }}</p>
+                    {% if user.is_friend %}
+                        <span class="badge bg-success">Friend</span>
+                    {% elif user.sent %}
+                        <span class="badge bg-secondary">Request Sent</span>
+                    {% elif user.approval %}
+                        <span class="badge bg-info">Pending Approval</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+<script>
+$(document).ready(function() {
+    $('.profile-card').click(function() {
+        const username = $(this).data('username');
+        window.location.href = `/profile/${username}`;
+    });
+
+    $('#searchInput').on('input', function () {
+      const searchTerm = $(this).val().toLowerCase();
+      $('.profile-card').each(function () {
+        const username = $(this).data('username').toLowerCase();
+        if (username.includes(searchTerm)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+});
+</script>
+{% endblock %}

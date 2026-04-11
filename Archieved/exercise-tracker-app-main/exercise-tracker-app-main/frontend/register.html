@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Exercise Tracker{% endblock %}
+
+{% block content %}
+<div class="welcome-container">
+    <div class="d-flex align-items-center gap-3 mb-2">
+        <div class="logo">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="11" fill="#2563eb"/>
+                <path d="M12 7l4 5-4 5-4-5 4-5z" fill="#fff"/>
+            </svg>
+        </div>
+        <span class="fs-5 fw-bold text-dark">Exercise Tracker</span>
+    </div>
+
+    <form id="register-form" method="post" action="/register" class="needs-validation">
+        {{ form.csrf_token }}
+        <h1 class="fs-3 fw-bold text-dark mt-3 mb-2">Create Account</h1>
+        
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            {{ form.username(class="form-control", id="username", required=true) }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            {{ form.email(class="form-control", id="email", required=true) }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone (optional)</label>
+            {{ form.phone(class="form-control", id="phone") }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            {{ form.password(class="form-control", id="password", required=true) }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="confirm-password" class="form-label">Confirm Password</label>
+            {{ form.confirm_password(class="form-control", id="confirm-password", required=true) }}
+        </div>
+        
+        <div id="registration-error" class="alert alert-danger d-none" role="alert"></div>
+        <div id="registration-success" class="alert alert-success d-none" role="alert">Registration successful! Redirecting to login...</div>
+        
+        <button type="submit" class="btn btn-primary w-100" id="register-button">
+            <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true" id="register-spinner"></span>
+            <span id="register-text">Register</span>
+        </button>
+    </form>
+</div>
+
+<script>
+// Add client-side validation for phone number
+document.getElementById('register-form').addEventListener('submit', function(event) {
+    const phone = document.getElementById('phone');
+    const phoneValue = phone.value.trim();
+    
+    // Basic phone validation
+    if (!/^[0-9]{10,15}$/.test(phoneValue)) {
+        phone.setCustomValidity('Please enter a valid phone number (10-15 digits)');
+        event.preventDefault();
+    } else {
+        phone.setCustomValidity('');
+    }
+});
+</script>
+{% endblock %}

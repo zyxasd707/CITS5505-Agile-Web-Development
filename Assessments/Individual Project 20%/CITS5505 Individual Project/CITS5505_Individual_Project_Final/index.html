@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Foundations Tutorial | Web Design and Development Fundamentals</title>
+
+  <!-- Google Fonts: Manrope + Material Symbols -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" />
+
+  <!-- Custom stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__brand">Web Design and Development Fundamentals</a>
+
+      <!-- Desktop links -->
+      <div class="site-nav__links">
+        <a href="index.html"          class="site-nav__link">Tutorials</a>
+        <a href="quiz.html"           class="site-nav__link">Assessments</a>
+        <a href="ai-reflection.html"  class="site-nav__link">AI Log</a>
+        <a href="cv.html"             class="site-nav__link">Curriculum</a>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button class="site-nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+
+    <!-- Mobile menu (hidden by default) -->
+    <div class="site-nav__mobile-menu">
+      <a href="index.html"          class="site-nav__mobile-link">Tutorials</a>
+      <a href="quiz.html"           class="site-nav__mobile-link">Assessments</a>
+      <a href="ai-reflection.html"  class="site-nav__mobile-link">AI Log</a>
+      <a href="cv.html"             class="site-nav__mobile-link">Curriculum</a>
+    </div>
+  </nav>
+
+  <!-- ========== Hero Header ========== -->
+  <main class="container-narrow" style="padding-top:4rem; padding-bottom:4rem;">
+    <header style="margin-bottom:6rem; padding-bottom:3rem; border-bottom:1px solid var(--surface-container-high);">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <span>Web Development</span>
+        <span class="material-symbols-outlined" style="font-size:0.9rem;">chevron_right</span>
+        <span>Foundations</span>
+      </nav>
+
+      <h1 class="display-lg" style="margin-bottom:2rem;">
+        The Architecture of the <span class="text-primary">Modern Web</span>
+      </h1>
+      <p class="body-lg" style="font-size:1.15rem; font-weight:500; max-width:680px;">
+        A rigorous exploration of the core pillars&thinsp;&mdash;&thinsp;HTML, CSS, and
+        JavaScript&thinsp;&mdash;&thinsp;that define the structural integrity, visual paradigms,
+        and computational logic of professional digital interfaces.
+      </p>
+    </header>
+
+    <!-- ========== Tutorial Sections ========== -->
+    <div class="tutorial-sections">
+
+      <!-- ============================== -->
+      <!-- SECTION I — Semantic HTML       -->
+      <!-- ============================== -->
+      <section id="html-foundation">
+        <div class="tutorial-grid">
+
+          <!-- Left: prose -->
+          <div>
+            <div class="section-header">
+              <div class="section-icon section-icon--secondary">
+                <span class="material-symbols-outlined">data_object</span>
+              </div>
+              <h2 class="headline-md">I. Semantic HTML</h2>
+            </div>
+
+            <div class="tutorial-prose">
+              <p>
+                HyperText Markup Language serves as the structural skeleton of every web page.
+                Beyond simple syntax, <strong>Semantic HTML</strong> emphasises the use of elements
+                that carry intrinsic meaning, communicating document hierarchy to both browsers and
+                assistive technologies.
+              </p>
+
+              <!-- Callout: Why semantics matter -->
+              <div class="callout">
+                <h4 class="callout__title">Why Semantic Best Practices Matter</h4>
+                <ul>
+                  <li>
+                    <strong>Universal Accessibility (a11y):</strong> Screen readers rely on semantic
+                    landmarks (<code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>,
+                    <code>&lt;article&gt;</code>) to allow users with visual impairments to skip to
+                    relevant content, preventing &ldquo;div-soup&rdquo; navigation fatigue.
+                  </li>
+                  <li>
+                    <strong>Search Engine Intelligence:</strong> Google and Bing prioritise semantic
+                    headers and data structures to index information accurately, directly impacting
+                    SEO performance.
+                  </li>
+                  <li>
+                    <strong>Future-Proof Maintainability:</strong> Meaningful tags make the codebase
+                    self-documenting, reducing cognitive load for engineers during collaborative
+                    scaling.
+                  </li>
+                </ul>
+              </div>
+
+              <p>
+                By utilising tags like <code>&lt;time&gt;</code>, <code>&lt;figure&gt;</code>, and
+                <code>&lt;aside&gt;</code>, we enrich the web&rsquo;s data layer, transforming a
+                visual layout into a machine-readable knowledge graph.
+              </p>
+            </div>
+
+            <!-- Interactive Demo: Semantic vs Div Soup -->
+            <div class="demo-sandbox">
+              <h4 class="demo-sandbox__title">
+                <span class="material-symbols-outlined" style="font-size:1rem; vertical-align:middle;">science</span>
+                Interactive Demo &mdash; Semantic vs. Div Soup
+              </h4>
+              <p style="font-size:0.85rem; color:var(--on-surface-variant); margin-bottom:var(--sp-4);">
+                Toggle between semantic HTML and its non-semantic equivalent to see the difference
+                in readability and structure.
+              </p>
+              <div class="demo-btn-grid" style="grid-template-columns:1fr 1fr; margin-bottom:var(--sp-4);">
+                <button class="demo-btn" id="btn-semantic" style="background:var(--primary-container); color:var(--on-primary-container);">
+                  Semantic HTML
+                </button>
+                <button class="demo-btn" id="btn-divsoup">
+                  Div Soup
+                </button>
+              </div>
+              <div class="code-block" style="padding:var(--sp-4); font-size:0.8rem;" id="semantic-demo">
+<pre id="semantic-code"><code><span class="syntax-html">&lt;header&gt;</span>
+  <span class="syntax-html">&lt;nav&gt;</span>Navigation<span class="syntax-html">&lt;/nav&gt;</span>
+<span class="syntax-html">&lt;/header&gt;</span>
+<span class="syntax-html">&lt;main&gt;</span>
+  <span class="syntax-html">&lt;article&gt;</span>
+    <span class="syntax-html">&lt;h1&gt;</span>Title<span class="syntax-html">&lt;/h1&gt;</span>
+    <span class="syntax-html">&lt;p&gt;</span>Content...<span class="syntax-html">&lt;/p&gt;</span>
+  <span class="syntax-html">&lt;/article&gt;</span>
+  <span class="syntax-html">&lt;aside&gt;</span>Sidebar<span class="syntax-html">&lt;/aside&gt;</span>
+<span class="syntax-html">&lt;/main&gt;</span>
+<span class="syntax-html">&lt;footer&gt;</span>&copy; 2026<span class="syntax-html">&lt;/footer&gt;</span></code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: code example -->
+          <div>
+            <div class="code-block" style="height:100%;">
+              <div class="code-block__header">
+                <span class="code-block__label">Standard-Compliant Document Structure</span>
+                <button class="btn-tertiary btn-sm btn-copy" aria-label="Copy code">
+                  <span class="material-symbols-outlined" style="font-size:1rem;">content_copy</span>
+                </button>
+              </div>
+<pre style="font-size:0.85rem; line-height:1.75;"><code><span class="syntax-comment">&lt;!DOCTYPE html&gt;</span>
+<span class="syntax-html">&lt;html</span> <span class="syntax-attr">lang=</span><span class="syntax-string">"en"</span><span class="syntax-html">&gt;</span>
+<span class="syntax-html">&lt;head&gt;</span>
+  <span class="syntax-html">&lt;meta</span> <span class="syntax-attr">charset=</span><span class="syntax-string">"utf-8"</span> <span class="syntax-html">/&gt;</span>
+  <span class="syntax-html">&lt;title&gt;</span>My Page<span class="syntax-html">&lt;/title&gt;</span>
+<span class="syntax-html">&lt;/head&gt;</span>
+<span class="syntax-html">&lt;body&gt;</span>
+
+  <span class="syntax-comment">&lt;!-- Semantic landmarks for a11y --&gt;</span>
+  <span class="syntax-html">&lt;header&gt;</span>
+    <span class="syntax-html">&lt;h1&gt;</span>The Modern Web<span class="syntax-html">&lt;/h1&gt;</span>
+    <span class="syntax-html">&lt;nav&gt;</span>
+      <span class="syntax-html">&lt;a</span> <span class="syntax-attr">href=</span><span class="syntax-string">"#about"</span><span class="syntax-html">&gt;</span>About<span class="syntax-html">&lt;/a&gt;</span>
+      <span class="syntax-html">&lt;a</span> <span class="syntax-attr">href=</span><span class="syntax-string">"#work"</span><span class="syntax-html">&gt;</span>Work<span class="syntax-html">&lt;/a&gt;</span>
+    <span class="syntax-html">&lt;/nav&gt;</span>
+  <span class="syntax-html">&lt;/header&gt;</span>
+
+  <span class="syntax-html">&lt;main&gt;</span>
+    <span class="syntax-comment">&lt;!-- Self-contained content --&gt;</span>
+    <span class="syntax-html">&lt;article&gt;</span>
+      <span class="syntax-html">&lt;h2&gt;</span>Understanding Semantics<span class="syntax-html">&lt;/h2&gt;</span>
+      <span class="syntax-html">&lt;time</span> <span class="syntax-attr">datetime=</span><span class="syntax-string">"2026-03-29"</span><span class="syntax-html">&gt;</span>
+        Mar 2026
+      <span class="syntax-html">&lt;/time&gt;</span>
+      <span class="syntax-html">&lt;p&gt;</span>Content describing the DOM...<span class="syntax-html">&lt;/p&gt;</span>
+
+      <span class="syntax-comment">&lt;!-- Media with caption --&gt;</span>
+      <span class="syntax-html">&lt;figure&gt;</span>
+        <span class="syntax-html">&lt;img</span> <span class="syntax-attr">src=</span><span class="syntax-string">"diagram.png"</span>
+             <span class="syntax-attr">alt=</span><span class="syntax-string">"DOM tree"</span> <span class="syntax-html">/&gt;</span>
+        <span class="syntax-html">&lt;figcaption&gt;</span>
+          Figure 1: DOM hierarchy
+        <span class="syntax-html">&lt;/figcaption&gt;</span>
+      <span class="syntax-html">&lt;/figure&gt;</span>
+    <span class="syntax-html">&lt;/article&gt;</span>
+  <span class="syntax-html">&lt;/main&gt;</span>
+
+  <span class="syntax-html">&lt;footer&gt;</span>
+    <span class="syntax-html">&lt;p&gt;</span>&amp;copy; 2026<span class="syntax-html">&lt;/p&gt;</span>
+  <span class="syntax-html">&lt;/footer&gt;</span>
+<span class="syntax-html">&lt;/body&gt;</span>
+<span class="syntax-html">&lt;/html&gt;</span></code></pre>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECTION II — Cascading Styles   -->
+      <!-- ============================== -->
+      <section id="css-aesthetic">
+        <div class="tutorial-grid tutorial-grid--reverse">
+
+          <!-- Left: code example -->
+          <div>
+            <div class="code-block" style="height:100%;">
+              <div class="code-block__header">
+                <span class="code-block__label">Modular CSS Definition</span>
+                <button class="btn-tertiary btn-sm btn-copy" aria-label="Copy code">
+                  <span class="material-symbols-outlined" style="font-size:1rem;">content_copy</span>
+                </button>
+              </div>
+<pre style="font-size:0.85rem; line-height:1.75;"><code><span class="syntax-comment">/* 1. Custom Properties for consistency */</span>
+<span class="syntax-keyword">:root</span> {
+  <span class="syntax-attr">--brand-gold</span>: <span class="syntax-string">#FFD709</span>;
+  <span class="syntax-attr">--spacing-md</span>: <span class="syntax-number">1.5rem</span>;
+  <span class="syntax-attr">--radius</span>: <span class="syntax-number">0.75rem</span>;
+}
+
+<span class="syntax-comment">/* 2. Box Model — border-box standard */</span>
+<span class="syntax-keyword">*</span> {
+  <span class="syntax-attr">box-sizing</span>: border-box;
+}
+
+<span class="syntax-comment">/* 3. Component with responsive units */</span>
+<span class="syntax-keyword">.profile-card</span> {
+  <span class="syntax-attr">padding</span>: var(--spacing-md);
+  <span class="syntax-attr">border</span>: <span class="syntax-number">1px</span> solid var(--brand-gold);
+  <span class="syntax-attr">border-radius</span>: var(--radius);
+  <span class="syntax-attr">transition</span>: transform <span class="syntax-number">0.3s</span> ease;
+}
+
+<span class="syntax-keyword">.profile-card:hover</span> {
+  <span class="syntax-attr">transform</span>: scale(<span class="syntax-number">1.02</span>);
+}
+
+<span class="syntax-comment">/* 4. Responsive with media queries */</span>
+<span class="syntax-keyword">@media</span> (max-width: <span class="syntax-number">768px</span>) {
+  <span class="syntax-keyword">.profile-card</span> {
+    <span class="syntax-attr">padding</span>: <span class="syntax-number">1rem</span>;
+  }
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Right: prose -->
+          <div>
+            <div class="section-header">
+              <div class="section-icon section-icon--primary">
+                <span class="material-symbols-outlined">palette</span>
+              </div>
+              <h2 class="headline-md">II. Cascading Styles</h2>
+            </div>
+
+            <div class="tutorial-prose">
+              <p>
+                CSS (Cascading Style Sheets) manages the visual presentation. It works through
+                <strong>Specificity</strong>&thinsp;&mdash;&thinsp;the rule hierarchy that
+                determines which styles &ldquo;win&rdquo;&thinsp;&mdash;&thinsp;and the
+                <strong>Box Model</strong>, which dictates how every element consumes physical
+                space on screen.
+              </p>
+
+              <!-- Callout: Best practices -->
+              <div class="callout" style="border-left-color:var(--primary);">
+                <h4 class="callout__title">Styling Best Practices</h4>
+                <ul>
+                  <li>
+                    <strong>The Cascade &amp; Specificity:</strong> Avoid <code>!important</code>.
+                    Use structured class naming to maintain a predictable cascade, preventing style
+                    collisions in large applications.
+                  </li>
+                  <li>
+                    <strong>The Box Model:</strong> Every element is a box. Use
+                    <code>box-sizing: border-box</code> to ensure padding doesn&rsquo;t break grid
+                    calculations&thinsp;&mdash;&thinsp;a critical standard for responsive design.
+                  </li>
+                  <li>
+                    <strong>Responsive Integrity:</strong> Use relative units
+                    (<code>rem</code>, <code>em</code>, <code>%</code>) over fixed pixels to
+                    ensure layout elasticity across devices.
+                  </li>
+                  <li>
+                    <strong>Custom Properties:</strong> CSS variables
+                    (<code>var(--name)</code>) enable theme-wide consistency and make design
+                    tokens easy to update from a single source.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Interactive Demo: Box Model Sandbox -->
+            <div class="demo-sandbox">
+              <h4 class="demo-sandbox__title">
+                <span class="material-symbols-outlined" style="font-size:1rem; vertical-align:middle;">science</span>
+                Live Box Model Sandbox
+              </h4>
+              <div class="demo-preview" id="box-preview"
+                   style="background:rgba(108,90,0,0.12); border:2px solid var(--primary); color:var(--primary);">
+                Styled Element
+              </div>
+              <div class="demo-btn-grid">
+                <button class="demo-btn" id="btn-round">Extra Round</button>
+                <button class="demo-btn" id="btn-fill">Fill Primary</button>
+                <button class="demo-btn" id="btn-pad">Add Padding</button>
+                <button class="demo-btn" id="btn-shadow">Add Shadow</button>
+                <button class="demo-btn" id="btn-scale">Scale Up</button>
+                <button class="demo-btn" id="btn-reset">Reset Demo</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECTION III — JavaScript Logic  -->
+      <!-- ============================== -->
+      <section id="js-logic">
+        <div class="tutorial-grid">
+
+          <!-- Left: prose -->
+          <div>
+            <div class="section-header">
+              <div class="section-icon section-icon--tertiary">
+                <span class="material-symbols-outlined">terminal</span>
+              </div>
+              <h2 class="headline-md">III. Behavioural Logic</h2>
+            </div>
+
+            <div class="tutorial-prose">
+              <p>
+                JavaScript provides the computational intelligence. By interacting with the
+                <strong>Document Object Model (DOM)</strong>, scripts enable real-time updates
+                and interactive logic without reloading the browser.
+              </p>
+
+              <!-- Callout: JS best practices -->
+              <div class="callout">
+                <h4 class="callout__title">Logic &amp; Computation Best Practices</h4>
+                <ul>
+                  <li>
+                    <strong>Separation of Concerns:</strong> Keep logic (JS) separate from
+                    styling (CSS) and structure (HTML). Avoid inline event handlers like
+                    <code>onclick=""</code> in production for better security and modularity.
+                  </li>
+                  <li>
+                    <strong>Input Validation:</strong> Never trust user input. Always sanitise
+                    and validate data before processing to prevent security vulnerabilities
+                    like XSS.
+                  </li>
+                  <li>
+                    <strong>Functional Purity:</strong> Use pure functions that return
+                    consistent results for the same inputs, making code testable and
+                    predictable.
+                  </li>
+                  <li>
+                    <strong>DOM Manipulation:</strong> Use
+                    <code>document.getElementById()</code>,
+                    <code>querySelector()</code>, and
+                    <code>addEventListener()</code> to interact with and modify page elements
+                    dynamically.
+                  </li>
+                </ul>
+              </div>
+
+              <div style="border-left:4px solid rgba(140,74,0,0.2); padding-left:var(--sp-6); margin-top:var(--sp-6);">
+                <h4 class="headline-sm">Interactive Example: Unit Conversion</h4>
+                <p style="font-size:0.9rem; margin-top:var(--sp-2);">
+                  Enter a Fahrenheit value below. The script applies the formula
+                  <code>(°F &minus; 32) &times; 5/9</code> to compute the Celsius equivalent
+                  dynamically via DOM manipulation.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: code + interactive lab -->
+          <div>
+            <div class="code-block">
+              <div class="code-block__header">
+                <span class="code-block__label">Logic Implementation (F &rarr; C)</span>
+                <button class="btn-tertiary btn-sm btn-copy" aria-label="Copy code">
+                  <span class="material-symbols-outlined" style="font-size:1rem;">content_copy</span>
+                </button>
+              </div>
+<pre style="font-size:0.85rem; line-height:1.75;"><code><span class="syntax-comment">// 1. Pure conversion function</span>
+<span class="syntax-keyword">function</span> <span class="syntax-fn">convertToCelsius</span>(fahrenheit) {
+  <span class="syntax-keyword">return</span> ((fahrenheit - <span class="syntax-number">32</span>) * <span class="syntax-number">5</span>) / <span class="syntax-number">9</span>;
+}
+
+<span class="syntax-comment">// 2. DOM handler — reads input, updates output</span>
+<span class="syntax-keyword">function</span> <span class="syntax-fn">handleUpdate</span>() {
+  <span class="syntax-keyword">var</span> input  = document.getElementById(<span class="syntax-string">"temp-input"</span>);
+  <span class="syntax-keyword">var</span> output = document.getElementById(<span class="syntax-string">"temp-output"</span>);
+
+  <span class="syntax-keyword">if</span> (input.value === <span class="syntax-string">""</span>) {
+    output.textContent = <span class="syntax-string">"--°C"</span>;
+    <span class="syntax-keyword">return</span>;
+  }
+
+  <span class="syntax-keyword">var</span> celsius = convertToCelsius(parseFloat(input.value));
+  output.textContent = celsius.toFixed(<span class="syntax-number">1</span>) + <span class="syntax-string">"°C"</span>;
+}
+
+<span class="syntax-comment">// 3. Attach listener (no inline handler)</span>
+document.getElementById(<span class="syntax-string">"temp-input"</span>)
+  .addEventListener(<span class="syntax-string">"input"</span>, handleUpdate);</code></pre>
+
+              <!-- Interactive Lab: Temperature Converter -->
+              <div class="demo-lab">
+                <h4 class="demo-lab__title">
+                  <span class="material-symbols-outlined" style="font-size:1rem; vertical-align:middle;">science</span>
+                  Interactive Lab: Temperature Converter
+                </h4>
+                <div class="demo-lab__row">
+                  <div class="demo-lab__field">
+                    <label for="temp-input">Fahrenheit Input</label>
+                    <input class="input-field"
+                           id="temp-input"
+                           type="number"
+                           placeholder="Enter °F"
+                           value="32"
+                           style="font-family:'JetBrains Mono',monospace; font-size:0.9rem;" />
+                  </div>
+                  <div class="demo-lab__arrow">
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                  </div>
+                  <div class="demo-lab__field">
+                    <label>Celsius Result</label>
+                    <div class="demo-lab__result">
+                      <div class="demo-lab__result-value" id="temp-output">0.0°C</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+    <!-- /tutorial-sections -->
+
+    <!-- ========== CTA Banner — Link to Quiz ========== -->
+    <section style="margin-top:8rem; padding-top:6rem; border-top:1px solid var(--surface-container-high);">
+      <div class="cta-banner">
+        <h3 class="headline-lg" style="margin-bottom:var(--sp-6);">Validate Your Expertise</h3>
+        <p class="body-lg" style="max-width:600px; margin:0 auto var(--sp-10);">
+          Now that we have covered the semantic, visual, and logical foundations of web
+          development, proceed to the technical assessment to test your understanding of
+          implementation best practices.
+        </p>
+
+        <a href="quiz.html" class="btn-primary" style="font-size:1.15rem; padding:var(--sp-5) var(--sp-12);">
+          Begin Technical Assessment
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+
+        <div class="cta-banner__meta">
+          <span style="display:flex; align-items:center; gap:0.5rem;">
+            <span class="material-symbols-outlined" style="font-size:1rem;">quiz</span> 15 Questions
+          </span>
+          <span class="cta-banner__dot"></span>
+          <span style="display:flex; align-items:center; gap:0.5rem;">
+            <span class="material-symbols-outlined" style="font-size:1rem;">database</span> AJAX Dynamic Loading
+          </span>
+          <span class="cta-banner__dot"></span>
+          <span style="display:flex; align-items:center; gap:0.5rem;">
+            <span class="material-symbols-outlined" style="font-size:1rem;">emoji_events</span> 60% Pass
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__grid">
+        <div>
+          <div class="site-footer__brand">Web Design and Development Fundamentals</div>
+        </div>
+        <div>
+          <h4 class="site-footer__heading">Curriculum</h4>
+          <ul class="site-footer__link-list">
+            <li><a href="index.html" class="site-footer__link">Web Foundations</a></li>
+            <li><a href="quiz.html"  class="site-footer__link">Technical Assessment</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="site-footer__heading">Resources</h4>
+          <ul class="site-footer__link-list">
+            <li><a href="ai-reflection.html" class="site-footer__link">AI Reflection Log</a></li>
+            <li><a href="cv.html"            class="site-footer__link">About the Author</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="site-footer__bottom">
+        <div class="site-footer__copy">&copy; 2026 Yuxing Zhou. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== Page Scripts ========== -->
+  <script src="js/main.js"></script>
+  <script>
+    /*
+     * Tutorial Page — Interactive Demonstrations
+     *
+     * This script handles three demos:
+     *   1. Semantic HTML vs Div Soup toggle
+     *   2. CSS Box Model sandbox buttons
+     *   3. Temperature converter (Fahrenheit to Celsius)
+     */
+
+    // ---- Demo 1: Semantic vs Div-Soup Toggle ----
+    // These two variables store the HTML code shown in the demo
+    // All event listeners use addEventListener (no inline onclick)
+    var semanticHTML =
+      '<span class="syntax-html">&lt;header&gt;</span>\n' +
+      '  <span class="syntax-html">&lt;nav&gt;</span>Navigation<span class="syntax-html">&lt;/nav&gt;</span>\n' +
+      '<span class="syntax-html">&lt;/header&gt;</span>\n' +
+      '<span class="syntax-html">&lt;main&gt;</span>\n' +
+      '  <span class="syntax-html">&lt;article&gt;</span>\n' +
+      '    <span class="syntax-html">&lt;h1&gt;</span>Title<span class="syntax-html">&lt;/h1&gt;</span>\n' +
+      '    <span class="syntax-html">&lt;p&gt;</span>Content...<span class="syntax-html">&lt;/p&gt;</span>\n' +
+      '  <span class="syntax-html">&lt;/article&gt;</span>\n' +
+      '  <span class="syntax-html">&lt;aside&gt;</span>Sidebar<span class="syntax-html">&lt;/aside&gt;</span>\n' +
+      '<span class="syntax-html">&lt;/main&gt;</span>\n' +
+      '<span class="syntax-html">&lt;footer&gt;</span>&copy; 2026<span class="syntax-html">&lt;/footer&gt;</span>';
+
+    var divSoupHTML =
+      '<span class="syntax-html">&lt;div</span> <span class="syntax-attr">class=</span><span class="syntax-string">"header"</span><span class="syntax-html">&gt;</span>\n' +
+      '  <span class="syntax-html">&lt;div</span> <span class="syntax-attr">class=</span><span class="syntax-string">"nav"</span><span class="syntax-html">&gt;</span>Navigation<span class="syntax-html">&lt;/div&gt;</span>\n' +
+      '<span class="syntax-html">&lt;/div&gt;</span>\n' +
+      '<span class="syntax-html">&lt;div</span> <span class="syntax-attr">class=</span><span class="syntax-string">"main"</span><span class="syntax-html">&gt;</span>\n' +
+      '  <span class="syntax-html">&lt;div</span> <span class="syntax-attr">class=</span><span class="syntax-string">"article"</span><span class="syntax-html">&gt;</span>\n' +
+      '    <span class="syntax-html">&lt;div</span> <span class="syntax-attr">class=</span><span class="syntax-string">"title"</span><span class="syntax-html">&gt;</span>Title<span class="syntax-html">&lt;/div&gt;</span>\n' +
+      '    <span class="syntax-html">&lt;div</span> <span class="syntax-attr">class=</span><span class="syntax-string">"text"</span><span class="syntax-html">&gt;</span>Content...<span class="syntax-html">&lt;/div&gt;</span>\n' +
+      '  <span class="syntax-html">&lt;/div&gt;</span>\n' +
+      '  <span class="syntax-html">&lt;div</span> <span class="syntax-attr">class=</span><span class="syntax-string">"sidebar"</span><span class="syntax-html">&gt;</span>Sidebar<span class="syntax-html">&lt;/div&gt;</span>\n' +
+      '<span class="syntax-html">&lt;/div&gt;</span>\n' +
+      '<span class="syntax-html">&lt;div</span> <span class="syntax-attr">class=</span><span class="syntax-string">"footer"</span><span class="syntax-html">&gt;</span>&copy; 2026<span class="syntax-html">&lt;/div&gt;</span>';
+
+    function showSemantic() {
+      document.getElementById("semantic-code").innerHTML = "<code>" + semanticHTML + "</code>";
+      document.getElementById("btn-semantic").style.background = "var(--primary-container)";
+      document.getElementById("btn-semantic").style.color = "var(--on-primary-container)";
+      document.getElementById("btn-divsoup").style.background = "";
+      document.getElementById("btn-divsoup").style.color = "";
+    }
+
+    function showDivSoup() {
+      document.getElementById("semantic-code").innerHTML = "<code>" + divSoupHTML + "</code>";
+      document.getElementById("btn-divsoup").style.background = "var(--error-container)";
+      document.getElementById("btn-divsoup").style.color = "#fff";
+      document.getElementById("btn-semantic").style.background = "";
+      document.getElementById("btn-semantic").style.color = "";
+    }
+
+    // Attach listeners using addEventListener (best practice — no inline onclick)
+    document.getElementById("btn-semantic").addEventListener("click", showSemantic);
+    document.getElementById("btn-divsoup").addEventListener("click", showDivSoup);
+
+    // ---- Demo 2: CSS Box Model Sandbox ----
+    // Each button modifies a CSS property on the preview box
+    var boxPreview = document.getElementById("box-preview");
+
+    function demoBoxRound() {
+      boxPreview.style.borderRadius = "2rem";
+    }
+    function demoBoxFill() {
+      boxPreview.style.backgroundColor = "var(--primary)";
+      boxPreview.style.color = "#fff";
+    }
+    function demoBoxPad() {
+      boxPreview.style.padding = "2rem";
+    }
+    function demoBoxShadow() {
+      boxPreview.style.boxShadow = "0 10px 40px rgba(108, 90, 0, 0.25)";
+    }
+    function demoBoxScale() {
+      boxPreview.style.transform = "scale(1.08)";
+    }
+    function demoBoxReset() {
+      boxPreview.style.cssText =
+        "background:rgba(108,90,0,0.12); border:2px solid var(--primary); color:var(--primary);";
+    }
+
+    // Attach box model demo listeners using addEventListener
+    document.getElementById("btn-round").addEventListener("click", demoBoxRound);
+    document.getElementById("btn-fill").addEventListener("click", demoBoxFill);
+    document.getElementById("btn-pad").addEventListener("click", demoBoxPad);
+    document.getElementById("btn-shadow").addEventListener("click", demoBoxShadow);
+    document.getElementById("btn-scale").addEventListener("click", demoBoxScale);
+    document.getElementById("btn-reset").addEventListener("click", demoBoxReset);
+
+    // ---- Demo 3: Temperature Converter ----
+    // Converts Fahrenheit input to Celsius in real time
+    function updateCelsius() {
+      var fInput = document.getElementById("temp-input");
+      var cOutput = document.getElementById("temp-output");
+
+      if (fInput.value === "") {
+        cOutput.textContent = "--°C";
+        return;
+      }
+
+      /* Pure conversion logic */
+      var celsius = (parseFloat(fInput.value) - 32) * (5 / 9);
+      cOutput.textContent = celsius.toFixed(1) + "°C";
+    }
+
+    // Attach event listener using addEventListener (best practice)
+    document.getElementById("temp-input").addEventListener("input", updateCelsius);
+
+    // Run once on page load to show initial value
+    updateCelsius();
+
+    // ---- Utility: Copy Code to Clipboard ----
+    // Used by the copy buttons next to code examples
+    // Attach listeners to all copy buttons using addEventListener
+    function copyCode(btn) {
+      // Find the code block that contains this button
+      var codeBlock = btn.closest(".code-block");
+      if (!codeBlock) return;
+
+      var pre = codeBlock.querySelector("pre");
+      if (!pre) return;
+
+      // Copy the text content and show a "check" icon briefly
+      navigator.clipboard.writeText(pre.textContent).then(function () {
+        var icon = btn.querySelector(".material-symbols-outlined");
+        if (icon) {
+          icon.textContent = "check";
+          setTimeout(function () { icon.textContent = "content_copy"; }, 1500);
+        }
+      });
+    }
+
+    // Bind all copy buttons via addEventListener instead of inline onclick
+    var copyButtons = document.querySelectorAll(".btn-copy");
+    for (var i = 0; i < copyButtons.length; i++) {
+      copyButtons[i].addEventListener("click", function () {
+        copyCode(this);
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+{% extends 'main-base.html' %}
+
+{% block title %}Dashboard - Exercise Tracker{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="main-content-boxes dashboard container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-6 mb-4 custom-cell">
+            <div class="box first-box">
+                <div class="box-section1">
+                    <div class="box-title">
+                        <h4>Welcome</h4>
+                        <p>{{ user.username }}</p>
+                    </div>
+                    <div class="box-image">
+                        <img src="{{ url_for('static', filename='asset/welcome.png') }}" alt="No image" />
+                    </div>
+                    <img src="{{ url_for('static', filename=user.avatar_path) }}" alt="No image" class="avatar" />
+                </div>
+                <div class="box-section2">
+                    <ul>
+                        <li>
+                            {% set name = user.full_name %}
+                            <span>
+                              {{ name if name not in [None, 'None', ''] else 'Unnamed' }}
+                              {% if name in [None, 'None', ''] %}
+                                <span class="text-danger">(Update)</span>
+                              {% endif %}
+                            </span>
+                            <p>{{ user.email }}</p>
+                        </li>
+                        <li>
+                            <span>{{total_exercises}}</span>
+                            <p>exercises</p>
+                        </li>
+                        <li>
+                            <span>{{last_calories}}</span>
+                            <p>calories last ex.</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="box-section3">
+                    <a href="{{ url_for('profile') }}">Profile </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 mb-4 custom-cell">
+            <div class="box">
+                <h4 class="mb-3">🤖 Ask Your Training Assistant</h4>
+                <div class="chat-box mb-3" id="chat-window">
+                    <!-- Chat messages appear here -->
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="user-input" class="form-control" placeholder="Type your message...">
+                    <button id="send-btn" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 col-md-6 mb-4 custom-cell">
+            <div class="box">
+                <canvas id="myChart" class="w-100" height="400"></canvas>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 mb-4 custom-cell">
+            <div class="box">
+                <canvas id="bubbleChart" class="w-100" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='script/dashboard.js') }}"></script>
+{% endblock %}

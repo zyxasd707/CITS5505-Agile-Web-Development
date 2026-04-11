@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curriculum Vitae | Web Design and Development Fundamentals</title>
+
+  <!-- Google Fonts: Manrope + Material Symbols -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" />
+
+  <!-- Custom stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__brand">Web Design and Development Fundamentals</a>
+
+      <div class="site-nav__links">
+        <a href="index.html"          class="site-nav__link">Tutorials</a>
+        <a href="quiz.html"           class="site-nav__link">Assessments</a>
+        <a href="ai-reflection.html"  class="site-nav__link">AI Log</a>
+        <a href="cv.html"             class="site-nav__link">Curriculum</a>
+      </div>
+
+      <button class="site-nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+
+    <div class="site-nav__mobile-menu">
+      <a href="index.html"          class="site-nav__mobile-link">Tutorials</a>
+      <a href="quiz.html"           class="site-nav__mobile-link">Assessments</a>
+      <a href="ai-reflection.html"  class="site-nav__mobile-link">AI Log</a>
+      <a href="cv.html"             class="site-nav__mobile-link">Curriculum</a>
+    </div>
+  </nav>
+
+  <!-- ========== Main Content ========== -->
+  <main class="container-narrow" style="padding-top:4rem; padding-bottom:4rem;">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span>About</span>
+      <span class="material-symbols-outlined" style="font-size:0.9rem;">chevron_right</span>
+      <span>Curriculum Vitae</span>
+    </nav>
+
+    <!-- ================================ -->
+    <!-- Hero: Photo + Introduction       -->
+    <!-- ================================ -->
+    <section class="cv-hero">
+      <div class="cv-photo-wrap">
+        <img src="images/profile.jpg"
+             alt="Portrait of Yuxing Zhou (Geoffrey Zhou)"
+             class="cv-photo" />
+      </div>
+
+      <div class="cv-intro">
+        <h1 class="cv-intro__name">Yuxing Zhou <span style="font-weight:400; font-size:0.6em; color:var(--on-surface-variant);">(Geoffrey Zhou)</span></h1>
+        <p class="cv-intro__role">IT &amp; Accounting Professional &middot; Master of Information Technology Student</p>
+        <p class="cv-intro__bio">
+          Before I applied for the Master of Information Technology at UWA, I was an accountant
+          in several companies, including wholesale companies and a manufacturing company. From
+          my experience in accounting, I gradually realised that digitalisation will reform the
+          ability in the accounting field, especially the AI trend in recent years. Therefore, I
+          am taking my journey in the Master of Information Technology to gain an understanding
+          of cloud computing, data analysis such as Power BI and R, and core programming skills
+          such as Python, C and Java. I am looking forward to having integrated skills in both
+          the commerce and IT fields.
+        </p>
+
+        <div class="cv-contact">
+          <span class="cv-contact__item">
+            <span class="material-symbols-outlined">email</span>
+            placeholder@email.com
+          </span>
+          <span class="cv-contact__item">
+            <span class="material-symbols-outlined">phone</span>
+            +61 4XX XXX XXX
+          </span>
+          <span class="cv-contact__item">
+            <span class="material-symbols-outlined">location_on</span>
+            WA 6009, Perth, Australia
+          </span>
+          <span class="cv-contact__item">
+            <span class="material-symbols-outlined">code</span>
+            github.com/placeholder
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- Education                        -->
+    <!-- ================================ -->
+    <section class="cv-section">
+      <div class="cv-section__header">
+        <div class="cv-section__icon">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;">school</span>
+        </div>
+        <h2 class="cv-section__title">Education Experience and Skills</h2>
+      </div>
+
+      <div class="cv-timeline">
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Feb 2024 &ndash; Jul 2026</div>
+          <div class="cv-timeline__title">Master of Information Technology</div>
+          <div class="cv-timeline__org">The University of Western Australia, Perth</div>
+          <p class="cv-timeline__desc">
+            In order to adapt to the trend of business informatisation, I further studied for a
+            Master&rsquo;s of Information Technology. I focus on the field of database applications
+            in business, data analytics, and business intelligence.
+          </p>
+          <p class="cv-timeline__desc" style="margin-top:0.5rem;">
+            <strong>Major Courses:</strong> Python Computing Thinking, Relationship Database,
+            Supply Chain Management, Open Source Script, Agile Web Development, Natural Language
+            Processing (NLP), Artificial Intelligence and Adaptive System, Business Intelligence.
+          </p>
+        </div>
+
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Jul 2020 &ndash; Jul 2022</div>
+          <div class="cv-timeline__title">Master of Accounting and Finance</div>
+          <div class="cv-timeline__org">The University of Adelaide, Adelaide</div>
+          <p class="cv-timeline__desc">
+            Through learning, I gained further understanding in business accounting, especially
+            in cost accounting, financial tools accounting, and mergers and acquisitions accounting.
+          </p>
+          <p class="cv-timeline__desc" style="margin-top:0.5rem;">
+            <strong>Major Courses:</strong> Accounting Principles, Intermediate Accounting,
+            Advanced Accounting, Financial Risk Management, Fixed Income Securities, Equity
+            Valuation Assessment, and Cost and Management Accounting.
+          </p>
+        </div>
+
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Sep 2012 &ndash; Jun 2016</div>
+          <div class="cv-timeline__title">Bachelor of Financial Management</div>
+          <div class="cv-timeline__org">Beijing Technology and Business University, Beijing, China</div>
+          <p class="cv-timeline__desc">
+            The fundamental knowledge about accounting and finance.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- Professional Experience          -->
+    <!-- ================================ -->
+    <section class="cv-section">
+      <div class="cv-section__header">
+        <div class="cv-section__icon">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;">work</span>
+        </div>
+        <h2 class="cv-section__title">Professional Experience</h2>
+      </div>
+
+      <div class="cv-timeline">
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Feb 2023 &ndash; Jul 2023</div>
+          <div class="cv-timeline__title">Accountant for Manufacturing</div>
+          <div class="cv-timeline__org">Xi&rsquo;an Huawei Chemical &amp; Biologic Engineering Co., Ltd, Xi&rsquo;an, China</div>
+          <p class="cv-timeline__desc">
+            I worked as an accountant in Xi&rsquo;an Huawei Chemical &amp; Biologic Engineering
+            Co., Ltd, a wholly-owned subsidiary of Xi&rsquo;an Aerospace Engine Factory, a
+            subordinate of the Sixth Academy of Aerospace. I mainly took responsibility for cost
+            accounting, payable accounting, reimbursement of materials, and fixed assets management.
+          </p>
+        </div>
+
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Sep 2016 &ndash; Sep 2017</div>
+          <div class="cv-timeline__title">Accountant for Wholesale Business</div>
+          <div class="cv-timeline__org">Beijing Shijia Mechen E-commerce Co. Ltd, Beijing, China</div>
+          <p class="cv-timeline__desc">
+            I engaged in financial accounting work. My main working task was to prepare expenses
+            and cost reports. I also identified overspending items based on cost reports and
+            suggested improvements.
+          </p>
+        </div>
+
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Jan 2016 &ndash; Mar 2016</div>
+          <div class="cv-timeline__title">Internship &mdash; Accountant</div>
+          <div class="cv-timeline__org">Beijing Zhenxing Xingsheng Daily Products Co., Ltd, Beijing, China</div>
+          <p class="cv-timeline__desc">
+            I engaged in cashier work and assisted accounting staff in filling out taxation
+            sheets and other related financial works.
+          </p>
+        </div>
+
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Jul 2015 &ndash; Aug 2015</div>
+          <div class="cv-timeline__title">Internship &mdash; Internal Auditor</div>
+          <div class="cv-timeline__org">Beijing Zhongxuanyu CPA Co., Ltd, Beijing, China</div>
+          <p class="cv-timeline__desc">
+            I worked as an intern for almost 2 months as an auditing assistant. I specifically
+            participated in assisting auditors in preparing audit drafts related to inventory
+            and assisted in the auditing program of Beijing Agricultural College.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- Technical Skills                 -->
+    <!-- ================================ -->
+    <section class="cv-section">
+      <div class="cv-section__header">
+        <div class="cv-section__icon">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;">code</span>
+        </div>
+        <h2 class="cv-section__title">Skills</h2>
+      </div>
+
+      <div class="cv-skills" id="cv-skills">
+        <div class="cv-skill">
+          <div class="cv-skill__name">Python for Accounting &amp; Finance</div>
+          <div class="cv-skill__bar"><div class="cv-skill__fill" data-width="85"></div></div>
+        </div>
+        <div class="cv-skill">
+          <div class="cv-skill__name">Microsoft Excel &amp; Power BI</div>
+          <div class="cv-skill__bar"><div class="cv-skill__fill" data-width="90"></div></div>
+        </div>
+        <div class="cv-skill">
+          <div class="cv-skill__name">R &mdash; Data Analysis</div>
+          <div class="cv-skill__bar"><div class="cv-skill__fill" data-width="75"></div></div>
+        </div>
+        <div class="cv-skill">
+          <div class="cv-skill__name">SQL, Neo4j &amp; MongoDB</div>
+          <div class="cv-skill__bar"><div class="cv-skill__fill" data-width="80"></div></div>
+        </div>
+        <div class="cv-skill">
+          <div class="cv-skill__name">HTML, CSS &amp; JavaScript</div>
+          <div class="cv-skill__bar"><div class="cv-skill__fill" data-width="75"></div></div>
+        </div>
+        <div class="cv-skill">
+          <div class="cv-skill__name">Language &mdash; English &amp; Chinese</div>
+          <div class="cv-skill__bar"><div class="cv-skill__fill" data-width="90"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- Certificates and Awards          -->
+    <!-- ================================ -->
+    <section class="cv-section">
+      <div class="cv-section__header">
+        <div class="cv-section__icon" style="background:var(--secondary-container); color:var(--secondary);">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;">emoji_events</span>
+        </div>
+        <h2 class="cv-section__title">Certificates and Awards</h2>
+      </div>
+
+      <div class="cv-timeline">
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Sep 2023</div>
+          <div class="cv-timeline__title">30% Tuition Fee Waiver Scholarship</div>
+          <div class="cv-timeline__org">The University of Western Australia</div>
+          <p class="cv-timeline__desc">
+            According to my working experience in accounting and high GPA in Bachelor&rsquo;s
+            Degree, I got a 30% tuition fee waiver scholarship for the Master of Information
+            Technology program.
+          </p>
+        </div>
+
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Jul 2022</div>
+          <div class="cv-timeline__title">30% Tuition Fee Waiver Scholarship</div>
+          <div class="cv-timeline__org">The University of Adelaide</div>
+          <p class="cv-timeline__desc">
+            I passed the Pre-Sessional English Program of the University of Adelaide in July
+            2020 and obtained the English Language Certificate equivalent to IELTS 6.5, and I
+            got a 30% tuition fee waiver scholarship for the Master of Accounting and Finance
+            Program.
+          </p>
+        </div>
+
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">2022</div>
+          <div class="cv-timeline__title">Certificates from the Association of Chartered Certified Accountants (ACCA)</div>
+          <div class="cv-timeline__org">ACCA</div>
+          <p class="cv-timeline__desc">
+            I obtained a Master&rsquo;s degree in Accounting and Finance Program from the
+            University of Adelaide in September 2022, which qualifies me for the Association
+            of Chartered Certified Accountants (ACCA) with 9 ACCA course exemptions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- Projects                         -->
+    <!-- ================================ -->
+    <section class="cv-section">
+      <div class="cv-section__header">
+        <div class="cv-section__icon" style="background:var(--tertiary-container); color:var(--on-tertiary-container);">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;">deployed_code</span>
+        </div>
+        <h2 class="cv-section__title">Projects</h2>
+      </div>
+
+      <div class="cv-timeline">
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Mar 2026</div>
+          <div class="cv-timeline__title">Web Design and Development Fundamentals &mdash; CITS5505 Individual Project</div>
+          <div class="cv-timeline__org">The University of Western Australia</div>
+          <p class="cv-timeline__desc">
+            Designed and built a four-page interactive web application covering HTML, CSS, and
+            JavaScript fundamentals. Features include a dynamic quiz with AJAX-loaded questions,
+            localStorage-based progress tracking, public API integration for reward content, and
+            a fully responsive custom CSS design system. Built without front-end frameworks,
+            demonstrating core web development proficiency.
+          </p>
+        </div>
+
+        <div class="cv-timeline__entry">
+          <div class="cv-timeline__date">Apr &ndash; May 2026</div>
+          <div class="cv-timeline__title">BookBorrow &mdash; Peer-to-Peer Book Lending Platform</div>
+          <div class="cv-timeline__org">The University of Western Australia</div>
+          <p class="cv-timeline__desc">
+            BookBorrow is a community-driven web platform that allows users to share books in
+            a secure and trustworthy way. Users can register, list books for lending, borrow
+            books from others, and complete transactions with accountability ensured through
+            deposits, reviews, and platform rules.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- Random Inspiration (AJAX)        -->
+    <!-- ================================ -->
+    <section class="cv-section">
+      <div class="cv-section__header">
+        <div class="cv-section__icon" style="background:var(--surface-container-highest); color:var(--on-surface-variant);">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;">lightbulb</span>
+        </div>
+        <h2 class="cv-section__title">Random Inspiration</h2>
+      </div>
+      <p class="body-lg" style="margin-bottom:var(--sp-4);">
+        This quote is fetched dynamically from a public API to reflect my passion for continuous learning:
+      </p>
+      <blockquote id="cv-quote" class="callout" style="border-left-color:var(--primary); min-height:60px;">
+        <p style="font-style:italic; color:var(--on-surface-variant);">Loading quote&hellip;</p>
+      </blockquote>
+    </section>
+
+    <!-- ================================ -->
+    <!-- References (Sources)             -->
+    <!-- ================================ -->
+    <section style="margin-top:4rem; padding-top:2rem; border-top:2px solid var(--primary-container);">
+      <div class="cv-section__header" style="border-bottom:none; padding-bottom:0;">
+        <div class="cv-section__icon" style="background:var(--surface-container-highest); color:var(--on-surface-variant);">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;">menu_book</span>
+        </div>
+        <h2 class="cv-section__title">References</h2>
+      </div>
+
+      <ol class="cv-references">
+        <li>
+          Anthropic. (2026). <em>Claude</em> [Large language model].
+          https://claude.ai. Used as an AI coding assistant for CSS scaffolding,
+          JavaScript logic generation, and tutorial content drafting. All AI-generated
+          output was reviewed, tested, and modified by the author. Full details in the
+          <a href="ai-reflection.html">AI Reflection Log</a>.
+        </li>
+        <li>
+          Hernandez, D. (2019, October 31). The 50 greatest moments in internet
+          history. <em>Popular Mechanics</em>.
+          https://www.popularmechanics.com/culture/web/g29622347/greatest-moments-internet-history/
+        </li>
+        <li>
+          De Jesus, V. (2019, February 4). Introduction to Google Fonts.
+          <em>Event Elves</em>.
+          https://www.eventelves.com.au/introduction-to-google-fonts/
+        </li>
+        <li>
+          Dog CEO. (n.d.). <em>Dog API: The internet&rsquo;s biggest collection of
+          open-source dog pictures</em>. Retrieved March 29, 2026, from
+          https://dog.ceo/dog-api/
+        </li>
+        <li>
+          Google. (n.d.). <em>Manrope</em> [Font]. Google Fonts. Retrieved March 29, 2026,
+          from https://fonts.google.com/specimen/Manrope
+        </li>
+        <li>
+          Mozilla Developer Network. (n.d.-a). <em>CSS: Cascading Style Sheets</em>. MDN
+          Web Docs. Retrieved March 29, 2026, from
+          https://developer.mozilla.org/en-US/docs/Web/CSS
+        </li>
+        <li>
+          Mozilla Developer Network. (n.d.-b). <em>HTML: HyperText Markup Language</em>. MDN
+          Web Docs. Retrieved March 29, 2026, from
+          https://developer.mozilla.org/en-US/docs/Web/HTML
+        </li>
+        <li>
+          Mozilla Developer Network. (n.d.-c). <em>JavaScript Guide</em>. MDN Web Docs.
+          Retrieved March 29, 2026, from
+          https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide
+        </li>
+        <li>
+          Stitch. (n.d.). <em>Stitch: AI-Powered Web Design Tool</em>. Retrieved March 29,
+          2026, from https://stitch.withgoogle.com/. Used to develop the initial visual
+          prototype and layout design for this web application.
+        </li>
+        <li>
+          World Wide Web Consortium. (2023). <em>Web Content Accessibility Guidelines
+          (WCAG) 2.2</em> (W3C Recommendation). https://www.w3.org/TR/WCAG22/
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__grid">
+        <div>
+          <div class="site-footer__brand">Web Design and Development Fundamentals</div>
+        </div>
+        <div>
+          <h4 class="site-footer__heading">Curriculum</h4>
+          <ul class="site-footer__link-list">
+            <li><a href="index.html" class="site-footer__link">Web Foundations</a></li>
+            <li><a href="quiz.html"  class="site-footer__link">Technical Assessment</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="site-footer__heading">Resources</h4>
+          <ul class="site-footer__link-list">
+            <li><a href="ai-reflection.html" class="site-footer__link">AI Reflection Log</a></li>
+            <li><a href="cv.html"            class="site-footer__link">About the Author</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="site-footer__bottom">
+        <div class="site-footer__copy">&copy; 2026 Yuxing Zhou. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== Page Scripts ========== -->
+  <script src="js/main.js"></script>
+  <script>
+    /*
+     * CV Page — Two interactive features:
+     *   1. Skill bars animate when scrolled into view
+     *   2. Random quote loaded via AJAX from DummyJSON API
+     */
+
+    // ---- 1. Skill Bar Animation ----
+    // The bars start at 0% width and fill up when the user scrolls to them
+    (function () {
+      var fills = document.querySelectorAll(".cv-skill__fill");
+      var animated = false;
+
+      function animateSkills() {
+        if (animated) return;
+
+        var section = document.getElementById("cv-skills");
+        if (!section) return;
+
+        // Check if the skills section is visible on screen
+        var rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.85) {
+          animated = true;
+          // Set each bar's width from its data-width attribute
+          for (var i = 0; i < fills.length; i++) {
+            var width = fills[i].getAttribute("data-width");
+            fills[i].style.width = width + "%";
+          }
+        }
+      }
+
+      window.addEventListener("scroll", animateSkills);
+      // Also check immediately (in case section is already visible)
+      animateSkills();
+    })();
+
+    // ---- 2. AJAX Random Quote ----
+    // Fetches a random quote from the DummyJSON public API
+    (function () {
+      var container = document.getElementById("cv-quote");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://dummyjson.com/quotes/random", true);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            // Parse the JSON response and display the quote
+            var data = JSON.parse(xhr.responseText);
+            container.innerHTML =
+              '<p style="font-style:italic; color:var(--on-surface); font-size:1.05rem; line-height:1.6; margin-bottom:0.5rem;">' +
+              '&ldquo;' + escapeHtml(data.quote) + '&rdquo;' +
+              '</p>' +
+              '<p style="font-size:0.8rem; font-weight:700; color:var(--secondary);">' +
+              '&mdash; ' + escapeHtml(data.author) +
+              '</p>';
+          } else {
+            // Fallback quote if the API fails
+            container.innerHTML =
+              '<p style="font-style:italic; color:var(--on-surface-variant);">' +
+              '&ldquo;The best way to predict the future is to invent it.&rdquo; &mdash; Alan Kay</p>';
+          }
+        }
+      };
+
+      xhr.send();
+
+      // Safely escape HTML to prevent XSS
+      function escapeHtml(str) {
+        var div = document.createElement("div");
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
+      }
+    })();
+  </script>
+
+</body>
+</html>

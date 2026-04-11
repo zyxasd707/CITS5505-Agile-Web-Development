@@ -1,0 +1,173 @@
+{
+  "quiz": {
+    "title": "Web Foundations Assessment",
+    "passThreshold": 60,
+    "questions": [
+      {
+        "id": 1,
+        "question": "Which HTML element is used to define the main navigation links on a page?",
+        "options": [
+          "<div class=\"nav\">",
+          "<navigation>",
+          "<nav>",
+          "<menu>"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 2,
+        "question": "What is the primary benefit of using semantic HTML elements like <article> and <section>?",
+        "options": [
+          "They make pages load faster",
+          "They provide meaning to content for browsers and assistive technologies",
+          "They automatically add styling to the page",
+          "They are required for valid HTML5 documents"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 3,
+        "question": "Which attribute should always be included in the <html> tag for accessibility?",
+        "options": [
+          "charset",
+          "dir",
+          "lang",
+          "role"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 4,
+        "question": "What does the CSS property 'box-sizing: border-box' do?",
+        "options": [
+          "Adds a border around all elements",
+          "Makes padding and border included in the element's total width and height",
+          "Removes all box shadows from the element",
+          "Sets the element's display to block"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 5,
+        "question": "In CSS specificity, which selector has the HIGHEST priority?",
+        "options": [
+          "Element selector (e.g., p)",
+          "Class selector (e.g., .intro)",
+          "ID selector (e.g., #header)",
+          "Universal selector (*)"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 6,
+        "question": "Why should you use relative units (rem, em, %) instead of fixed pixels in CSS?",
+        "options": [
+          "Pixels are not supported by modern browsers",
+          "Relative units ensure layout elasticity and better responsiveness across devices",
+          "Relative units make the website load faster",
+          "Fixed pixels cause accessibility violations"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 7,
+        "question": "What is a CSS Custom Property (CSS variable) and how is it defined?",
+        "options": [
+          "A JavaScript variable used in stylesheets, defined with 'let'",
+          "A special property defined with '--' prefix and accessed with 'var()'",
+          "A property defined in the HTML style attribute only",
+          "A built-in browser property that cannot be customised"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 8,
+        "question": "Which JavaScript method is the recommended way to handle user interactions instead of inline HTML event attributes?",
+        "options": [
+          "document.write()",
+          "element.innerHTML",
+          "element.addEventListener()",
+          "window.alert()"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 9,
+        "question": "What is the DOM (Document Object Model)?",
+        "options": [
+          "A CSS framework for styling documents",
+          "A programming interface that represents the page as a tree of objects that scripts can manipulate",
+          "A server-side database for storing web page data",
+          "A file format for storing HTML documents"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 10,
+        "question": "What does a 'pure function' in JavaScript mean?",
+        "options": [
+          "A function that only uses ES6 syntax",
+          "A function that never returns a value",
+          "A function that returns consistent results for the same inputs and has no side effects",
+          "A function that modifies global variables"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 11,
+        "question": "Which HTML element is used to provide a caption for an image?",
+        "options": [
+          "<caption>",
+          "<figcaption> inside a <figure>",
+          "<img-caption>",
+          "<label>"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 12,
+        "question": "What is the correct way to prevent 'div-soup' in HTML?",
+        "options": [
+          "Use only <span> elements instead of <div>",
+          "Replace generic <div> elements with semantic elements like <header>, <main>, <aside>",
+          "Add ARIA roles to every <div> element",
+          "Limit the number of <div> elements to 10 per page"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 13,
+        "question": "What does the CSS 'cascade' refer to?",
+        "options": [
+          "A waterfall animation effect",
+          "The algorithm that determines which styles apply when multiple rules target the same element",
+          "The order in which CSS files are downloaded",
+          "A method of nesting CSS selectors"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 14,
+        "question": "Which method is used to select an HTML element by its ID in JavaScript?",
+        "options": [
+          "document.getElement(id)",
+          "document.querySelector(id)",
+          "document.getElementById(id)",
+          "document.findById(id)"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 15,
+        "question": "Why is input validation important in JavaScript?",
+        "options": [
+          "It makes the code run faster",
+          "It prevents security vulnerabilities like XSS and ensures data integrity",
+          "It is required by the JavaScript specification",
+          "It only affects the visual appearance of forms"
+        ],
+        "answer": 1
+      }
+    ]
+  }
+}

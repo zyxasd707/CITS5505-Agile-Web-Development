@@ -1000,3 +1000,23 @@ git checkout -b feature/next-function
 ------
 
 **🎉 恭喜！你已经掌握了团队协作中的 Git 核心知识！**
+
+
+
+
+
+# 1. 初始化 Git 仓库
+git init
+
+# 2. 关联远程仓库
+git remote add origin https://github.com/zyxasd707/CITS5505-Agile-Web-Development.git
+
+# 3. 拉取远程历史
+git fetch origin
+
+# 4. 创建 main 分支并对齐远程历史
+git branch -M main
+git reset origin/main
+
+# 5. 设置跟踪关系
+git branch --set-upstream-to=origin/main main

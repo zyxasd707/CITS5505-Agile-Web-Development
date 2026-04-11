@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Reflection Log | Web Design and Development Fundamentals</title>
+
+  <!-- Google Fonts: Manrope + Material Symbols -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" />
+
+  <!-- Custom stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__brand">Web Design and Development Fundamentals</a>
+
+      <div class="site-nav__links">
+        <a href="index.html"          class="site-nav__link">Tutorials</a>
+        <a href="quiz.html"           class="site-nav__link">Assessments</a>
+        <a href="ai-reflection.html"  class="site-nav__link">AI Log</a>
+        <a href="cv.html"             class="site-nav__link">Curriculum</a>
+      </div>
+
+      <button class="site-nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+
+    <div class="site-nav__mobile-menu">
+      <a href="index.html"          class="site-nav__mobile-link">Tutorials</a>
+      <a href="quiz.html"           class="site-nav__mobile-link">Assessments</a>
+      <a href="ai-reflection.html"  class="site-nav__mobile-link">AI Log</a>
+      <a href="cv.html"             class="site-nav__mobile-link">Curriculum</a>
+    </div>
+  </nav>
+
+  <!-- ========== Main Content ========== -->
+  <main class="container-narrow" style="padding-top:4rem; padding-bottom:4rem;">
+
+    <!-- Page header -->
+    <header style="margin-bottom:3rem; padding-bottom:2rem; border-bottom:1px solid var(--surface-container-high);">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <span>Documentation</span>
+        <span class="material-symbols-outlined" style="font-size:0.9rem;">chevron_right</span>
+        <span>AI Reflection</span>
+      </nav>
+
+      <h1 class="headline-lg" style="margin-bottom:1rem;">AI Reflection Log</h1>
+      <p class="body-lg" style="max-width:660px;">
+        This page documents and critically evaluates how AI tools and large language models
+        (LLMs) were used during the development of this project. It includes example prompts,
+        summaries of AI output, corrections made, and an honest assessment of limitations
+        and ethical considerations.
+      </p>
+
+    </header>
+
+    <!-- ================================ -->
+    <!-- Overview Section                 -->
+    <!-- ================================ -->
+    <section style="margin-bottom:3rem;">
+      <h2 class="headline-md" style="margin-bottom:1rem;">Overview of AI Usage</h2>
+      <div class="tutorial-prose">
+        <p>
+          Throughout this project, I used <strong>Claude</strong> (Anthropic) as an AI coding
+          assistant to help with several aspects of development. The AI was used as a
+          collaborative tool rather than a wholesale code generator &mdash; I provided direction,
+          reviewed all output, and made significant manual corrections. Below I document three
+          distinct use cases, each illustrating a different way the AI contributed and the
+          limitations I encountered.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- Use Case 1: Design System / CSS  -->
+    <!-- ================================ -->
+    <article class="ai-entry">
+      <div class="ai-entry__header">
+        <div class="ai-entry__icon" style="background:var(--primary-container); color:var(--on-primary-container);">
+          <span class="material-symbols-outlined">palette</span>
+        </div>
+        <div>
+          <div class="ai-entry__title">Use Case 1: CSS Design System Scaffolding</div>
+          <div class="ai-entry__subtitle">Generating the initial CSS custom properties and component styles</div>
+        </div>
+      </div>
+
+      <!-- Prompt -->
+      <div class="ai-prompt">
+        <div class="ai-block-label">
+          <span class="material-symbols-outlined" style="font-size:0.9rem;">person</span> My Prompt
+        </div>
+        <p>
+          &ldquo;Based on this DESIGN.md specification, create a CSS file with custom properties
+          for the colour palette, spacing scale, border radii, and shadow tokens. Include base
+          reset styles, typography classes using the Manrope font, and component styles for
+          buttons, cards, callouts, and code blocks. Follow the &lsquo;no-line&rsquo; rule
+          from the design spec &mdash; use background colour shifts instead of borders to
+          separate content.&rdquo;
+        </p>
+      </div>
+
+      <!-- Output summary -->
+      <div class="ai-output">
+        <div class="ai-block-label">
+          <span class="material-symbols-outlined" style="font-size:0.9rem;">smart_toy</span> AI Output Summary
+        </div>
+        <p>
+          The AI generated a comprehensive CSS file (~400 lines) containing all design tokens
+          as custom properties, a basic CSS reset, typography utility classes, and styled
+          components for buttons, cards, code blocks, and input fields. It correctly translated
+          the colour roles from the design spec into CSS variables and implemented the gradient
+          CTA button as specified.
+        </p>
+      </div>
+
+      <!-- Corrections -->
+      <h4 class="label-md" style="margin-top:var(--sp-4);">Corrections &amp; Changes I Made</h4>
+      <ul class="ai-corrections">
+        <li>
+          The AI initially used <code>border: 1px solid</code> on several card components,
+          violating the &ldquo;no-line&rdquo; rule from the design spec. I replaced these with
+          background colour differentiation using surface container tokens.
+        </li>
+        <li>
+          Some colour contrast ratios did not meet WCAG AA standards. I manually tested using
+          the WebAIM contrast checker and adjusted <code>--on-surface</code> from
+          <code>#2f2f2f</code> to <code>#1a1a1a</code> for better readability.
+        </li>
+        <li>
+          The responsive breakpoints were too aggressive &mdash; the AI collapsed to a
+          single-column layout at 900px. I adjusted this to 1024px for tablets and 768px for
+          mobile, which better matched the content density.
+        </li>
+      </ul>
+    </article>
+
+    <!-- ================================ -->
+    <!-- Use Case 2: Quiz AJAX Logic      -->
+    <!-- ================================ -->
+    <article class="ai-entry">
+      <div class="ai-entry__header">
+        <div class="ai-entry__icon" style="background:var(--secondary-container); color:var(--secondary);">
+          <span class="material-symbols-outlined">code</span>
+        </div>
+        <div>
+          <div class="ai-entry__title">Use Case 2: Quiz Page JavaScript Logic</div>
+          <div class="ai-entry__subtitle">AJAX loading, dynamic rendering, scoring, and localStorage</div>
+        </div>
+      </div>
+
+      <!-- Prompt -->
+      <div class="ai-prompt">
+        <div class="ai-block-label">
+          <span class="material-symbols-outlined" style="font-size:0.9rem;">person</span> My Prompt
+        </div>
+        <p>
+          &ldquo;Create a quiz.js file that: (1) loads questions from a local JSON file using
+          XMLHttpRequest, (2) shuffles question order with Fisher-Yates, (3) renders questions
+          dynamically as radio-button cards, (4) triggers beforeunload warning after the first
+          answer is selected, (5) validates all questions are answered before submission,
+          (6) calculates score/percentage/pass-fail, (7) on pass, fetches a reward image from
+          the Dog CEO API, (8) saves each attempt to localStorage with date/time.&rdquo;
+        </p>
+      </div>
+
+      <!-- Output summary -->
+      <div class="ai-output">
+        <div class="ai-block-label">
+          <span class="material-symbols-outlined" style="font-size:0.9rem;">smart_toy</span> AI Output Summary
+        </div>
+        <p>
+          The AI produced a well-structured IIFE (Immediately Invoked Function Expression) with
+          clearly separated functions for each responsibility. It correctly implemented the
+          Fisher-Yates shuffle, XMLHttpRequest-based AJAX loading, dynamic DOM generation,
+          beforeunload event handling, and localStorage persistence. The code included HTML
+          escaping utilities to prevent XSS when rendering question text.
+        </p>
+      </div>
+
+      <!-- Corrections -->
+      <h4 class="label-md" style="margin-top:var(--sp-4);">Corrections &amp; Changes I Made</h4>
+      <ul class="ai-corrections">
+        <li>
+          The AI used <code>fetch()</code> initially. I changed this to
+          <code>XMLHttpRequest</code> because the assignment specifically required AJAX, and
+          I wanted to demonstrate understanding of the traditional approach. I also added a
+          check for <code>xhr.status === 0</code> to support the <code>file://</code> protocol
+          during local development.
+        </li>
+        <li>
+          The beforeunload handler was not being properly removed after submission. The AI
+          attached it with an anonymous function, making removal impossible. I refactored it
+          into a named function (<code>warnBeforeLeave</code>) so it could be cleanly removed
+          via <code>removeEventListener</code>.
+        </li>
+        <li>
+          The reward API response was rendered using <code>innerHTML</code> with the image URL
+          inserted directly, creating a potential injection risk. I added an
+          <code>escapeAttr()</code> utility to sanitise the URL before insertion.
+        </li>
+        <li>
+          The localStorage code lacked error handling for private browsing mode (where
+          <code>setItem</code> throws). I wrapped it in a try-catch to fail silently.
+        </li>
+      </ul>
+    </article>
+
+    <!-- ================================ -->
+    <!-- Use Case 3: Content Writing      -->
+    <!-- ================================ -->
+    <article class="ai-entry">
+      <div class="ai-entry__header">
+        <div class="ai-entry__icon" style="background:var(--tertiary-container); color:var(--on-tertiary-container);">
+          <span class="material-symbols-outlined">edit_note</span>
+        </div>
+        <div>
+          <div class="ai-entry__title">Use Case 3: Tutorial Content Drafting</div>
+          <div class="ai-entry__subtitle">Generating educational text for the HTML/CSS/JS tutorial page</div>
+        </div>
+      </div>
+
+      <!-- Prompt -->
+      <div class="ai-prompt">
+        <div class="ai-block-label">
+          <span class="material-symbols-outlined" style="font-size:0.9rem;">person</span> My Prompt
+        </div>
+        <p>
+          &ldquo;Write educational content for a tutorial page covering three topics:
+          (1) Semantic HTML &mdash; explain why semantic elements matter for accessibility,
+          SEO, and maintainability; (2) CSS &mdash; cover the Box Model, Specificity, and
+          responsive design with relative units; (3) JavaScript &mdash; explain DOM
+          manipulation, event listeners, and pure functions. Include practical code examples
+          for each section.&rdquo;
+        </p>
+      </div>
+
+      <!-- Output summary -->
+      <div class="ai-output">
+        <div class="ai-block-label">
+          <span class="material-symbols-outlined" style="font-size:0.9rem;">smart_toy</span> AI Output Summary
+        </div>
+        <p>
+          The AI generated well-structured educational text for all three sections, including
+          best-practice callout boxes, bullet-pointed explanations, and inline code examples.
+          The content was technically accurate and appropriately pitched for an introductory
+          web development audience.
+        </p>
+      </div>
+
+      <!-- Corrections -->
+      <h4 class="label-md" style="margin-top:var(--sp-4);">Corrections &amp; Changes I Made</h4>
+      <ul class="ai-corrections">
+        <li>
+          The AI used overly verbose, textbook-style language. I shortened several paragraphs
+          and rewrote them in a more concise, direct tone to match the site&rsquo;s editorial
+          voice described in DESIGN.md.
+        </li>
+        <li>
+          One code snippet showed an incorrect <code>&lt;time&gt;</code> element with a
+          malformed <code>datetime</code> attribute (missing closing angle bracket). I caught
+          this during manual review and fixed it.
+        </li>
+        <li>
+          The JavaScript section originally recommended using <code>var</code> exclusively.
+          While this is not incorrect, I revised the explanation to acknowledge modern
+          <code>let</code>/<code>const</code> while keeping <code>var</code> in the demo
+          code for broader compatibility demonstration.
+        </li>
+      </ul>
+    </article>
+
+    <!-- ================================ -->
+    <!-- Critical Evaluation              -->
+    <!-- ================================ -->
+    <section class="ai-critical">
+      <h2 class="headline-md" style="margin-bottom:0.5rem;">Critical Evaluation</h2>
+      <p class="body-lg">
+        Beyond the specific use cases above, the following reflections capture broader insights
+        about working with AI tools in a coding project.
+      </p>
+
+      <div class="ai-critical__grid">
+
+        <!-- Card: Reliability -->
+        <div class="ai-critical__card">
+          <div class="ai-critical__card-title">
+            <span class="material-symbols-outlined" style="font-size:1.1rem; color:var(--primary);">verified</span>
+            Reliability
+          </div>
+          <p>
+            AI-generated code was structurally sound roughly 80% of the time, but required
+            manual review for edge cases. The most common failure was <strong>subtle logical
+            errors</strong> &mdash; such as the unreachable <code>removeEventListener</code>
+            bug &mdash; that would only surface during real user testing, not code review alone.
+            This reinforces that AI output should never be trusted without thorough testing.
+          </p>
+        </div>
+
+        <!-- Card: Limitations -->
+        <div class="ai-critical__card">
+          <div class="ai-critical__card-title">
+            <span class="material-symbols-outlined" style="font-size:1.1rem; color:var(--secondary);">report</span>
+            Limitations
+          </div>
+          <p>
+            The AI struggled with <strong>design-system coherence</strong>. When asked to
+            follow the &ldquo;no-line&rdquo; rule from DESIGN.md, it still defaulted to border
+            separators in several places, suggesting it cannot reliably internalise and
+            consistently apply nuanced design constraints across an entire codebase. It also
+            produced code that assumed modern browser APIs (like <code>fetch</code>) without
+            considering the assignment&rsquo;s requirement for traditional AJAX.
+          </p>
+        </div>
+
+        <!-- Card: Ethical Considerations -->
+        <div class="ai-critical__card">
+          <div class="ai-critical__card-title">
+            <span class="material-symbols-outlined" style="font-size:1.1rem; color:var(--tertiary);">balance</span>
+            Ethical Considerations
+          </div>
+          <p>
+            Using AI in an academic context raises questions of <strong>authorship and
+            academic integrity</strong>. I ensured AI was used as a productivity tool (similar
+            to Stack Overflow or documentation), not as a substitute for understanding. Every
+            line of AI-generated code was reviewed, understood, and in many cases rewritten.
+            This reflection log itself serves as evidence of that critical engagement. Full AI
+            usage is disclosed in the references section of the CV page.
+          </p>
+        </div>
+
+        <!-- Card: What I Learned -->
+        <div class="ai-critical__card">
+          <div class="ai-critical__card-title">
+            <span class="material-symbols-outlined" style="font-size:1.1rem; color:var(--error);">school</span>
+            What I Learned
+          </div>
+          <p>
+            The most valuable takeaway is that <strong>AI is best used for scaffolding, not
+            finishing</strong>. It excels at generating boilerplate, suggesting structural
+            patterns, and producing first drafts of repetitive code. But the &ldquo;last
+            mile&rdquo; &mdash; ensuring accessibility, security, design consistency, and
+            cross-browser compatibility &mdash; still requires human expertise and careful
+            testing. Knowing when to accept, modify, or reject AI suggestions is itself a
+            critical skill.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__grid">
+        <div>
+          <div class="site-footer__brand">Web Design and Development Fundamentals</div>
+        </div>
+        <div>
+          <h4 class="site-footer__heading">Curriculum</h4>
+          <ul class="site-footer__link-list">
+            <li><a href="index.html" class="site-footer__link">Web Foundations</a></li>
+            <li><a href="quiz.html"  class="site-footer__link">Technical Assessment</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="site-footer__heading">Resources</h4>
+          <ul class="site-footer__link-list">
+            <li><a href="ai-reflection.html" class="site-footer__link">AI Reflection Log</a></li>
+            <li><a href="cv.html"            class="site-footer__link">About the Author</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="site-footer__bottom">
+        <div class="site-footer__copy">&copy; 2026 Yuxing Zhou. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Shared JS -->
+  <script src="js/main.js"></script>
+</body>
+</html>
