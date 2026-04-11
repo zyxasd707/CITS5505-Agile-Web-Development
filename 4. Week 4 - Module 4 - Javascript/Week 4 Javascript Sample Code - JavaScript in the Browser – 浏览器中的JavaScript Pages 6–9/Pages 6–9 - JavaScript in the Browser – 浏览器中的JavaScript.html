@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- ===== 方式②: <script>标签内嵌在<head>中 (P7) ===== -->
+<script>
+function greet() {                                          // 定义函数
+  document.getElementById("output").innerHTML = "Hello!";   // 修改页面内容
+  console.log("greet() was called");                        // 调试输出到Console (P9)
+}
+
+function askName() {
+  let name = prompt("What is your name?");                  // 用prompt获取用户输入 (P9)
+  if (name !== null) {                                      // 用户没有按Cancel
+    alert("Welcome, " + name + "!");                        // 用alert输出给用户 (P9)
+    console.log("User entered:", name);                     // 调试输出 (P9)
+  }
+}
+
+function doConfirm() {
+  let result = confirm("Are you sure?");                    // confirm返回true或false (P9)
+  document.getElementById("output").innerHTML =
+    "You clicked: " + (result ? "OK" : "Cancel");           // 显示用户的选择
+}
+</script>
+</head>
+<body>
+
+<h1>JS in Browser Demo (Pages 7-9)</h1>
+<p id="output">Original text</p>
+
+<!-- ===== 方式①: 内联在onclick属性中 (P7) ===== -->
+<button onclick="greet()">Greet (onclick调用函数)</button>
+<button onclick="askName()">Prompt (获取输入)</button>
+<button onclick="doConfirm()">Confirm (确认对话框)</button>
+
+<!-- ===== 方式③: 从外部文件引入 (P7) ===== -->
+<!-- <script src="myExternalFile.js"></script> -->
+<!-- 以上为外部文件引入方式，此处注释展示格式 -->
+
+</body>
+</html>

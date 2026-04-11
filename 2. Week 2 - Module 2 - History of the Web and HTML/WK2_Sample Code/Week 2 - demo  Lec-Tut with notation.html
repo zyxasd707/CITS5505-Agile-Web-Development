@@ -1,0 +1,63 @@
+<!DOCTYPE html> <!-- Declares the document type as HTML5 | 声明文档类型为 HTML5 -->
+<html> <!-- Root element of the HTML page | HTML 页面的根元素 -->
+  <head> <!-- Contains meta information about the document | 包含文档的元数据信息 -->
+  </head> <!-- End of head section | 头部区域结束 -->
+  <body> <!-- Contains the visible page content | 包含页面的可见内容 -->
+
+    <!-- 段落：介绍 HTML，包含有序列表和超链接 -->
+    <!-- Paragraph: introduces HTML, contains ordered list and hyperlink | 段落：介绍 HTML，包含有序列表和超链接 -->
+    <p> <!-- Start of a paragraph | 段落开始 -->
+      Its a markup language. We will cover following topics: <!-- Introductory text | 介绍性文字 -->
+      <ol type="I"> <!-- Ordered list using Roman numerals | 使用罗马数字的有序列表 -->
+        <li>Text tags</li> <!-- List item: Text tags | 列表项：文本标签 -->
+        <li>Hyperlinks</li> <!-- List item: Hyperlinks | 列表项：超链接 -->
+        <li>forms</li> <!-- List item: Forms | 列表项：表单 -->
+      </ol> <!-- End of ordered list | 有序列表结束 -->
+      If you want to read more about HTML go to this <!-- Prompt text before link | 链接前的提示文字 -->
+      <a href="https://www.w3schools.com/html/" target="_blank">link to W3School</a> <!-- Hyperlink opening in new tab | 在新标签页打开的超链接 -->
+    </p> <!-- End of paragraph | 段落结束 -->
+
+    <!-- Image example: external URL image | 图片示例：外部链接图片 -->
+    <img src="https://web.dev/static/images/learn-header_720.png" <!-- Image source URL | 图片来源网址 -->
+         alt="An image of web dev tools"> <!-- Alt text for accessibility | 无障碍访问的替代文字 -->
+
+    <!-- Image as hyperlink | 图片作为超链接 -->
+    <p>因为OneComplier上使用的是<strong>在线编辑器</strong>，运行在云端服务器，无法访问本地的cat.jpg文件</p>
+    <!-- Explains why local file cannot be accessed | 说明为何无法访问本地文件 -->
+    <!-- Paragraph explaining online editor limitation | 说明在线编辑器限制的段落 -->
+
+    <a href="cat.jpg" target="_blank"> <!-- Link to local cat image (will not work in online editor) | 本地猫咪图片链接（在线编辑器中无法使用） -->
+      <img src="cat.jpg" alt="A picture of a cat"> <!-- Local cat image (will not load online) | 本地猫咪图片（在线环境中无法加载） -->
+    </a> <!-- End of local image link | 本地图片链接结束 -->
+
+    <!-- ✅ Using full uploaded URL | ✅ 使用上传后的完整 URL -->
+    <a href="https://uploads.onecompiler.io/43kpgsbuj/44fhhggbk/cat.jpg" target="_blank"> <!-- Link to uploaded cat image | 已上传猫咪图片的链接 -->
+      <img src="https://uploads.onecompiler.io/43kpgsbuj/44fhhggbk/cat.jpg" <!-- Uploaded cat image source | 已上传猫咪图片的来源 -->
+       alt="A picture of a cat"> <!-- Alt text for cat image | 猫咪图片的替代文字 -->
+    </a> <!-- End of uploaded image link | 已上传图片链接结束 -->
+
+    <br> <!-- Line break | 换行符 -->
+
+    Hello! Week 2 Tutorial! <!-- Plain text content | 纯文本内容 -->
+
+    </br> <!-- ⚠️ Incorrect closing br tag (br is self-closing) | ⚠️ 错误的 br 闭合标签（br 是自闭合标签） -->
+
+    Agile Web <!-- Plain text content | 纯文本内容 -->
+
+    <!-- Normal paragraph with bold text | 普通段落，含加粗文字 -->
+    <p>Paragraph 1, <b>xyx</b>....... Abc</p> <!-- Paragraph with bold tag wrapping "xyx" | 段落，<b> 标签加粗 "xyx" -->
+
+    <!-- ❌ Bad practice: writing code directly inside <p> | ❌ 错误示范：直接在 <p> 里写代码（不推荐） -->
+    <p> <!-- Paragraph start (not suitable for code display) | 段落开始（不适合用于展示代码） -->
+      for i in range(5): <!-- Python code written as plain text (loses formatting) | Python 代码以纯文本写入（失去格式） -->
+          print(i) <!-- Indentation will be ignored by browser | 浏览器会忽略缩进 -->
+    </p> <!-- End of bad-practice paragraph | 错误示范段落结束 -->
+
+    <!-- ✅ Good practice: use <pre><code> to display code blocks | ✅ 正确示范：使用 <pre><code> 展示代码块 -->
+    <p> <!-- Wrapping paragraph | 包裹段落 -->
+      <pre><code>for i in range(5): <!-- <pre> preserves whitespace, <code> marks it as code | <pre> 保留空白格式，<code> 标记为代码 -->
+    print(i)</code></pre> <!-- End of code and preformatted block | 代码块和预格式化块结束 -->
+    </p> <!-- End of wrapping paragraph | 包裹段落结束 -->
+
+  </body> <!-- End of body section | 主体区域结束 -->
+</html> <!-- End of HTML document | HTML 文档结束 -->

@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CH07 Client-side JavaScript · V3 全页交互学习</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#090b10;--sf:#12151e;--sf2:#1a1e2c;--sf3:#222738;
+  --bd:#272d40;--bd2:#353d54;
+  --tx:#d4d9e8;--tx2:#7c849a;--tx3:#4f576c;
+  --bl:#5e9ff8;--cy:#50d4c6;--gn:#52da84;--yl:#efc048;
+  --or:#e48d56;--rd:#ef6a7c;--pu:#a48bf8;--pk:#f070b0;
+  --code:#0b0e14;--r:10px;
+  --fm:'Noto Sans SC',sans-serif;--fc:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--fm);background:var(--bg);color:var(--tx);line-height:1.75;-webkit-font-smoothing:antialiased}
+::selection{background:var(--bl);color:#fff}
+
+/* progress */
+.bar{position:fixed;top:0;left:0;height:3px;z-index:200;
+  background:linear-gradient(90deg,var(--bl),var(--pu),var(--pk));
+  box-shadow:0 0 10px var(--bl);transition:width .1s}
+
+/* nav */
+nav{position:fixed;top:3px;left:0;right:0;z-index:100;
+  background:rgba(9,11,16,.88);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--bd);height:50px;
+  display:flex;align-items:center;padding:0 1.2rem;gap:.4rem;
+  overflow-x:auto;overflow-y:hidden}
+nav::-webkit-scrollbar{height:0}
+nav .logo{font-family:var(--fc);font-weight:700;font-size:.82rem;
+  color:var(--bl);margin-right:.6rem;white-space:nowrap;flex-shrink:0;letter-spacing:1px}
+nav a{color:var(--tx2);text-decoration:none;font-size:.76rem;
+  padding:4px 9px;border-radius:5px;white-space:nowrap;transition:all .2s;font-weight:500}
+nav a:hover,nav a.on{color:var(--bl);background:rgba(94,159,248,.1)}
+
+/* hero */
+.hero{padding:6rem 2rem 2rem;text-align:center;
+  background:radial-gradient(ellipse 70% 50% at 50% 10%,rgba(94,159,248,.06) 0%,transparent 80%)}
+.hero h1{font-weight:900;font-size:clamp(1.7rem,4.5vw,2.6rem);
+  background:linear-gradient(135deg,var(--bl),var(--pu),var(--pk));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.3;margin-bottom:.3rem}
+.hero .sub{color:var(--tx2);font-size:.9rem}
+.chips{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:1rem}
+.chip{background:var(--sf);border:1px solid var(--bd);border-radius:7px;
+  padding:.45rem 1rem;font-family:var(--fc);font-size:.76rem;display:flex;align-items:center;gap:.3rem}
+.chip b{color:var(--yl)}
+
+/* wrap */
+.w{max-width:920px;margin:0 auto;padding:.5rem 1.2rem 5rem}
+
+/* section */
+.sec{margin-bottom:2.2rem;scroll-margin-top:62px}
+.sh{display:flex;align-items:center;gap:.7rem;margin-bottom:1rem;
+  padding-bottom:.6rem;border-bottom:2px solid var(--bd)}
+.sn{font-family:var(--fc);font-weight:700;background:var(--bl);color:var(--bg);
+  width:30px;height:30px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;font-size:.75rem;flex-shrink:0}
+.sh h2{font-weight:700;font-size:1.2rem;line-height:1.3}
+.pg{margin-left:auto;font-family:var(--fc);font-size:.68rem;color:var(--tx3);flex-shrink:0;white-space:nowrap}
+.star{display:inline-block;background:rgba(239,106,124,.12);color:var(--rd);
+  font-size:.66rem;padding:1px 6px;border-radius:4px;font-weight:700;margin-left:.3rem;vertical-align:middle}
+
+/* card */
+.c{background:var(--sf);border:1px solid var(--bd);border-radius:12px;
+  margin-bottom:1rem;overflow:hidden;transition:border-color .3s}
+.c:hover{border-color:var(--bd2)}
+.ct{padding:.75rem 1rem;font-weight:700;font-size:.92rem;
+  border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.cb{padding:1rem}
+.cb p{margin-bottom:.6rem;font-size:.88rem}
+.en{color:var(--tx2);font-size:.84rem;font-style:italic}
+
+/* code */
+.cd{background:var(--code);border:1px solid var(--bd);border-radius:var(--r);margin:.6rem 0;overflow:hidden}
+.cd-bar{display:flex;align-items:center;justify-content:space-between;
+  padding:.35rem .8rem;background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.04)}
+.cd-bar .lang{font-family:var(--fc);font-size:.7rem;color:var(--cy);font-weight:600}
+.cp{font-family:var(--fc);font-size:.66rem;background:var(--sf2);color:var(--tx2);
+  border:1px solid var(--bd);padding:2px 9px;border-radius:4px;cursor:pointer;transition:all .2s}
+.cp:hover{background:var(--bl);color:#fff;border-color:var(--bl)}
+pre{padding:.8rem;overflow-x:auto;font-family:var(--fc);font-size:.78rem;line-height:1.65;color:var(--tx);white-space:pre}
+.kw{color:var(--pu)}.fn{color:var(--bl)}.str{color:var(--gn)}.cmt{color:#444e64;font-style:italic}
+.num{color:var(--or)}.tg{color:var(--rd)}.at{color:var(--yl)}.vl{color:var(--cy)}
+
+/* run */
+.ru{border:1px dashed var(--bd);border-radius:var(--r);margin:.6rem 0;overflow:hidden}
+.ru-top{padding:.4rem .8rem;background:rgba(80,212,198,.05);border-bottom:1px dashed var(--bd);
+  display:flex;align-items:center;justify-content:space-between}
+.ru-top span{color:var(--cy);font-size:.76rem;font-weight:600}
+.rb{font-family:var(--fc);font-size:.7rem;font-weight:700;background:var(--cy);
+  color:var(--bg);border:none;padding:3px 12px;border-radius:4px;cursor:pointer;transition:all .15s}
+.rb:hover{filter:brightness(1.15);transform:scale(1.03)}
+.ro{padding:.8rem;min-height:34px;font-family:var(--fc);font-size:.8rem;
+  color:var(--yl);line-height:1.6;white-space:pre-wrap;word-break:break-word}
+
+/* quiz */
+.q{background:rgba(239,192,72,.04);border:1px solid rgba(239,192,72,.16);border-radius:12px;margin:.8rem 0}
+.qa{padding:.75rem 1rem;cursor:pointer;display:flex;align-items:flex-start;gap:.4rem;
+  font-weight:600;font-size:.88rem;transition:background .2s}
+.qa:hover{background:rgba(239,192,72,.05)}
+.qa .ic{font-size:1rem;flex-shrink:0;line-height:1.5}
+.qb{max-height:0;overflow:hidden;transition:max-height .4s ease;border-top:1px solid rgba(239,192,72,.1)}
+.qb.open{max-height:3000px}
+.qb-in{padding:.9rem 1rem;font-size:.86rem;line-height:1.85;background:rgba(239,192,72,.02)}
+.qb-in code{background:var(--code);padding:2px 5px;border-radius:3px;font-family:var(--fc);font-size:.78rem;color:var(--cy)}
+
+/* tip/warn */
+.tip,.warn{padding:.65rem .9rem;border-radius:var(--r);margin:.6rem 0;font-size:.85rem;line-height:1.75}
+.tip{background:rgba(80,212,198,.05);border-left:3px solid var(--cy)}
+.warn{background:rgba(239,106,124,.05);border-left:3px solid var(--rd)}
+
+/* table */
+.tb{overflow-x:auto;margin:.6rem 0}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{background:var(--sf2);color:var(--bl);font-weight:700;text-align:left}
+th,td{padding:.45rem .7rem;border:1px solid var(--bd)}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+td code{font-family:var(--fc);font-size:.76rem;color:var(--cy)}
+
+/* ascii */
+.ascii{background:var(--code);border:1px solid var(--bd);border-radius:var(--r);
+  padding:.8rem;margin:.6rem 0;overflow-x:auto}
+.ascii pre{padding:0;font-size:.76rem;line-height:1.55}
+
+/* demo box */
+.demo{background:var(--sf2);border:1px solid var(--bd);border-radius:12px;padding:.9rem;margin:.6rem 0}
+.demo h4{color:var(--bl);margin-bottom:.4rem;font-size:.85rem}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+@media(max-width:768px){html{font-size:14px}.w{padding:.5rem .7rem 4rem}nav{padding:0 .7rem}pre{font-size:.72rem}}
+</style>
+</head>
+<body>
+
+<div class="bar" id="bar"></div>
+<nav>
+  <span class="logo">CH07</span>
+  <a href="#s1">DOM概念</a><a href="#s2">DOM树</a><a href="#s3">DOM访问</a>
+  <a href="#s4">DOM遍历</a><a href="#s5">DOM修改</a><a href="#s6">BOM</a>
+  <a href="#s7">存储</a><a href="#s8">事件概念</a><a href="#s9">事件注册</a>
+  <a href="#s10">事件流</a><a href="#s11">事件对象</a><a href="#s12">表单验证</a>
+  <a href="#s13">jQuery基础</a><a href="#s14">jQueryDOM</a><a href="#s15">jQuery事件</a>
+  <a href="#s16">jQuery效果</a><a href="#s17">链式调用</a>
+</nav>
+
+<header class="hero">
+  <h1>Chapter 07 · Client-side JavaScript</h1>
+  <p class="sub">CITS3403/5505 · 全45页逐讲 · 所有代码可运行 · V3</p>
+  <div class="chips">
+    <div class="chip">📄 <b>45</b>页</div>
+    <div class="chip">📦 <b>17</b>模块</div>
+    <div class="chip">🧠 <b>15</b>道测验</div>
+    <div class="chip">💻 <b>25+</b>可运行代码</div>
+  </div>
+</header>
+
+<main class="w">
+
+<!-- =========================================================
+     S1: P2–4  DOM 概述
+     ========================================================= -->
+<section class="sec" id="s1">
+<div class="sh"><div class="sn">01</div><h2>What is Client-side JS & DOM? <span class="star">★★</span></h2><span class="pg">P2–4</span></div>
+
+<div class="c"><div class="ct">📖 P2: JavaScript 的独特卖点 USP</div><div class="cb">
+  <p>客户端 JavaScript 添加了一组对象、方法和属性，让脚本能与 HTML 文档交互——实现动态文档和客户端编程。</p>
+  <p class="en">Client-side JavaScript adds a collection of objects, methods and properties that allow scripts to interact with HTML documents — enabling dynamic documents and client-side programming.</p>
+  <p>这是通过绑定到 <strong>DOM (Document Object Model，文档对象模型)</strong> 实现的。</p>
+</div></div>
+
+<div class="c"><div class="ct">📖 P4: DOM 的定义</div><div class="cb">
+  <p><strong>"DOM 是一个平台无关、语言无关的接口，允许程序动态访问和更新文档的内容、结构和样式。"</strong></p>
+  <p class="en">"The Document Object Model is a platform- and language-neutral interface that will allow programs and scripts to dynamically access and update the content, structure and style of documents."</p>
+  <p>DOM 规范描述了文档的<strong>抽象模型 (abstract model)</strong>，是 HTML 文档与程序之间的 API。数据表示为属性 (properties)，操作表示为方法 (methods)。</p>
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — 探索 document 对象 (可运行)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// document 是 DOM 的入口对象</span>
+<span class="cmt">// document is the entry point to the DOM</span>
+console.log(<span class="fn">document</span>.documentElement.tagName); <span class="cmt">// "HTML" — 根元素</span>
+console.log(<span class="fn">document</span>.head.tagName);             <span class="cmt">// "HEAD"</span>
+console.log(<span class="fn">document</span>.body.tagName);             <span class="cmt">// "BODY"</span>
+console.log(<span class="fn">document</span>.title);                     <span class="cmt">// 页面标题 page title</span>
+console.log(<span class="kw">typeof</span> <span class="fn">document</span>);                   <span class="cmt">// "object" — DOM 是 JS 对象</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 运行 Run</span><button class="rb" onclick="R('d1')">运行</button></div><div class="ro" id="d1"></div></div>
+  <script>function R_d1(){document.getElementById('d1').innerHTML=
+    `documentElement.tagName → "${document.documentElement.tagName}"\n`+
+    `head.tagName → "${document.head.tagName}"\n`+
+    `body.tagName → "${document.body.tagName}"\n`+
+    `title → "${document.title}"\n`+
+    `typeof document → "${typeof document}"`;}</script>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: DOM 和 HTML 源文件有什么区别？</span></div><div class="qb"><div class="qb-in">
+  HTML 文件是<strong>静态文本</strong>；DOM 是浏览器解析后生成的<strong>活的内存对象树 (live object tree)</strong>。<br>
+  用 JS 修改 DOM 会立即反映在页面上（浏览器重新渲染），但不会改变 HTML 源文件。
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S2: P5–7  DOM 树 & BOM 树
+     ========================================================= -->
+<section class="sec" id="s2">
+<div class="sh"><div class="sn">02</div><h2>DOM Tree & BOM Tree 树结构 <span class="star">★★</span></h2><span class="pg">P5–7</span></div>
+
+<div class="c"><div class="ct">🌳 P5: DOM 树模型</div><div class="cb">
+  <p>DOM API 描述一个<strong>树结构</strong>。"document" 节点反映 HTML 文档中的层级关系。</p>
+  <p class="en">DOM API describes a tree structure. The "document" node reflects the hierarchy in the HTML document.</p>
+  <div class="ascii"><pre>           <span style="color:var(--yl)">Document</span>
+          /        \
+     <span style="color:var(--bl)">&lt;head&gt;</span>       <span style="color:var(--bl)">&lt;body&gt;</span>
+       |              |
+   <span style="color:var(--bl)">&lt;title&gt;</span>       <span style="color:var(--bl)">&lt;table&gt;</span>
+       |            /     \
+  <span style="color:var(--gn)">"A simple   &lt;tr&gt;    &lt;tr&gt;</span>
+   document"  /|\     /|\
+          <span style="color:var(--bl)">&lt;th&gt;&lt;td&gt;&lt;td&gt; &lt;th&gt;&lt;td&gt;&lt;td&gt;</span></pre></div>
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — 验证树关系 (可运行)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// 验证 P5 图中的父子关系 Verify parent-child from P5 diagram</span>
+<span class="kw">const</span> htmlEl = <span class="fn">document</span>.documentElement; <span class="cmt">// &lt;html&gt; 根元素</span>
+console.log(htmlEl.tagName);            <span class="cmt">// "HTML"</span>
+
+<span class="cmt">// body 和 head 都是 html 的子节点</span>
+console.log(<span class="fn">document</span>.body.parentNode === htmlEl);  <span class="cmt">// true</span>
+console.log(<span class="fn">document</span>.head.parentNode === htmlEl);  <span class="cmt">// true</span>
+
+<span class="cmt">// children 只返回 Element 子节点 (不含 Text 节点)</span>
+console.log(htmlEl.children.length);     <span class="cmt">// 2 (head + body)</span>
+<span class="cmt">// childNodes 返回所有节点 (含空白 Text 节点!)</span>
+console.log(htmlEl.childNodes.length);   <span class="cmt">// 可能 > 2</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 运行</span><button class="rb" onclick="R('d2')">运行</button></div><div class="ro" id="d2"></div></div>
+  <script>function R_d2(){
+    var h=document.documentElement;
+    document.getElementById('d2').innerHTML=
+      `htmlEl.tagName → "${h.tagName}"\n`+
+      `body.parentNode === htmlEl → ${document.body.parentNode===h}\n`+
+      `head.parentNode === htmlEl → ${document.head.parentNode===h}\n`+
+      `htmlEl.children.length → ${h.children.length} (只含 Element)\n`+
+      `htmlEl.childNodes.length → ${h.childNodes.length} (含 Text 节点)`;
+  }</script>
+</div></div>
+
+<div class="c"><div class="ct">🌐 P6–7: BOM 浏览器对象模型</div><div class="cb">
+  <p>DOM 树只是更大的 <strong>BOM 树</strong>的子部分。BOM 还包括浏览器环境信息：浏览器类型、用户历史、Cookies、屏幕大小、地理位置、本地存储等。</p>
+  <p class="en">The DOM tree is just one subsection of a larger BOM tree. Unlike the DOM, the BOM is not supported by a fixed standard.</p>
+  <div class="ascii"><pre>                   <span style="color:var(--yl)">window</span> ← BOM 根节点
+      ┌───────┬────────┬─────────┬─────────┬──────────┐
+  <span style="color:var(--tx2)">self/window</span> <span style="color:var(--bl)">document</span> <span style="color:var(--tx2)">frames[]</span> <span style="color:var(--gn)">location</span> <span style="color:var(--or)">history</span>  <span style="color:var(--cy)">navigator</span>
+   parent/top   │                                         │
+                ├─ forms[]  images[]         plugins[]  mimeTypes[]
+                ├─ links[]  anchors[]
+                └─ all[]    layers[]</pre></div>
+  <div class="warn">⚠️ <strong>P6：</strong>DOM 有 W3C 标准；BOM <strong>没有固定标准</strong>，但浏览器普遍实现了通用特性。<code>window</code> 是最顶层对象，<code>document = window.document</code>。</div>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: window 和 document 的关系？DOM 和 BOM 的关系？</span></div><div class="qb"><div class="qb-in">
+  <code>window</code> = BOM 根对象（整个浏览器窗口）<br>
+  <code>document</code> = DOM 根对象 = <code>window.document</code>（当前页面）<br>
+  DOM tree ⊂ BOM tree（DOM 是 BOM 的子集）
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S3: P9–13  DOM 元素访问
+     ========================================================= -->
+<section class="sec" id="s3">
+<div class="sh"><div class="sn">03</div><h2>DOM 元素访问 4 种方法 <span class="star">★★ 必考</span></h2><span class="pg">P9–13</span></div>
+
+<div class="c"><div class="ct">📖 P9: 元素对象 Element Objects</div><div class="cb">
+  <p>HTML 元素绑定为 JS 对象 (element objects)。元素的 HTML 属性 (attributes) 成为对象的<strong>命名属性 (named properties)</strong>。</p>
+  <p class="en">Elements in the HTML document are bound to JavaScript objects. Attributes of the elements become named properties.</p>
+  <div class="cd"><div class="cd-bar"><span class="lang">示例 (P9)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">&lt;!-- HTML 元素 --&gt;</span>
+<span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span> <span class="at">name</span>=<span class="str">"address"</span><span class="tg">&gt;</span>
+
+<span class="cmt">// 对应的 element object 有两个属性:</span>
+<span class="cmt">// elementObj.type  → "text"     (HTML attribute → JS property)</span>
+<span class="cmt">// elementObj.name  → "address"  (HTML attribute → JS property)</span></pre>
+  </div>
+</div></div>
+
+<div class="c"><div class="ct">🔍 P10: 方法1 — 按类型和索引 By Type &amp; Index</div><div class="cb">
+  <p><code>document</code> 有多个属性引用特定类型的所有元素：<code>forms</code>, <code>images</code>, <code>links</code> 等。</p>
+  <p class="en">The document object has properties referencing array-like objects containing all elements of a certain type.</p>
+
+  <!-- 
+    ⚠️ 代码正确性说明:
+    课件 P10 原文用了未定义的 x: "x.getElementsByTagName("p")"
+    这里补全为 document.body，并在注释中标注课件原文
+  -->
+  <div class="cd"><div class="cd-bar"><span class="lang">HTML + JS (P10，已补全可运行)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="tg">&lt;body&gt;</span>
+  <span class="tg">&lt;h2&gt;</span>Comic 1<span class="tg">&lt;/h2&gt;</span>
+  <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="str">"degree_off.png"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;h2&gt;</span>Comic 2<span class="tg">&lt;/h2&gt;</span>
+  <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="str">"ineffective_sorts.png"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;/body&gt;</span>
+
+<span class="tg">&lt;script&gt;</span>
+<span class="cmt">// 通过 document.images 按索引访问两张图片</span>
+<span class="kw">const</span> firstImg  = <span class="fn">document</span>.images[<span class="num">0</span>];  <span class="cmt">// 第1张 degree_off.png</span>
+<span class="kw">const</span> secondImg = <span class="fn">document</span>.images[<span class="num">1</span>];  <span class="cmt">// 第2张 ineffective_sorts.png</span>
+
+<span class="cmt">// 更通用: getElementsByTagName</span>
+<span class="cmt">// ⚠️ 课件原文写 x.getElementsByTagName("p")，x 是某个节点</span>
+<span class="cmt">// ✅ 这里补全为 document.body，使代码可运行</span>
+<span class="kw">const</span> allP = <span class="fn">document</span>.body.getElementsByTagName(<span class="str">"p"</span>);
+console.log(allP.length); <span class="cmt">// 返回 body 内所有 &lt;p&gt; 的数量</span>
+<span class="tg">&lt;/script&gt;</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 在本页运行</span><button class="rb" onclick="R('d3a')">运行</button></div><div class="ro" id="d3a"></div></div>
+  <script>function R_d3a(){
+    // 实际运行 getElementsByTagName 获取真实数据
+    var imgs=document.images.length;
+    var ps=document.body.getElementsByTagName("p").length;
+    var h2s=document.body.getElementsByTagName("h2").length;
+    document.getElementById('d3a').innerHTML=
+      `document.images.length → ${imgs} (本页面所有 &lt;img&gt;)\n`+
+      `document.body.getElementsByTagName("p").length → ${ps}\n`+
+      `document.body.getElementsByTagName("h2").length → ${h2s}\n`+
+      `<span style="color:var(--tx2)">返回类型: HTMLCollection (类数组，有 length，可用索引访问)</span>`;
+  }</script>
+</div></div>
+
+<div class="c"><div class="ct">🔍 P11: 方法2 — 按 name 访问 By Name</div><div class="cb">
+  <p>给元素加 <code>name</code> 属性，可通过<strong>父元素对象的属性</strong>直接访问。</p>
+  <p class="en">Adding a name attribute allows access as a property of the parent element object.</p>
+  <div class="cd"><div class="cd-bar"><span class="lang">HTML + JS (P11)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="tg">&lt;form</span> <span class="at">name</span>=<span class="str">"pets"</span> <span class="at">action</span>=<span class="str">""</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="str">"catName"</span><span class="tg">&gt;</span>Your cat's name:<span class="tg">&lt;/label&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span> <span class="at">name</span>=<span class="str">"catName"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;/form&gt;</span>
+
+<span class="tg">&lt;script&gt;</span>
+<span class="cmt">// 路径: document.表单name.元素name</span>
+<span class="kw">const</span> catInput = <span class="fn">document</span>.pets.catName;  <span class="cmt">// 直接访问 input 元素</span>
+<span class="cmt">// 等价于: document.forms["pets"].elements["catName"]</span>
+<span class="cmt">// name 还用于服务器提交的 key 和 label 的 for 关联</span>
+<span class="tg">&lt;/script&gt;</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 实时演示</span><button class="rb" onclick="R('d3b')">运行</button></div><div class="ro" id="d3b"></div></div>
+  <script>function R_d3b(){
+    // 在页面中动态创建表单来演示
+    var el=document.getElementById('d3b');
+    el.innerHTML='<form name="demoPets" style="margin-bottom:8px"><label>Cat name: </label>'+
+      '<input type="text" name="catName" value="Whiskers" style="padding:4px 8px;background:var(--code);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-family:var(--fc)"></form>'+
+      '<div id="d3b-out"></div>';
+    // 使用 name 属性访问
+    var form=document.forms["demoPets"];
+    var inputEl=form.elements["catName"];  // 通过 form.elements 访问
+    document.getElementById('d3b-out').innerHTML=
+      `document.forms["demoPets"].elements["catName"].value → "<span style="color:var(--gn)">${inputEl.value}</span>"\n`+
+      `<span style="color:var(--tx2)">试试修改输入框的值，再点运行看结果变化</span>`;
+  }</script>
+</div></div>
+
+<div class="c"><div class="ct">🔍 P12: 方法3 — 按 id 访问 By ID <span class="star">★★ 最常用</span></div><div class="cb">
+  <p><code>getElementById</code> 查找具有匹配 id 属性的元素。</p>
+  <div class="cd"><div class="cd-bar"><span class="lang">完整可运行示例 (P12 课件代码)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="tg">&lt;form</span> <span class="at">id</span>=<span class="str">"frm1"</span><span class="tg">&gt;</span>
+  First name: <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span> <span class="at">name</span>=<span class="str">"fname"</span> <span class="at">value</span>=<span class="str">"Donald"</span><span class="tg">&gt;</span>
+  Last name:  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span> <span class="at">name</span>=<span class="str">"lname"</span> <span class="at">value</span>=<span class="str">"Duck"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"submit"</span> <span class="at">value</span>=<span class="str">"Submit"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;/form&gt;</span>
+<span class="tg">&lt;p</span> <span class="at">id</span>=<span class="str">"demo"</span><span class="tg">&gt;&lt;/p&gt;</span>
+
+<span class="tg">&lt;script&gt;</span>
+<span class="kw">function</span> <span class="fn">myFunction</span>() {
+  <span class="kw">var</span> x = <span class="fn">document</span>.forms[<span class="str">"frm1"</span>];    <span class="cmt">// 用 forms 集合获取表单</span>
+  <span class="kw">var</span> text = <span class="str">""</span>;                       <span class="cmt">// 初始化结果字符串</span>
+  <span class="kw">for</span> (<span class="kw">var</span> i = <span class="num">0</span>; i &lt; x.length; i++) { <span class="cmt">// 遍历表单中所有元素</span>
+    text += x.elements[i].value + <span class="str">"&lt;br&gt;"</span>; <span class="cmt">// 拼接每个元素的 value</span>
+  }
+  <span class="fn">document</span>.getElementById(<span class="str">"demo"</span>).innerHTML = text; <span class="cmt">// 写入 #demo 元素</span>
+}
+<span class="tg">&lt;/script&gt;</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 完整复现 P12 示例</span><button class="rb" onclick="R('d3c')">运行</button></div><div class="ro" id="d3c"></div></div>
+  <script>function R_d3c(){
+    var el=document.getElementById('d3c');
+    // 创建完整的 P12 示例 HTML
+    el.innerHTML='<form id="frm1Demo" style="margin-bottom:8px">'+
+      'First: <input type="text" name="fname" value="Donald" style="padding:3px 6px;background:var(--code);border:1px solid var(--bd);color:var(--tx);border-radius:4px;width:80px;font-family:var(--fc)"> '+
+      'Last: <input type="text" name="lname" value="Duck" style="padding:3px 6px;background:var(--code);border:1px solid var(--bd);color:var(--tx);border-radius:4px;width:80px;font-family:var(--fc)"> '+
+      '<input type="submit" value="Submit" style="padding:3px 10px;background:var(--sf2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;cursor:default"></form>'+
+      '<button onclick="runP12Demo()" style="padding:4px 12px;background:var(--bl);color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:.8rem;font-weight:600">Try it (运行 myFunction)</button>'+
+      '<p id="demoP12" style="margin-top:6px;color:var(--gn)"></p>';
+  }
+  function runP12Demo(){
+    // 这是 P12 课件中 myFunction 的精确复现
+    var x=document.forms["frm1Demo"];  // 获取表单
+    var text="";
+    for(var i=0;i<x.length;i++){       // 遍历所有表单元素
+      text+=x.elements[i].value+"<br>";  // 拼接每个元素的值
+    }
+    document.getElementById("demoP12").innerHTML=text; // 输出: Donald<br>Duck<br>Submit
+  }</script>
+</div></div>
+
+<div class="c"><div class="ct">🔍 P13: 方法4 — 特定元素访问 Element-Specific</div><div class="cb">
+  <p>复选框和单选按钮有以 name 为名的<strong>隐式数组</strong>。</p>
+  <p class="en">Checkboxes and radio buttons have an implicit array, which has their name as the array name.</p>
+  <div class="cd"><div class="cd-bar"><span class="lang">完整可运行 (基于 P13)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="tg">&lt;form</span> <span class="at">id</span>=<span class="str">"topGroup"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"checkbox"</span> <span class="at">name</span>=<span class="str">"toppings"</span> <span class="at">value</span>=<span class="str">"olives"</span><span class="tg">/&gt;</span> Olives
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"checkbox"</span> <span class="at">name</span>=<span class="str">"toppings"</span> <span class="at">value</span>=<span class="str">"tomatoes"</span><span class="tg">/&gt;</span> Tomatoes
+<span class="tg">&lt;/form&gt;</span>
+
+<span class="tg">&lt;script&gt;</span>
+<span class="kw">let</span> toppingsSelected = <span class="num">0</span>;                             <span class="cmt">// 计数器</span>
+<span class="kw">let</span> form = <span class="fn">document</span>.getElementById(<span class="str">"topGroup"</span>);     <span class="cmt">// 获取表单</span>
+<span class="kw">for</span> (<span class="kw">let</span> index = <span class="num">0</span>; index &lt; form.toppings.length; index++) {
+  <span class="cmt">// form.toppings 是同 name="toppings" 的复选框隐式数组</span>
+  <span class="kw">if</span> (form.toppings[index].checked) {               <span class="cmt">// 是否被勾选</span>
+    toppingsSelected++;                               <span class="cmt">// 勾选数+1</span>
+  }
+}
+<span class="tg">&lt;/script&gt;</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 交互演示</span><button class="rb" onclick="R('d3d')">运行</button></div><div class="ro" id="d3d"></div></div>
+  <script>function R_d3d(){
+    var el=document.getElementById('d3d');
+    el.innerHTML='<form id="topGroupDemo" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">'+
+      '<label><input type="checkbox" name="toppings" value="olives"> Olives</label>'+
+      '<label><input type="checkbox" name="toppings" value="tomatoes"> Tomatoes</label>'+
+      '<label><input type="checkbox" name="toppings" value="cheese"> Cheese</label>'+
+      '<button type="button" onclick="countToppings()" style="padding:3px 10px;background:var(--cy);color:var(--bg);border:none;border-radius:4px;cursor:pointer;font-weight:700;font-size:.78rem">Count</button>'+
+      '</form><div id="d3d-out" style="margin-top:6px"></div>';
+  }
+  function countToppings(){
+    var form=document.getElementById("topGroupDemo");
+    var toppingsSelected=0;
+    // form.toppings 是 RadioNodeList (隐式数组)
+    for(var i=0;i<form.toppings.length;i++){
+      if(form.toppings[i].checked) toppingsSelected++;
+    }
+    document.getElementById('d3d-out').innerHTML=
+      `已选中 <span style="color:var(--gn)">${toppingsSelected}</span> 个 toppings (form.toppings.length = ${form.toppings.length})`;
+  }</script>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: getElementById 和 getElementsByTagName 的 3 个关键区别？</span></div><div class="qb"><div class="qb-in">
+  1. <code>getElementById</code> 返回<strong>单个元素</strong>（id 唯一），找不到返回 <code>null</code><br>
+  2. <code>getElementsByTagName</code> 返回 <strong>HTMLCollection</strong>（类数组），即使只有1个也是集合<br>
+  3. 拼写：getElement<strong>s</strong> 有复数 s，getElementById 没有<br>
+  现代替代：<code>querySelector("#id")</code> / <code>querySelectorAll("p")</code>
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S4: P14–15  DOM 遍历
+     ========================================================= -->
+<section class="sec" id="s4">
+<div class="sh"><div class="sn">04</div><h2>DOM 树遍历 Traversal <span class="star">★★</span></h2><span class="pg">P14–15</span></div>
+
+<div class="c"><div class="ct">🌳 P14: 遍历属性</div><div class="cb">
+  <div class="tb"><table>
+    <tr><th>属性</th><th>返回</th><th>说明</th></tr>
+    <tr><td><code>parentNode</code></td><td>Node</td><td>父节点</td></tr>
+    <tr><td><code>firstChild / lastChild</code></td><td>Node</td><td>第一个/最后一个子节点 (可能是 Text!)</td></tr>
+    <tr><td><code>previousSibling / nextSibling</code></td><td>Node</td><td>前/后兄弟节点</td></tr>
+    <tr><td><code>childNodes</code></td><td>NodeList</td><td>所有子节点 (含 Text, Comment)</td></tr>
+    <tr><td><code>children</code></td><td>HTMLCollection</td><td>只含 Element 子节点</td></tr>
+    <tr><td><code>firstElementChild</code></td><td>Element</td><td>第一个 Element 子节点 (安全版)</td></tr>
+  </table></div>
+</div></div>
+
+<div class="c"><div class="ct">📝 P15: countTags 递归遍历 (课件原版代码) <span class="star">★★</span></div><div class="cb">
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — P15 课件原版 (可运行)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// 递归函数: 统计 DOM 子树中所有 Element 节点的数量</span>
+<span class="cmt">// Recursive: count all Element nodes in a DOM subtree</span>
+<span class="kw">function</span> <span class="fn">countTags</span>(n) {               <span class="cmt">// n is a Node 参数是节点</span>
+  <span class="kw">var</span> numtags = <span class="num">0</span>;                    <span class="cmt">// Initialize counter 初始化计数器</span>
+  <span class="kw">if</span> (n.nodeType == <span class="num">1</span>)                <span class="cmt">// nodeType==1 → Element 节点</span>
+    numtags++;                          <span class="cmt">// If Element, increment 是元素则+1</span>
+
+  <span class="kw">var</span> children = n.childNodes;          <span class="cmt">// Get all children 获取所有子节点</span>
+  <span class="kw">for</span> (<span class="kw">var</span> i = <span class="num">0</span>; i &lt; children.length; i++) {
+    numtags += <span class="fn">countTags</span>(children[i]);  <span class="cmt">// Recurse on each 递归累加</span>
+  }
+  <span class="kw">return</span> numtags;                      <span class="cmt">// Return total 返回总数</span>
+}
+
+<span class="cmt">// 使用: 传入 document 遍历整棵 DOM 树</span>
+<span class="cmt">// Usage: pass document to traverse entire tree</span>
+alert(<span class="str">'This document has '</span> + <span class="fn">countTags</span>(<span class="fn">document</span>) + <span class="str">' tags'</span>);</pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 在本页面执行 countTags(document)</span><button class="rb" onclick="R('d4')">运行</button></div><div class="ro" id="d4"></div></div>
+  <script>function R_d4(){
+    // 精确复现 P15 的 countTags 函数
+    function countTags(n){
+      var numtags=0;
+      if(n.nodeType==1) numtags++;           // Element 节点
+      var children=n.childNodes;
+      for(var i=0;i<children.length;i++){
+        numtags+=countTags(children[i]);      // 递归
+      }
+      return numtags;
+    }
+    var total=countTags(document);
+    document.getElementById('d4').innerHTML=
+      `countTags(document) → <span style="color:var(--bl)">${total}</span> 个 Element 节点\n`+
+      `<span style="color:var(--tx2)">nodeType: 1=Element  3=Text  8=Comment  9=Document</span>`;
+  }</script>
+  <div class="warn">⚠️ <strong>易错：</strong><code>childNodes</code> 包含<strong>所有节点类型</strong>！<code>firstChild</code> 可能是空白 Text 节点，用 <code>firstElementChild</code> 更安全。</div>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: childNodes 和 children 的区别？</span></div><div class="qb"><div class="qb-in">
+  <code>childNodes</code> → <strong>NodeList</strong>，含所有类型 (Element, Text, Comment)<br>
+  <code>children</code> → <strong>HTMLCollection</strong>，只含 Element<br>
+  常用 nodeType: <code>1</code>=Element, <code>3</code>=Text, <code>8</code>=Comment, <code>9</code>=Document
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S5: P16–17  DOM 修改
+     ========================================================= -->
+<section class="sec" id="s5">
+<div class="sh"><div class="sn">05</div><h2>DOM 动态修改 Modification <span class="star">★★</span></h2><span class="pg">P16–17</span></div>
+
+<div class="c"><div class="ct">✏️ P16: DOM 修改方法</div><div class="cb">
+  <p>React/Angular 等框架正是用这些方法在客户端动态构建整个文档！</p>
+  <p class="en">This is how front-end frameworks like Angular or React dynamically build the entire document on the client side!</p>
+  <div class="tb"><table>
+    <tr><th>方法</th><th>作用</th></tr>
+    <tr><td><code>createElement(tag)</code></td><td>创建新元素 Create element</td></tr>
+    <tr><td><code>createTextNode(text)</code></td><td>创建文本节点</td></tr>
+    <tr><td><code>appendChild(node)</code></td><td>末尾添加子节点</td></tr>
+    <tr><td><code>insertBefore(new, ref)</code></td><td>在 ref 前插入</td></tr>
+    <tr><td><code>removeChild(node)</code></td><td>移除子节点</td></tr>
+    <tr><td><code>replaceChild(new, old)</code></td><td>替换子节点</td></tr>
+  </table></div>
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — 动态构建 (可运行)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// 创建段落并添加到页面 Create &amp; append paragraph</span>
+<span class="kw">const</span> newP = <span class="fn">document</span>.createElement(<span class="str">"p"</span>);        <span class="cmt">// 创建 &lt;p&gt;</span>
+<span class="kw">const</span> text = <span class="fn">document</span>.createTextNode(<span class="str">"Hello!"</span>);  <span class="cmt">// 创建文本</span>
+newP.appendChild(text);                            <span class="cmt">// 文本放入 &lt;p&gt;</span>
+<span class="fn">document</span>.body.appendChild(newP);                  <span class="cmt">// &lt;p&gt; 加入 body</span>
+
+<span class="cmt">// 删除元素 Remove element</span>
+<span class="kw">const</span> old = <span class="fn">document</span>.getElementById(<span class="str">"target"</span>);  <span class="cmt">// 获取目标</span>
+old.parentNode.removeChild(old);                   <span class="cmt">// 从父节点删除</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 动态添加+删除</span><button class="rb" onclick="R('d5')">运行</button></div><div class="ro" id="d5"></div></div>
+  <script>function R_d5(){
+    var el=document.getElementById('d5');el.innerHTML='';
+    // createElement + appendChild
+    var p=document.createElement('p');
+    p.id='d5target';
+    p.style.cssText='color:var(--gn);margin-bottom:6px';
+    var t=document.createTextNode('✅ 这是 createElement + createTextNode + appendChild 创建的！');
+    p.appendChild(t);
+    el.appendChild(p);
+    // removeChild button
+    var btn=document.createElement('button');
+    btn.textContent='点击 removeChild 删除上面那行';
+    btn.style.cssText='padding:4px 12px;background:var(--rd);color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:.78rem';
+    btn.onclick=function(){
+      var target=document.getElementById('d5target');
+      if(target){target.parentNode.removeChild(target);btn.textContent='已删除！';}
+    };
+    el.appendChild(btn);
+  }</script>
+</div></div>
+
+<div class="c"><div class="ct">⚡ P17: document.write() 的危险</div><div class="cb">
+  <div class="cd"><div class="cd-bar"><span class="lang">P17 课件原版代码 (展示用，不运行)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="tg">&lt;body&gt;</span>
+<span class="tg">&lt;p&gt;</span>I'm having such a quiet, peaceful day...<span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;/body&gt;</span>
+<span class="tg">&lt;script&gt;</span>
+setTimeout(
+  () =&gt; <span class="fn">document</span>.write(<span class="str">"&lt;h1&gt; Hello World! &lt;/h1&gt;"</span>), <span class="cmt">// 2秒后覆盖整个页面!</span>
+  <span class="num">2000</span>                                              <span class="cmt">// 延迟 2000ms = 2秒</span>
+);
+<span class="tg">&lt;/script&gt;</span>
+<span class="cmt">// ⚠️ 不运行此代码 — 因为它会覆盖整个学习页面!</span>
+<span class="cmt">// document.write() called AFTER page load → replaces entire page</span></pre>
+  </div>
+  <div class="warn">⚠️ <strong>P17 关键：</strong>文档加载完成后调用 <code>document.write()</code> 会<strong>覆盖整个页面</strong>！正确做法用 <code>innerHTML</code> 或 <code>createElement</code>。</div>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: innerHTML vs createElement 各自优缺点？XSS 风险如何产生？</span></div><div class="qb"><div class="qb-in">
+  <code>innerHTML</code>：简洁，但有 <strong>XSS 风险</strong> — 如拼入用户输入 <code>&lt;img onerror=alert(1) src=x&gt;</code>。<br>
+  <code>createElement</code> + <code>textContent</code>：安全，自动转义 HTML。<br>
+  🔑 永远不将未验证的用户输入放入 innerHTML！
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S6: P18–21  BOM 对象
+     ========================================================= -->
+<section class="sec" id="s6">
+<div class="sh"><div class="sn">06</div><h2>BOM 对象 Navigator / History / Location</h2><span class="pg">P18–21</span></div>
+
+<div class="c"><div class="ct">🧭 P20–21: BOM 核心对象</div><div class="cb">
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — BOM 对象 (可运行)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// ===== window.navigator (P20) =====</span>
+console.log(navigator.userAgent);    <span class="cmt">// 浏览器 UA 字符串</span>
+console.log(navigator.language);     <span class="cmt">// 语言 e.g. "zh-CN"</span>
+console.log(navigator.onLine);       <span class="cmt">// 是否联网 boolean</span>
+<span class="cmt">// navigator.geolocation — 需要用户授权 (needs permission)</span>
+
+<span class="cmt">// ===== window.history (P21) =====</span>
+<span class="cmt">// history.back();     — 后退一页</span>
+<span class="cmt">// history.forward();  — 前进一页</span>
+<span class="cmt">// history.go(-2);     — 后退两页</span>
+
+<span class="cmt">// ===== window.location (P21) =====</span>
+console.log(location.href);          <span class="cmt">// 完整 URL</span>
+console.log(location.hostname);      <span class="cmt">// 主机名</span>
+<span class="cmt">// location.href = "https://uwa.edu.au"; — 页面跳转!</span>
+
+<span class="cmt">// ===== 其他 =====</span>
+<span class="cmt">// window.console, window.screen</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 检测你的浏览器</span><button class="rb" onclick="R('d6')">运行</button></div><div class="ro" id="d6"></div></div>
+  <script>function R_d6(){document.getElementById('d6').innerHTML=
+    `userAgent: ${navigator.userAgent.substring(0,72)}...\n`+
+    `language: ${navigator.language}\n`+
+    `onLine: ${navigator.onLine}\n`+
+    `screen: ${screen.width}×${screen.height}\n`+
+    `location.hostname: ${location.hostname||'(local file)'}`;
+  }</script>
+</div></div>
+</section>
+
+<!-- =========================================================
+     S7: P22–24  存储
+     ========================================================= -->
+<section class="sec" id="s7">
+<div class="sh"><div class="sn">07</div><h2>浏览器存储 Cookies & Web Storage <span class="star">★★</span></h2><span class="pg">P22–24</span></div>
+
+<div class="c"><div class="ct">📖 P22: HTTP 无状态问题</div><div class="cb">
+  <p>HTTP 请求默认<strong>无状态 (stateless)</strong>。两种客户端存储方式：Cookie 和 Web Storage。两者都只在<strong>同域名 (same domain)</strong> 下可访问。</p>
+  <div class="tb"><table>
+    <tr><th>特性</th><th>Cookie</th><th>localStorage</th><th>sessionStorage</th></tr>
+    <tr><td>容量</td><td>~4KB</td><td>~10MB</td><td>~5MB</td></tr>
+    <tr><td>发送到服务器</td><td>✅ 每次 HTTP 请求</td><td>❌ 仅客户端</td><td>❌ 仅客户端</td></tr>
+    <tr><td>过期</td><td>设定 / 关浏览器</td><td>永不过期</td><td>关标签页</td></tr>
+  </table></div>
+</div></div>
+
+<div class="c"><div class="ct">🍪 P23: Cookie + 💾 P24: localStorage</div><div class="cb">
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — Cookie 辅助函数 (P23 课件原版)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// 设置 Cookie (P23)</span>
+<span class="kw">function</span> <span class="fn">setCookie</span>(cname, cvalue, exdays) {
+  <span class="kw">var</span> d = <span class="kw">new</span> Date();                                <span class="cmt">// 当前日期</span>
+  d.setTime(d.getTime() + (exdays*<span class="num">24</span>*<span class="num">60</span>*<span class="num">60</span>*<span class="num">1000</span>));   <span class="cmt">// 加上过期天数</span>
+  <span class="kw">var</span> expires = <span class="str">"expires="</span> + d.toUTCString();          <span class="cmt">// UTC 字符串</span>
+  <span class="fn">document</span>.cookie = cname+<span class="str">"="</span>+cvalue+<span class="str">";"</span>+expires+<span class="str">";path=/"</span>;
+}
+
+<span class="cmt">// 读取 Cookie (P23)</span>
+<span class="kw">function</span> <span class="fn">getCookie</span>(cname) {
+  <span class="kw">var</span> name = cname + <span class="str">"="</span>;                              <span class="cmt">// 搜索的键名</span>
+  <span class="kw">var</span> ca = decodeURIComponent(<span class="fn">document</span>.cookie).split(<span class="str">';'</span>); <span class="cmt">// 分割</span>
+  <span class="kw">for</span>(<span class="kw">var</span> i = <span class="num">0</span>; i &lt; ca.length; i++) {
+    <span class="kw">var</span> c = ca[i];
+    <span class="kw">while</span> (c.charAt(<span class="num">0</span>) == <span class="str">' '</span>) c = c.substring(<span class="num">1</span>);   <span class="cmt">// 去前导空格</span>
+    <span class="kw">if</span> (c.indexOf(name) == <span class="num">0</span>)
+      <span class="kw">return</span> c.substring(name.length, c.length);      <span class="cmt">// 返回值</span>
+  }
+  <span class="kw">return</span> <span class="str">""</span>;
+}</pre>
+  </div>
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — localStorage (P24 课件代码，可运行)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// P24 原版: 点击计数器</span>
+<span class="kw">if</span> (localStorage.clickcount) {
+  localStorage.clickcount = Number(localStorage.clickcount) + <span class="num">1</span>; <span class="cmt">// ⚠️ 转 Number!</span>
+} <span class="kw">else</span> {
+  localStorage.clickcount = <span class="num">1</span>;                                  <span class="cmt">// 首次初始化</span>
+}
+
+<span class="cmt">// ⚠️ 所有值自动转为 string! All values become strings!</span>
+localStorage.setItem(<span class="str">"num"</span>, <span class="num">42</span>);
+<span class="kw">typeof</span> localStorage.getItem(<span class="str">"num"</span>);  <span class="cmt">// → "string" (不是 number!)</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ localStorage 持久计数器</span><button class="rb" onclick="R('d7')">运行</button></div><div class="ro" id="d7"></div></div>
+  <script>function R_d7(){
+    // 精确复现 P24 逻辑
+    var key='__ch07v3_click';
+    if(localStorage.getItem(key)){
+      localStorage.setItem(key,Number(localStorage.getItem(key))+1);
+    }else{
+      localStorage.setItem(key,"1");
+    }
+    var count=localStorage.getItem(key);
+    document.getElementById('d7').innerHTML=
+      `点击次数: ${count} (关闭浏览器再开依然保留!)\n`+
+      `typeof: "${typeof count}" ← 注意是 string!`;
+  }</script>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: Cookie 和 localStorage 最关键的区别？</span></div><div class="qb"><div class="qb-in">
+  <strong>Cookie 随每次 HTTP 请求自动发送到服务器</strong>；localStorage 仅在客户端。<br>
+  用 Cookie → 服务器需要读的数据 (session ID)。<br>用 localStorage → 纯客户端数据 (偏好、草稿)。
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S8: P25–28  事件概念
+     ========================================================= -->
+<section class="sec" id="s8">
+<div class="sh"><div class="sn">08</div><h2>事件驱动编程 Event-Driven <span class="star">★★</span></h2><span class="pg">P25–28</span></div>
+
+<div class="c"><div class="ct">⚡ P26–28: 概念与浏览器事件循环</div><div class="cb">
+  <p><strong>事件驱动</strong>：程序流由用户动作或消息决定。浏览器替你实现了事件循环——你只写处理函数 (handler)。</p>
+  <p class="en">Event-driven: flow determined by user actions or messages. Browser implements the event loop; programmer focuses on event handling.</p>
+  <p>浏览器监听两类事件：① 用户动作 (点击, 按键) ② 服务器响应 (页面加载, AJAX)。<br>
+  事件发生时，调用注册的 <strong>event listener</strong>。但必须先<strong>注册</strong>！</p>
+</div></div>
+</section>
+
+<!-- =========================================================
+     S9: P29–31  事件注册
+     ========================================================= -->
+<section class="sec" id="s9">
+<div class="sh"><div class="sn">09</div><h2>事件注册 3 种方式 <span class="star">★★ 必考</span></h2><span class="pg">P29–31</span></div>
+
+<div class="c"><div class="ct">📋 P29: 常用事件表</div><div class="cb">
+  <div class="tb"><table>
+    <tr><th>事件</th><th>HTML属性</th><th>触发时机</th></tr>
+    <tr><td>click / dblclick</td><td>onclick / ondblclick</td><td>单击/双击</td></tr>
+    <tr><td>load / unload</td><td>onload / onunload</td><td>页面加载完/离开</td></tr>
+    <tr><td>keydown / keyup</td><td>onkeydown / onkeyup</td><td>按键按下/释放</td></tr>
+    <tr><td>focus / blur</td><td>onfocus / onblur</td><td>获得/失去焦点</td></tr>
+    <tr><td>mouseover / mouseout</td><td>onmouseover / onmouseout</td><td>鼠标移入/出</td></tr>
+    <tr><td>submit / change</td><td>onsubmit / onchange</td><td>提交/值改变</td></tr>
+  </table></div>
+</div></div>
+
+<div class="c"><div class="ct">🔧 P30–31: 三种注册方式 <span class="star">★★</span></div><div class="cb">
+  <div class="cd"><div class="cd-bar"><span class="lang">方法1: HTML 属性 (P30)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">&lt;!-- 在 HTML 属性中写代码字符串 --&gt;</span>
+<span class="tg">&lt;button</span> <span class="at">onclick</span>=<span class="str">"alert('Hi!')"</span><span class="tg">&gt;</span>Greetings<span class="tg">&lt;/button&gt;</span>
+<span class="cmt">&lt;!-- ⚠️ 有括号! 浏览器将属性值作为代码执行 --&gt;</span></pre>
+  </div>
+  <div class="cd"><div class="cd-bar"><span class="lang">方法2: DOM 属性 (P30)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="fn">document</span>.getElementById(<span class="str">"myBtn"</span>).onclick = myHandler;
+<span class="cmt">// ⚠️ 没有括号! 传函数引用，不是调用</span>
+<span class="cmt">// 必须在函数和元素都存在后才能执行此语句</span></pre>
+  </div>
+  <div class="cd"><div class="cd-bar"><span class="lang">方法3: addEventListener ★★ 推荐 (P31)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="kw">var</span> button = <span class="fn">document</span>.getElementById(<span class="str">"myButton"</span>); <span class="cmt">// 获取元素</span>
+button.addEventListener(<span class="str">"click"</span>, myHandler, <span class="kw">false</span>);  <span class="cmt">// 注册</span>
+<span class="cmt">//                       ↑事件名  ↑处理函数  ↑捕获?(默认false=冒泡)</span>
+
+<span class="cmt">// P31 三大优势 Three advantages:</span>
+<span class="cmt">// 1. Separation of concerns — JS 和 HTML 分离</span>
+<span class="cmt">// 2. Multiple handlers — 同一事件注册多个处理器</span>
+<span class="cmt">// 3. Loop registration — 循环给多个元素加同一 handler</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 三种方式对比</span><button class="rb" onclick="R('d9')">运行</button></div><div class="ro" id="d9"></div></div>
+  <script>function R_d9(){
+    var el=document.getElementById('d9');
+    el.innerHTML='<div id="d9b" style="display:flex;gap:8px;flex-wrap:wrap"></div><div id="d9l" style="margin-top:8px;color:var(--tx2)">点击按钮观察：</div>';
+    var bx=document.getElementById('d9b'),lg=document.getElementById('d9l');
+    var s='padding:5px 12px;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:5px;cursor:pointer;font-size:.78rem;';
+    // M1: inline
+    var b1=document.createElement('button');b1.textContent='方法1 onclick=""';b1.style.cssText=s;
+    b1.setAttribute('onclick',"document.getElementById('d9l').innerHTML+='<br>方法1 触发!'");bx.appendChild(b1);
+    // M2: property
+    var b2=document.createElement('button');b2.textContent='方法2 .onclick=fn';b2.style.cssText=s;
+    b2.onclick=function(){lg.innerHTML+='<br>方法2 触发! (只能1个handler)';};bx.appendChild(b2);
+    // M3: addEventListener
+    var b3=document.createElement('button');b3.textContent='方法3 addEventListener';b3.style.cssText=s;
+    b3.addEventListener('click',function(){lg.innerHTML+='<br><span style="color:var(--gn)">方法3-A 触发!</span>';});
+    b3.addEventListener('click',function(){lg.innerHTML+='<br><span style="color:var(--pu)">方法3-B 也触发了!(多handler)</span>';});
+    bx.appendChild(b3);
+  }</script>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: onclick="fn()" 有括号 vs .onclick=fn 没括号 — 为什么？</span></div><div class="qb"><div class="qb-in">
+  HTML属性：值是<strong>代码字符串</strong>，浏览器 eval 执行 → 需要括号<strong>调用</strong><br>
+  JS属性：将<strong>函数引用</strong>赋值 → 不能加括号（加了就变成立即执行并赋返回值）<br>
+  <code>addEventListener("click", fn)</code> 同理传引用，不加括号。
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S10: P32  事件流
+     ========================================================= -->
+<section class="sec" id="s10">
+<div class="sh"><div class="sn">10</div><h2>事件流 Event Flow <span class="star">★★ 难点必考</span></h2><span class="pg">P32</span></div>
+
+<div class="c"><div class="ct">🔄 P32: 捕获 → 目标 → 冒泡</div><div class="cb">
+  <div class="ascii"><pre>  Document ─┐                    ┌─ Document
+            │ <span style="color:var(--bl)">① 捕获 Capture ↓</span>  │ <span style="color:var(--rd)">③ 冒泡 Bubble ↑</span>
+  HTML   ─┤                    ├─ HTML
+            │                    │
+  BODY   ─┤                    ├─ BODY
+            │                    │
+  DIV    ─┤                    ├─ DIV
+         ┌──┴────────────────────┴──┐
+         │ <span style="color:var(--yl)">② 目标阶段 Target Phase</span>   │
+         │     BUTTON (target)       │
+         └───────────────────────────┘</pre></div>
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — addEventListener 第3个参数</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// 第3个参数: true=捕获阶段执行, false(默认)=冒泡阶段执行</span>
+el.addEventListener(<span class="str">"click"</span>, handler, <span class="kw">true</span>);   <span class="cmt">// 捕获阶段</span>
+el.addEventListener(<span class="str">"click"</span>, handler, <span class="kw">false</span>);  <span class="cmt">// 冒泡阶段(默认)</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 交互式事件流</span><button class="rb" onclick="R('d10')">运行</button></div><div class="ro" id="d10"></div></div>
+  <script>function R_d10(){
+    var el=document.getElementById('d10');
+    el.innerHTML=
+      '<div id="x10o" style="background:rgba(94,159,248,.08);padding:14px;border:2px solid var(--bl);border-radius:8px;cursor:pointer">'+
+      '<span style="color:var(--bl);font-size:.76rem">OUTER DIV</span>'+
+      '<div id="x10i" style="background:rgba(239,106,124,.08);padding:14px;margin-top:6px;border:2px solid var(--rd);border-radius:8px">'+
+      '<span style="color:var(--rd);font-size:.76rem">INNER DIV</span>'+
+      '<button id="x10b" style="display:block;margin-top:6px;padding:5px 16px;background:var(--yl);color:var(--bg);border:none;border-radius:5px;cursor:pointer;font-weight:700">Click Me!</button>'+
+      '</div></div>'+
+      '<div id="x10log" style="margin-top:6px;font-size:.78rem;color:var(--tx2)">点击按钮观察冒泡顺序...</div>';
+    var log=document.getElementById('x10log');
+    // 冒泡阶段 handler
+    document.getElementById('x10o').addEventListener('click',function(e){
+      log.innerHTML+='<br><span style="color:var(--bl)">OUTER冒泡 | target='+e.target.tagName+' | currentTarget='+e.currentTarget.tagName+'</span>';
+    },false);
+    document.getElementById('x10i').addEventListener('click',function(e){
+      log.innerHTML+='<br><span style="color:var(--rd)">INNER冒泡 | target='+e.target.tagName+'</span>';
+    },false);
+    document.getElementById('x10b').addEventListener('click',function(e){
+      log.innerHTML='<span style="color:var(--yl)">BUTTON目标阶段 | target='+e.target.tagName+'</span>';
+    });
+  }</script>
+</div></div>
+</section>
+
+<!-- =========================================================
+     S11: P33–34  事件对象
+     ========================================================= -->
+<section class="sec" id="s11">
+<div class="sh"><div class="sn">11</div><h2>事件对象 Event Object <span class="star">★★</span></h2><span class="pg">P33–34</span></div>
+
+<div class="c"><div class="ct">📦 P33–34: event 对象属性 + 常用事件</div><div class="cb">
+  <div class="tb"><table>
+    <tr><th>属性/方法</th><th>说明</th></tr>
+    <tr><td><code>e.target</code></td><td>事件的目标元素 (用户实际点击的)</td></tr>
+    <tr><td><code>e.currentTarget</code></td><td>handler 注册在的元素</td></tr>
+    <tr><td><code>e.stopPropagation()</code></td><td>阻止继续冒泡</td></tr>
+    <tr><td><code>e.preventDefault()</code></td><td>阻止浏览器默认行为</td></tr>
+  </table></div>
+  <div class="warn">⚠️ 不冒泡的事件 (P33): <code>load</code>, <code>unload</code>, <code>blur</code>, <code>focus</code></div>
+  <div class="ru"><div class="ru-top"><span>▶ 键盘事件检测</span><button class="rb" onclick="R('d11')">运行</button></div><div class="ro" id="d11"></div></div>
+  <script>function R_d11(){
+    var el=document.getElementById('d11');
+    el.innerHTML='<input id="d11in" placeholder="在此输入按键..." style="width:100%;padding:6px 8px;background:var(--code);border:1px solid var(--bd);color:var(--tx);border-radius:5px;font-family:var(--fc);font-size:.82rem">'+
+      '<div id="d11o" style="margin-top:6px"></div>';
+    document.getElementById('d11in').addEventListener('keydown',function(e){
+      document.getElementById('d11o').innerHTML=
+        'e.key: <span style="color:var(--yl)">"'+e.key+'"</span> | e.code: <span style="color:var(--cy)">"'+e.code+'"</span> | e.type: "'+e.type+'"';
+    });
+  }</script>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: e.target 和 e.currentTarget 什么时候不同？</span></div><div class="qb"><div class="qb-in">
+  <strong>不同:</strong> 事件冒泡时。点击 BUTTON 但 handler 在 DIV → target=BUTTON, currentTarget=DIV<br>
+  <strong>相同:</strong> 目标阶段，handler 直接注册在被点击的元素上。
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S12: P35  表单验证
+     ========================================================= -->
+<section class="sec" id="s12">
+<div class="sh"><div class="sn">12</div><h2>表单验证 Form Validation <span class="star">★★</span></h2><span class="pg">P35</span></div>
+
+<div class="c"><div class="ct">✅ P35: preventDefault 阻止提交</div><div class="cb">
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — P35 课件代码 (可运行)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// 监听 submit 事件验证表单</span>
+form.addEventListener(<span class="str">"submit"</span>, (e) =&gt; {
+  <span class="kw">if</span> (!<span class="fn">isValid</span>(form.email)) {     <span class="cmt">// email 无效?</span>
+    <span class="fn">showError</span>();                   <span class="cmt">// 显示错误消息</span>
+    e.<span class="fn">preventDefault</span>();            <span class="cmt">// ★★ 阻止表单提交!</span>
+  }
+});</pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 完整可运行验证演示</span><button class="rb" onclick="R('d12')">运行</button></div><div class="ro" id="d12"></div></div>
+  <script>function R_d12(){
+    var el=document.getElementById('d12');
+    // 创建完整表单 + 验证逻辑
+    el.innerHTML='<form id="d12form" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+
+      '<input id="d12in" type="text" placeholder="输入email..." style="flex:1;min-width:160px;padding:5px 8px;background:var(--code);border:1px solid var(--bd);color:var(--tx);border-radius:5px;font-family:var(--fc);font-size:.82rem">'+
+      '<button type="submit" style="padding:5px 12px;background:var(--bl);color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:700;font-size:.78rem">Submit</button>'+
+      '</form><div id="d12msg" style="margin-top:6px;font-size:.82rem"></div>';
+    // addEventListener 注册 submit handler
+    document.getElementById('d12form').addEventListener('submit',function(e){
+      var email=document.getElementById('d12in').value;
+      var msg=document.getElementById('d12msg');
+      // 简单验证: 必须包含 @ 和 .
+      if(!email||email.indexOf('@')===-1||email.indexOf('.')===-1){
+        msg.innerHTML='<span style="color:var(--rd)">❌ 无效email → preventDefault()阻止提交!</span>';
+        document.getElementById('d12in').style.borderColor='var(--rd)';
+        e.preventDefault(); // ★★ 阻止表单提交
+      }else{
+        msg.innerHTML='<span style="color:var(--gn)">✅ 验证通过!</span>';
+        document.getElementById('d12in').style.borderColor='var(--gn)';
+        e.preventDefault(); // 演示中也阻止,避免页面刷新
+      }
+    });
+  }</script>
+  <div class="warn">⚠️ <strong>P35 原话:</strong> 客户端验证容易绕过 (删 Inspector 代码、直接发 HTTP 请求)。<strong>If data validity is important, the server needs to check it!</strong></div>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: preventDefault() vs stopPropagation() 区别？</span></div><div class="qb"><div class="qb-in">
+  <code>preventDefault()</code> → 阻止<strong>默认行为</strong> (表单提交/链接跳转)<br>
+  <code>stopPropagation()</code> → 阻止事件继续<strong>冒泡</strong> (不影响默认行为)<br>
+  解决不同问题，可以同时使用。
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S13: P36–38  jQuery 基础
+     ========================================================= -->
+<section class="sec" id="s13">
+<div class="sh"><div class="sn">13</div><h2>jQuery 基础 <span class="star">★★</span></h2><span class="pg">P36–38</span></div>
+
+<div class="c"><div class="ct">💲 P37–38: 语法 $(selector).action()</div><div class="cb">
+  <p>jQuery (2006, MIT) 让 DOM 操作更简洁。基本语法：<code>$(selector).action()</code></p>
+  <div class="tb"><table>
+    <tr><th>语法</th><th>说明</th></tr>
+    <tr><td><code>$("*")</code></td><td>所有元素</td></tr>
+    <tr><td><code>$(this)</code></td><td>当前元素</td></tr>
+    <tr><td><code>$("p.intro")</code></td><td>class="intro" 的 &lt;p&gt;</td></tr>
+    <tr><td><code>$("p:first")</code></td><td>第一个 &lt;p&gt; (全局唯一)</td></tr>
+    <tr><td><code>$("ul li:first-child")</code></td><td>每个 &lt;ul&gt; 的第一个 &lt;li&gt;</td></tr>
+  </table></div>
+  <div class="cd"><div class="cd-bar"><span class="lang">HTML — CDN 引入 (P38)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="tg">&lt;script</span> <span class="at">src</span>=<span class="str">"https://code.jquery.com/jquery-3.7.1.min.js"</span><span class="tg">&gt;&lt;/script&gt;</span></pre>
+  </div>
+</div></div>
+</section>
+
+<!-- =========================================================
+     S14: P39–40  jQuery DOM
+     ========================================================= -->
+<section class="sec" id="s14">
+<div class="sh"><div class="sn">14</div><h2>jQuery DOM 操作</h2><span class="pg">P39–40</span></div>
+
+<div class="c"><div class="ct">📝 P39: Get/Set + P40: 树操作</div><div class="cb">
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — jQuery Get/Set (P39) & Tree (P40)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// ===== P39: Get/Set (无参=get, 有参=set) =====</span>
+$(<span class="str">".h1"</span>).text();                      <span class="cmt">// 获取纯文本 get text</span>
+$(<span class="str">".h1"</span>).text(<span class="str">"Hello"</span>);               <span class="cmt">// 设置文本 set text</span>
+$(<span class="str">"#box"</span>).html();                     <span class="cmt">// 获取 HTML</span>
+$(<span class="str">"#box"</span>).html(<span class="str">"&lt;b&gt;Hi&lt;/b&gt;"</span>);        <span class="cmt">// 设置 HTML</span>
+$(<span class="str">"input"</span>).val();                     <span class="cmt">// 获取表单值 get value</span>
+$(<span class="str">".age"</span>).attr(<span class="str">"max"</span>);                <span class="cmt">// 获取属性</span>
+$(<span class="str">".age"</span>).attr(<span class="str">"max"</span>, <span class="num">105</span>);           <span class="cmt">// 设置属性</span>
+
+<span class="cmt">// ===== P40: 树操作 (子元素 vs 兄弟元素) =====</span>
+$(<span class="str">"#list"</span>).prepend(<span class="str">"&lt;li&gt;First&lt;/li&gt;"</span>); <span class="cmt">// 内部开头加子元素</span>
+$(<span class="str">"#list"</span>).append(<span class="str">"&lt;li&gt;Last&lt;/li&gt;"</span>);  <span class="cmt">// 内部末尾加子元素</span>
+$(<span class="str">"#item"</span>).before(<span class="str">"&lt;p&gt;前&lt;/p&gt;"</span>);      <span class="cmt">// 外部前面加兄弟</span>
+$(<span class="str">"#item"</span>).after(<span class="str">"&lt;p&gt;后&lt;/p&gt;"</span>);       <span class="cmt">// 外部后面加兄弟</span></pre>
+  </div>
+  <div class="tip">💡 <strong>append vs after:</strong> append 添加<strong>子元素</strong>(内部末尾)；after 添加<strong>兄弟元素</strong>(外部后面)。</div>
+</div></div>
+</section>
+
+<!-- =========================================================
+     S15: P41–42  jQuery 事件
+     ========================================================= -->
+<section class="sec" id="s15">
+<div class="sh"><div class="sn">15</div><h2>jQuery 事件 & $(document).ready() <span class="star">★★</span></h2><span class="pg">P41–42</span></div>
+
+<div class="c"><div class="ct">🎯 P41: jQuery 事件 + P42: ready()</div><div class="cb">
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — P42 课件原版 (Evanesco 示例)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// P42 完整示例: 点击按钮隐藏 class="zap" 的段落</span>
+$(<span class="fn">document</span>).ready(() =&gt; {             <span class="cmt">// DOM 加载完成后执行</span>
+  $(<span class="str">"button"</span>).click(() =&gt; {           <span class="cmt">// 给按钮注册 click</span>
+    $(<span class="str">".zap"</span>).hide();                  <span class="cmt">// 隐藏所有 class="zap" 元素</span>
+  });
+});
+
+<span class="cmt">// HTML:</span>
+<span class="cmt">// &lt;p class="zap"&gt;Wands&lt;/p&gt;</span>
+<span class="cmt">// &lt;p class="zap"&gt;Broomsticks&lt;/p&gt;</span>
+<span class="cmt">// &lt;p&gt;Owls&lt;/p&gt;</span>
+<span class="cmt">// &lt;button&gt;Evanesco!&lt;/button&gt;</span>
+<span class="cmt">// 点击后: Wands 和 Broomsticks 消失, Owls 保留</span></pre>
+  </div>
+
+  <!-- 用原生 JS 复现 P42 的 jQuery 效果，使其可运行 -->
+  <div class="ru"><div class="ru-top"><span>▶ 用原生 JS 复现 P42 Evanesco 效果</span><button class="rb" onclick="R('d15')">运行</button></div><div class="ro" id="d15"></div></div>
+  <script>function R_d15(){
+    var el=document.getElementById('d15');
+    el.innerHTML=
+      '<p class="d15zap" style="transition:opacity .3s">Wands</p>'+
+      '<p class="d15zap" style="transition:opacity .3s">Broomsticks</p>'+
+      '<p>Owls</p>'+
+      '<button onclick="evanesco()" style="padding:5px 14px;background:var(--pu);color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:700">Evanesco!</button>'+
+      '<div id="d15msg" style="margin-top:6px;font-size:.78rem;color:var(--tx2)"></div>';
+  }
+  function evanesco(){
+    // 原生 JS 等价于 $(".zap").hide()
+    var items=document.querySelectorAll('.d15zap');
+    items.forEach(function(p){p.style.opacity='0';setTimeout(function(){p.style.display='none';},300);});
+    document.getElementById('d15msg').textContent='等价jQuery: $(".zap").hide() — Wands和Broomsticks消失, Owls保留';
+  }</script>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: $(document).ready() 和 window.onload 区别？</span></div><div class="qb"><div class="qb-in">
+  <code>$(document).ready()</code> → DOM 树构建完即触发，<strong>不等</strong>图片/CSS<br>
+  <code>window.onload</code> → <strong>所有资源</strong>加载完才触发<br>
+  原生等价: <code>document.addEventListener("DOMContentLoaded", fn)</code>
+</div></div></div>
+</section>
+
+<!-- =========================================================
+     S16: P43  jQuery 效果
+     ========================================================= -->
+<section class="sec" id="s16">
+<div class="sh"><div class="sn">16</div><h2>jQuery 效果 Effects</h2><span class="pg">P43</span></div>
+
+<div class="c"><div class="ct">✨ P43: 效果方法 + 课件 slideDown 示例</div><div class="cb">
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — jQuery 效果 (P43)</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre><span class="cmt">// 显示/隐藏</span>
+$(<span class="str">"#box"</span>).hide();    $(<span class="str">"#box"</span>).show();    $(<span class="str">"#box"</span>).toggle();
+<span class="cmt">// 淡入/淡出</span>
+$(<span class="str">"#box"</span>).fadeIn();   $(<span class="str">"#box"</span>).fadeOut();
+<span class="cmt">// 滑动</span>
+$(<span class="str">"#panel"</span>).slideDown(<span class="str">"slow"</span>);  $(<span class="str">"#panel"</span>).slideUp();
+<span class="cmt">// 自定义动画</span>
+$(<span class="str">"#box"</span>).animate({left: <span class="str">'250px'</span>});
+
+<span class="cmt">// P43 课件完整示例:</span>
+$(<span class="fn">document</span>).ready(() =&gt; {
+  $(<span class="str">"#flip"</span>).click(() =&gt; {           <span class="cmt">// 点击 #flip</span>
+    $(<span class="str">"#panel"</span>).slideDown(<span class="str">"slow"</span>);    <span class="cmt">// #panel 缓慢下滑显示</span>
+  });
+});</pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 原生 JS 复现 slideDown</span><button class="rb" onclick="R('d16')">运行</button></div><div class="ro" id="d16"></div></div>
+  <script>function R_d16(){
+    var el=document.getElementById('d16');
+    el.innerHTML=
+      '<div id="d16flip" style="padding:8px;background:var(--sf2);border:1px solid var(--bd);border-radius:6px;text-align:center;cursor:pointer;font-weight:600">Click me! (#flip)</div>'+
+      '<div id="d16panel" style="padding:14px;background:rgba(94,159,248,.1);border:1px solid var(--bl);border-radius:6px;max-height:0;overflow:hidden;transition:max-height .5s ease,padding .5s ease;padding-top:0;padding-bottom:0;margin-top:4px">Hello World! (#panel) — slideDown效果</div>';
+    document.getElementById('d16flip').addEventListener('click',function(){
+      var p=document.getElementById('d16panel');
+      if(!p.style.maxHeight||p.style.maxHeight==='0px'){
+        p.style.maxHeight='80px';p.style.paddingTop='14px';p.style.paddingBottom='14px';
+      }else{
+        p.style.maxHeight='0px';p.style.paddingTop='0';p.style.paddingBottom='0';
+      }
+    });
+  }</script>
+</div></div>
+</section>
+
+<!-- =========================================================
+     S17: P44  链式调用
+     ========================================================= -->
+<section class="sec" id="s17">
+<div class="sh"><div class="sn">17</div><h2>jQuery 链式调用 Chaining <span class="star">★★</span></h2><span class="pg">P44</span></div>
+
+<div class="c"><div class="ct">🔗 P44: Chaining 原理</div><div class="cb">
+  <p>大多数 jQuery 修改方法返回<strong>被修改的对象本身</strong>，因此可以连续调用。这种风格叫 <strong>chaining (链式调用)</strong>。</p>
+  <p class="en">Most jQuery functions that mutate an element object return that mutated element object instead of returning nothing.</p>
+  <div class="cd"><div class="cd-bar"><span class="lang">JS — P44 课件原版代码</span><button class="cp" onclick="CC(this)">复制</button></div>
+<pre>$(<span class="str">"li"</span>)                                <span class="cmt">// 1. 选中所有 &lt;li&gt;</span>
+  .filter(<span class="str">".first, .last"</span>)              <span class="cmt">// 2. 过滤出 class=first 或 last</span>
+  .css(<span class="str">"color"</span>, <span class="str">"red"</span>)                 <span class="cmt">// 3. 设置前景色</span>
+  .css(<span class="str">"backgroundColor"</span>, <span class="str">"yellow"</span>);  <span class="cmt">// 4. 设置背景色</span>
+
+<span class="cmt">// 原理: 每个方法返回 jQuery 对象自身 (return this)</span></pre>
+  </div>
+  <div class="ru"><div class="ru-top"><span>▶ 原生 JS 复现链式效果</span><button class="rb" onclick="R('d17')">运行</button></div><div class="ro" id="d17"></div></div>
+  <script>function R_d17(){
+    var el=document.getElementById('d17');
+    el.innerHTML=
+      '<ul id="d17list">'+
+      '<li class="first" style="padding:4px 8px;margin:2px 0;border-radius:4px;transition:all .3s">Item 1 (class="first")</li>'+
+      '<li style="padding:4px 8px;margin:2px 0;border-radius:4px;transition:all .3s">Item 2 (no class)</li>'+
+      '<li style="padding:4px 8px;margin:2px 0;border-radius:4px;transition:all .3s">Item 3 (no class)</li>'+
+      '<li class="last" style="padding:4px 8px;margin:2px 0;border-radius:4px;transition:all .3s">Item 4 (class="last")</li>'+
+      '</ul>'+
+      '<div style="margin-top:6px;font-size:.76rem;color:var(--tx3)">等效: $("li").filter(".first,.last").css("color","red").css("backgroundColor","rgba(239,192,72,.15)")</div>';
+    // 原生 JS 等价实现
+    var items=document.querySelectorAll('#d17list li');
+    items.forEach(function(li){
+      if(li.classList.contains('first')||li.classList.contains('last')){
+        li.style.color='var(--rd)';
+        li.style.backgroundColor='rgba(239,192,72,.12)';
+      }
+    });
+  }</script>
+</div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: 链式调用能工作的核心原理？一句话概括。</span></div><div class="qb"><div class="qb-in">
+  每个 jQuery 修改方法都 <code>return this</code> — 返回 jQuery 对象本身 → 可继续调用。<br>
+  设计模式: <strong>fluent interface / method chaining</strong>。
+</div></div></div>
+
+<div class="q"><div class="qa" onclick="TQ(this)"><span class="ic">🧠</span><span>Q: 用原生 JS 写出 $("li").filter(".first").css("color","red") 的等价代码</span></div><div class="qb"><div class="qb-in">
+<pre style="color:var(--tx);font-size:.8rem;line-height:1.6">document.querySelectorAll("li").forEach(function(li) {
+  if (li.classList.contains("first")) {  // 过滤
+    li.style.color = "red";              // 设置样式
+  }
+});</pre>
+</div></div></div>
+</section>
+
+</main>
+
+<script>
+// Toggle quiz
+function TQ(el){var a=el.nextElementSibling;a.classList.toggle('open');el.querySelector('.ic').textContent=a.classList.contains('open')?'✅':'🧠';}
+// Run demo
+function R(id){var fn=window['R_'+id];if(fn)fn();}
+// Copy code
+function CC(btn){var pre=btn.closest('.cd').querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(function(){btn.textContent='已复制✓';setTimeout(function(){btn.textContent='复制';},1500);});}
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('bar').style.width=(window.scrollY/h*100)+'%';});
+// Active nav
+var secs=document.querySelectorAll('.sec');var navAs=document.querySelectorAll('nav a');
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){navAs.forEach(function(a){a.classList.remove('on');});var l=document.querySelector('nav a[href="#'+e.target.id+'"]');if(l)l.classList.add('on');}});},{rootMargin:'-62px 0px -60% 0px'});
+secs.forEach(function(s){obs.observe(s);});
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+// ─────────────────────────────────────
+// 方法1：按类型 & 索引访问 document.images
+// ─────────────────────────────────────
+
+console.log(document.images[0].alt); // "猫"  — 第1张图片
+console.log(document.images[1].alt); // "狗"  — 第2张图片
+console.log(document.images[2].alt); // "鸟"  — 第3张图片
+
+// 也可以修改图片属性
+document.images[0].src = "newcat.jpg"; // 替换第1张图片
+
+
+// ─────────────────────────────────────
+// 方法2：getElementsByTagName
+// ─────────────────────────────────────
+
+// 获取 #article 节点内所有 <p> 元素
+const article = document.getElementById("article");
+const paragraphs = article.getElementsByTagName("p");
+
+console.log(paragraphs.length); // 3
+
+// 遍历所有段落并打印文字内容
+for (let i = 0; i < paragraphs.length; i++) {
+  console.log(paragraphs[i].innerText);
+}
+// 输出：
+// 第一段：猫很懒。
+// 第二段：狗很忠诚。
+// 第三段：鸟会飞。
+
+// 也可以针对整个 document 搜索
+const allP = document.getElementsByTagName("p"); // 页面所有 <p>
+
+
+// ─────────────────────────────────────
+// 方法3：按 id 访问 getElementById
+// ─────────────────────────────────────
+
+// 直接通过 id 拿到唯一元素
+const title  = document.getElementById("pageTitle");
+const intro  = document.getElementById("intro");
+const btn    = document.getElementById("submitBtn");
+
+// 读取内容
+console.log(title.innerText); // "宠物百科"
+console.log(intro.innerText); // "欢迎来到宠物世界。"
+
+// 修改内容
+title.innerText = "宠物大全";       // 改标题文字
+intro.style.color = "steelblue";   // 改段落颜色
+btn.disabled = true;               // 禁用按钮
+
+// id 不存在时返回 null，访问前最好做判断
+const missing = document.getElementById("ghost");
+console.log(missing); // null
+if (missing) {
+  missing.innerText = "不会执行到这里";
+}

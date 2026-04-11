@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ch05 Bootstrap Cheatsheet – Q&A Edition</title>
+<style>
+@page { size: A4; margin: 3mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Courier New', monospace; font-size: 7.1pt; line-height: 1.26; color: #1e293b; background: #fff; }
+.page { width: 210mm; min-height: 297mm; padding: 2mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; grid-auto-rows: min-content; align-content: start; }
+.title { grid-column: 1 / -1; background: #1e3a8a; color: #fff; text-align: center; padding: 3px 0; font-size: 9pt; font-weight: bold; border-radius: 3px; margin-bottom: 1px; }
+.title small { font-size: 6.5pt; font-weight: normal; display: block; }
+.col { display: flex; flex-direction: column; gap: 3px; }
+.box { border-radius: 3px; padding: 3px 4px; border-left: 2.5px solid; }
+.blue { background: #dbeafe; border-color: #1d4ed8; }
+.green { background: #dcfce7; border-color: #15803d; }
+.yellow { background: #fef9c3; border-color: #a16207; }
+.red { background: #fee2e2; border-color: #b91c1c; }
+.purple { background: #f3e8ff; border-color: #7c3aed; }
+.gray { background: #f1f5f9; border-color: #475569; }
+.orange { background: #ffedd5; border-color: #c2410c; }
+h1 { font-size: 8.2pt; margin-bottom: 2px; color: #1e3a8a; }
+h2 { font-size: 7.2pt; font-weight: bold; margin-bottom: 1px; color: #1e3a8a; }
+h2.g { color: #14532d; }
+h2.r { color: #7f1d1d; }
+h2.p { color: #4c1d95; }
+pre { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; border-radius: 2px; padding: 2px 3px; font-size: 6.4pt; line-height: 1.22; white-space: pre-wrap; word-break: break-all; margin: 1px 0; font-family: 'Courier New', monospace; }
+code { background: rgba(0,0,0,.09); padding: 0 2px; border-radius: 2px; font-size: 6.8pt; font-family: 'Courier New', monospace; }
+.kw { color: #1d4ed8; }
+.cm { color: #15803d; }
+.st { color: #a16207; }
+.va { color: #be185d; }
+.op { color: #c2410c; }
+.nb { color: #7c3aed; }
+table { border-collapse: collapse; width: 100%; font-size: 6.7pt; margin: 1px 0; }
+th { background: #e5e7eb; font-weight: bold; }
+th, td { border: 0.5px solid #9ca3af; padding: 1px 3px; text-align: left; }
+ul { list-style: none; padding-left: 7px; }
+ul li::before { content: "▸ "; color: #475569; }
+.qa { font-size: 6.8pt; margin: 1px 0; }
+.q { color: #6d28d9; font-weight: bold; }
+.a { color: #14532d; padding-left: 7px; }
+.eg { font-style: italic; color: #0369a1; padding-left: 7px; font-size: 6.8pt; }
+.warn { background: #fef2f2; border: 1px solid #ef4444; border-radius: 2px; padding: 2px 3px; font-size: 6.9pt; margin: 1px 0; }
+.tip { background: #f0fdf4; border: 1px solid #22c55e; border-radius: 2px; padding: 2px 3px; font-size: 6.9pt; margin: 1px 0; }
+hr.d { border: none; border-top: 1px dashed #9ca3af; margin: 2px 0; }
+.star { color: #dc2626; font-weight: bold; }
+@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .page { page-break-after: always; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="title">Ch05 · CSS Frameworks: Bootstrap — CSS框架：Bootstrap · Q&amp;A Cheatsheet (Pages 1–16)<small>CITS3403 / CITS5505 Agile Web Development — 16 pages verified ✓</small></div>
+
+<!-- ============ COLUMN 1 ============ -->
+<div class="col">
+
+<div class="box blue">
+<h2>P3: Challenges with CSS – CSS的局限性 <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q: What are the limitations of plain CSS? 纯CSS有哪些局限？</div>
+<div class="a">A: ① Centering pictures/text can be unintuitive 居中操作不直观 ② Hard to create responsive styles for different devices 难以为不同设备创建响应式样式 ③ Many sites don't need the full power of CSS 多数网站不需要CSS全部功能 ④ Producing attractive style is highly creative 创建美观样式是高度创造性活动</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What does "responsive" mean here? "响应式"指什么？</div>
+<div class="a">A: Styles that change depending on the device they are being viewed on. 样式能根据不同设备自动调整。类比：像水一样适应不同容器形状。</div>
+</div>
+</div>
+
+<div class="box green">
+<h2>P4: Frameworks – 框架概述 <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q: What are CSS frameworks? CSS框架是什么？</div>
+<div class="a">A: Open-source libraries for developing responsive web-applications. 用于开发响应式Web应用的开源库。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: How do frameworks work? 框架如何工作？</div>
+<div class="a">A: They use CSS and JavaScript to build style components in a reasonably aesthetic way with very little effort. 使用CSS+JS以极少工作量构建美观的样式组件。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What is the big advantage? 最大优势是什么？</div>
+<div class="a">A: Normally designed to be responsive — one application looks good on mobile, tablets, and PCs with minimal effort. 天生响应式：一个应用在手机/平板/PC上都好看，工作量极小。</div>
+</div>
+</div>
+
+<div class="box yellow">
+<h2>P5: Common Frameworks – 常见框架</h2>
+<div class="qa">
+<div class="q">Q: Name 4 common CSS frameworks. 列举4个常见CSS框架。</div>
+<div class="a">A: ① <b>Bootstrap</b> — powerful front-end framework 强大前端框架 ② <b>Tailwind CSS</b> — utility-first CSS framework 工具优先框架 ③ <b>Semantic UI</b> — user interface is the language of the web 语义化UI ④ <b>Foundation</b> — advanced responsive framework 高级响应式框架</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What is the main disadvantage of using a framework? 使用框架的主要缺点？</div>
+<div class="a">A: Websites built with the same framework will often appear visually similar. 使用同一框架的网站外观往往相似。</div>
+</div>
+</div>
+
+<div class="box blue">
+<h2>P7: Loading Bootstrap – 加载Bootstrap <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q: How do you include Bootstrap in your page? 如何在页面中引入Bootstrap？</div>
+<div class="a">A: Two ways: ① Download and host the code yourself 下载自托管 ② Reference a <b>Content Delivery Network (CDN)</b> in the header CDN引用放在header中</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What files does Bootstrap consist of? Bootstrap由哪些文件组成？</div>
+<div class="a">A: A <b>CSS file</b> + a <b>JavaScript file</b> + optional <b>theme files</b>. 一个CSS文件 + 一个JS文件 + 可选主题文件。</div>
+</div>
+<pre><span class="cm">&lt;!-- 1.核心CSS (Latest compiled &amp; minified CSS) --&gt;</span>
+<span class="kw">&lt;link</span> <span class="va">rel</span>=<span class="st">"stylesheet"</span>
+  <span class="va">href</span>=<span class="st">"https://cdn.../bootstrap.min.css"</span>
+  <span class="va">integrity</span>=<span class="st">"sha384-..."</span>
+  <span class="va">crossorigin</span>=<span class="st">"anonymous"</span><span class="kw">&gt;</span>
+<span class="cm">&lt;!-- 2.可选主题 (Optional theme) --&gt;</span>
+<span class="kw">&lt;link</span> <span class="va">rel</span>=<span class="st">"stylesheet"</span>
+  <span class="va">href</span>=<span class="st">"https://cdn.../bootstrap-theme.min.css"</span><span class="kw">&gt;</span>
+<span class="cm">&lt;!-- 3.核心JS (Latest compiled &amp; minified JS) --&gt;</span>
+<span class="kw">&lt;script</span> <span class="va">src</span>=<span class="st">"https://cdn.../bootstrap.min.js"</span>
+  <span class="va">crossorigin</span>=<span class="st">"anonymous"</span><span class="kw">&gt;&lt;/script&gt;</span></pre>
+<div class="tip">💡 <code>integrity</code> = Subresource Integrity hash for security 子资源完整性哈希校验; <code>crossorigin="anonymous"</code> = no credentials sent for CORS 跨域不发凭证</div>
+</div>
+
+</div>
+
+<!-- ============ COLUMN 2 ============ -->
+<div class="col">
+
+<div class="box green">
+<h2>P8: Your First Bootstrap Page – 第一个Bootstrap页面 <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q: What meta tag is required for Bootstrap? Bootstrap需要什么meta标签？</div>
+<div class="a">A: The <code>viewport</code> meta tag setting width to device-width (for zooming and scaling). 设置视口宽度为设备宽度的viewport标签。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What does the .container class do? .container类有什么作用？</div>
+<div class="a">A: It automatically sets margins that respond to the page size. 自动设置随页面大小响应的边距。</div>
+</div>
+<pre><span class="kw">&lt;!DOCTYPE html&gt;</span>
+<span class="kw">&lt;html</span> <span class="va">lang</span>=<span class="st">"en"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+ <span class="kw">&lt;title&gt;</span>Bootstrap Example<span class="kw">&lt;/title&gt;</span>
+ <span class="kw">&lt;meta</span> <span class="va">charset</span>=<span class="st">"utf-8"</span><span class="kw">&gt;</span>
+ <span class="kw">&lt;meta</span> <span class="va">name</span>=<span class="st">"viewport"</span>        <span class="cm">&lt;!-- 必须 --&gt;</span>
+  <span class="va">content</span>=<span class="st">"width=device-width,</span>
+  <span class="st">initial-scale=1"</span><span class="kw">&gt;</span>           <span class="cm">&lt;!-- 1:1缩放 --&gt;</span>
+ <span class="kw">&lt;link</span> <span class="va">rel</span>=<span class="st">"stylesheet"</span>
+  <span class="va">href</span>=<span class="st">"...bootstrap.min.css"</span><span class="kw">&gt;</span>  <span class="cm">&lt;!-- CSS --&gt;</span>
+ <span class="kw">&lt;script</span> <span class="va">src</span>=<span class="st">"...jquery.min.js"</span><span class="kw">&gt;&lt;/script&gt;</span> <span class="cm">&lt;!-- jQuery --&gt;</span>
+ <span class="kw">&lt;script</span> <span class="va">src</span>=<span class="st">"...bootstrap.min.js"</span><span class="kw">&gt;&lt;/script&gt;</span><span class="cm">&lt;!-- JS --&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"container"</span><span class="kw">&gt;</span>       <span class="cm">&lt;!-- 响应式容器 --&gt;</span>
+  <span class="kw">&lt;h1&gt;</span>My First Bootstrap Page<span class="kw">&lt;/h1&gt;</span>
+  <span class="kw">&lt;p&gt;</span>Inside .container class.<span class="kw">&lt;/p&gt;</span>
+ <span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;/body&gt;&lt;/html&gt;</span></pre>
+<div class="warn">⚠ 3 files needed 需要3个文件: bootstrap.min.css + jquery.min.js + bootstrap.min.js (Bootstrap 3 depends on jQuery jQuery是依赖)</div>
+</div>
+
+<div class="box blue">
+<h2>P9: Bootstrap Container – 容器类型 <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q: What are the 3 types of Bootstrap containers? 3种Bootstrap容器类型？</div>
+<div class="a">A: ① <code>.container</code> — responsive fixed-width; max-width adjusts at each breakpoint (xs,sm,md,lg,xl,xxl); centers content 响应式固定宽度，居中内容 ② <code>.container-fluid</code> — always 100% viewport width regardless of screen size 始终100%视口宽度 ③ <code>.container-{breakpoint}</code> — fluid (100%) until that breakpoint is reached, then fixed-width 到达指定断点前流式，之后固定宽度</div>
+</div>
+<h2 class="g">Breakpoint Container Chart 断点容器表 <span class="star">★★</span></h2>
+<table>
+<tr><th>Class</th><th>xs<br>&lt;576</th><th>sm<br>≥576</th><th>md<br>≥768</th><th>lg<br>≥992</th><th>xl<br>≥1200</th><th>xxl<br>≥1400</th></tr>
+<tr><td><code>.container</code></td><td>100%</td><td>540</td><td>720</td><td>960</td><td>1140</td><td>1320</td></tr>
+<tr><td><code>.container-sm</code></td><td>100%</td><td>540</td><td>720</td><td>960</td><td>1140</td><td>1320</td></tr>
+<tr><td><code>.container-md</code></td><td>100%</td><td>100%</td><td>720</td><td>960</td><td>1140</td><td>1320</td></tr>
+<tr><td><code>.container-lg</code></td><td>100%</td><td>100%</td><td>100%</td><td>960</td><td>1140</td><td>1320</td></tr>
+<tr><td><code>.container-xl</code></td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>1140</td><td>1320</td></tr>
+<tr><td><code>.container-xxl</code></td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>1320</td></tr>
+<tr><td><code>.container-fluid</code></td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td></tr>
+</table>
+<div class="qa">
+<div class="q">Q: How to read this table? 如何理解此表？</div>
+<div class="a">A: <code>.container-{bp}</code> is 100% below that breakpoint, then becomes fixed-width above it. 低于该断点时100%全宽，达到断点后变为固定宽度。类比：水龙头水量，开到一定程度就不再增大。</div>
+</div>
+</div>
+
+</div>
+
+<!-- ============ COLUMN 3 ============ -->
+<div class="col">
+
+<div class="box yellow">
+<h2>P10–11: Grid System Basics – 网格系统基础 <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q: How many columns per row in Bootstrap? Bootstrap每行有几列？</div>
+<div class="a">A: <b>12 columns</b>. Every component/div spans a number of these columns. 12列。每个组件/div占据若干列。类比：一把12厘米的尺子，你可以划分为不同的段。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: Must columns add up to 12? 列数必须加起来等于12吗？</div>
+<div class="a">A: Yes, the spanned columns should always add up to 12. 是的，跨越的列数总和应为12。超过12的列会自动换行。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What is the layout hierarchy? 布局层级结构？</div>
+<div class="a">A: <code>.container</code> → <code>.row</code> → <code>.col-*</code> (container 容器 → row 行 → columns 列)</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What does class <code>col</code> (with no number) do? 不带数字的col类有什么作用？</div>
+<div class="a">A: Creates <b>equal-width</b> columns across all devices. Columns are centered in the parent .container. 在所有设备上创建等宽列。列在父容器中居中。</div>
+</div>
+<pre><span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"container"</span><span class="kw">&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"row"</span><span class="kw">&gt;</span>             <span class="cm">&lt;!-- 行 --&gt;</span>
+  <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col"</span><span class="kw">&gt;</span>1 of 2<span class="kw">&lt;/div&gt;</span> <span class="cm">&lt;!-- 等宽50% --&gt;</span>
+  <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col"</span><span class="kw">&gt;</span>2 of 2<span class="kw">&lt;/div&gt;</span> <span class="cm">&lt;!-- 等宽50% --&gt;</span>
+ <span class="kw">&lt;/div&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"row"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col"</span><span class="kw">&gt;</span>1 of 3<span class="kw">&lt;/div&gt;</span> <span class="cm">&lt;!-- 等宽33% --&gt;</span>
+  <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col"</span><span class="kw">&gt;</span>2 of 3<span class="kw">&lt;/div&gt;</span>
+  <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col"</span><span class="kw">&gt;</span>3 of 3<span class="kw">&lt;/div&gt;</span>
+ <span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;/div&gt;</span></pre>
+</div>
+
+<div class="box purple">
+<h2 class="p">P12: Column Sizing – 指定列宽 <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q: How to specify column width? 如何指定列宽？</div>
+<div class="a">A: Use <code>col-{n}</code> where n = number of 12-column slices. 用col-{n}指定占n个列。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What does col-6 mean? col-6是什么意思？</div>
+<div class="a">A: Span 6 out of 12 columns = exactly <b>half</b> the row width (50%). 占6/12列 = 正好一半宽度。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: How to create uneven layout? 如何创建不等宽布局？</div>
+<div class="a">A: Use different numbers: <code>col-4</code> (1/3) + <code>col-8</code> (2/3). 用不同数字：col-4占1/3 + col-8占2/3。</div>
+</div>
+<pre><span class="cm">&lt;!-- 等宽布局 Equal: 50%+50% --&gt;</span>
+<span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"row"</span><span class="kw">&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-6"</span><span class="kw">&gt;</span>Half<span class="kw">&lt;/div&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-6"</span><span class="kw">&gt;</span>Half<span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+<span class="cm">&lt;!-- 不等宽 Uneven: 33%+67% --&gt;</span>
+<span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"row"</span><span class="kw">&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-4"</span><span class="kw">&gt;</span>1/3<span class="kw">&lt;/div&gt;</span>    <span class="cm">&lt;!-- 33.3% --&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-8"</span><span class="kw">&gt;</span>2/3<span class="kw">&lt;/div&gt;</span>    <span class="cm">&lt;!-- 66.7% --&gt;</span>
+<span class="kw">&lt;/div&gt;</span></pre>
+<div class="tip">💡 Grid Visual 网格图示: 12×col-1 | 3×col-4 | col-4+col-8 | 2×col-6 | 1×col-12</div>
+</div>
+
+<div class="box orange">
+<h2>P13: Responsive Grid – 响应式网格 <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q: What does <code>col-md-6</code> mean? col-md-6是什么意思？</div>
+<div class="a">A: On <b>medium devices and larger</b> (≥768px), each column occupies 50% of the row width → two-column layout. Below md, columns stack vertically at 100%. 中等及以上设备(≥768px)每列占50%，低于md时垂直堆叠。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: Can you combine breakpoint classes? 能否组合断点类？</div>
+<div class="a">A: Yes! <code>col-sm-6 col-lg-3</code> = on small: 2 columns per row (6/12=50%); on large: 4 columns per row (3/12=25%). 可以！小设备2列/大设备4列。</div>
+</div>
+<pre><span class="cm">&lt;!-- md+: 两列 --&gt;</span>
+<span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"row"</span><span class="kw">&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-md-6"</span><span class="kw">&gt;</span>1<span class="kw">&lt;/div&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-md-6"</span><span class="kw">&gt;</span>2<span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+<span class="cm">&lt;!-- sm:2列, lg:4列 --&gt;</span>
+<span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"row"</span><span class="kw">&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-sm-6 col-lg-3"</span><span class="kw">&gt;</span>1<span class="kw">&lt;/div&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-sm-6 col-lg-3"</span><span class="kw">&gt;</span>2<span class="kw">&lt;/div&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-sm-6 col-lg-3"</span><span class="kw">&gt;</span>3<span class="kw">&lt;/div&gt;</span>
+ <span class="kw">&lt;div</span> <span class="va">class</span>=<span class="st">"col-sm-6 col-lg-3"</span><span class="kw">&gt;</span>4<span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;/div&gt;</span></pre>
+</div>
+
+</div>
+
+<!-- ============ COLUMN 4 ============ -->
+<div class="col">
+
+<div class="box gray">
+<h2>Breakpoint Prefix Reference – 断点前缀一览 <span class="star">★★</span></h2>
+<table>
+<tr><th>Prefix 前缀</th><th>Device 设备</th><th>Width 宽度</th></tr>
+<tr><td><code>col-</code></td><td>Extra small 超小</td><td>&lt;576px</td></tr>
+<tr><td><code>col-sm-</code></td><td>Small 小</td><td>≥576px</td></tr>
+<tr><td><code>col-md-</code></td><td>Medium 中</td><td>≥768px</td></tr>
+<tr><td><code>col-lg-</code></td><td>Large 大</td><td>≥992px</td></tr>
+<tr><td><code>col-xl-</code></td><td>X-Large 超大</td><td>≥1200px</td></tr>
+<tr><td><code>col-xxl-</code></td><td>XX-Large 超超大</td><td>≥1400px</td></tr>
+</table>
+<div class="qa">
+<div class="q">Q: Layout can be specified with respect to…? 布局可以按什么来指定？</div>
+<div class="a">A: Device size: extra small, small, medium and large. 设备尺寸。</div>
+</div>
+</div>
+
+<div class="box red">
+<h2>P14: Bootstrap Tables – 表格 <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q: What does class <code>.table</code> do? .table类做什么？</div>
+<div class="a">A: Adds basic styling with <b>horizontal lines</b> and <b>padding</b>. 添加水平线和内边距的基本样式。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What additional table classes exist? 还有哪些表格类？</div>
+<div class="a">A: <code>.table-striped</code> 斑马条纹行 | <code>.table-bordered</code> 全边框 | <code>.table-hover</code> 悬停高亮 | <code>.table-condensed</code> 紧凑间距</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: How to color specific rows? 如何给特定行上色？</div>
+<div class="a">A: Apply context classes to <code>&lt;tr&gt;</code>: <code>success</code>(绿) <code>danger</code>(红) <code>info</code>(蓝) <code>warning</code>(黄) <code>active</code>(灰)</div>
+</div>
+<pre><span class="kw">&lt;table</span> <span class="va">class</span>=<span class="st">"table table-striped"</span><span class="kw">&gt;</span>
+ <span class="kw">&lt;tr</span> <span class="va">class</span>=<span class="st">"success"</span><span class="kw">&gt;</span>  <span class="cm">&lt;!-- 绿色行 --&gt;</span>
+  <span class="kw">&lt;td&gt;</span>Doe<span class="kw">&lt;/td&gt;&lt;td&gt;</span>john@..<span class="kw">&lt;/td&gt;</span>
+ <span class="kw">&lt;/tr&gt;</span>
+ <span class="kw">&lt;tr</span> <span class="va">class</span>=<span class="st">"danger"</span><span class="kw">&gt;</span>...<span class="kw">&lt;/tr&gt;</span>  <span class="cm">&lt;!-- 红色行 --&gt;</span>
+<span class="kw">&lt;/table&gt;</span></pre>
+</div>
+
+<div class="box green">
+<h2>P15: Glyphicons – 图标字体</h2>
+<div class="qa">
+<div class="q">Q: What are Glyphicons? Glyphicons是什么？</div>
+<div class="a">A: ~200 icons included with Bootstrap. Rendered as <b>text</b>, so they resize with headers etc. 约200个图标，以文本渲染，随字号缩放。</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q: What is the syntax? 语法是什么？</div>
+<div class="a">A: Apply a class to an <b>empty span</b>. 对空span应用类名。</div>
+</div>
+<pre><span class="kw">&lt;button</span> <span class="va">class</span>=<span class="st">"btn btn-default"</span><span class="kw">&gt;</span>
+ <span class="kw">&lt;span</span> <span class="va">class</span>=<span class="st">"glyphicon</span>
+  <span class="st">glyphicon-search"</span><span class="kw">&gt;&lt;/span&gt;</span> <span class="cm">&lt;!-- 搜索图标 --&gt;</span>
+ Search
+<span class="kw">&lt;/button&gt;</span></pre>
+</div>
+
+<div class="box orange">
+<h2>P16: Other Features – 其他功能</h2>
+<div class="qa">
+<div class="q">Q: What other widgets does Bootstrap support? Bootstrap还支持哪些组件？</div>
+<div class="a">A: <b>Jumbotrons</b> 大型展示区 | <b>Modals</b> 弹窗 | <b>Form layouts</b> 表单布局 | <b>Carousels</b> 轮播图 — make pages look professional with little effort 少量工作让页面专业化</div>
+</div>
+</div>
+
+<div class="box purple">
+<h2 class="p">Exam Practice 考试练习 <span class="star">★★</span></h2>
+<div class="qa">
+<div class="q">Q1: .container vs .container-fluid 的区别？</div>
+<div class="a">A: container有固定max-width随断点变化并居中; container-fluid始终100%视口宽</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q2: col-sm-6 col-lg-3 在sm设备布局？</div>
+<div class="a">A: 6/12=50%, 每行2个元素</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q3: Why add up to 12?</div>
+<div class="a">A: 12-col grid; &gt;12 wraps to next line 超12换行</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q4: 手机正确缩放需要什么？</div>
+<div class="a">A: <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code></div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q5: Bootstrap需要加载几个文件？</div>
+<div class="a">A: 3个: bootstrap.css + jQuery.js + bootstrap.js</div>
+</div>
+<hr class="d">
+<div class="qa">
+<div class="q">Q6: col-md-6在xs设备上如何？</div>
+<div class="a">A: 100%全宽竖向堆叠(md仅≥768px生效)</div>
+</div>
+</div>
+
+<div class="box blue">
+<h2>Summary 总结 (P1–16)</h2>
+<ul>
+<li>CSS frameworks solve responsive+aesthetics 框架解决响应式+美观</li>
+<li>Bootstrap = CSS + JS + themes via CDN 通过CDN加载</li>
+<li>viewport meta tag is essential 视口标签必须</li>
+<li>.container / .container-fluid wraps content 容器包裹</li>
+<li>12-col grid: .row → .col-{bp}-{n} 12列网格</li>
+<li>6 breakpoints: xs/sm/md/lg/xl/xxl 六断点</li>
+<li>Table: .table .table-striped etc. 表格类</li>
+<li>Glyphicons: empty span + class 图标语法</li>
+<li>Widgets: jumbotron/modal/carousel/forms 组件</li>
+</ul>
+</div>
+
+</div>
+
+</div>
+</body>
+</html>

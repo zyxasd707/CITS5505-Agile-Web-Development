@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <style>
+      /* 蓝色样式类：30像素内边距，蓝色背景 */
+      div.c1 {padding:30px; background-color: rgb(47, 0, 255);}
+      /* 紫色样式类：30像素内边距，紫色背景 */
+      div.c2 {padding:30px; background-color: rgb(156, 14, 149);}
+    </style>
+    <script>
+      /* 创建按钮的工厂函数 */
+      function foo() {
+        let x = document.createElement('input');  // 创建一个input元素
+        x.type = 'button';                         // 设置为按钮类型
+        x.value = 'Clicked: 0';                    // 初始显示文本
+        x.addEventListener('click', run);          // 为按钮添加点击事件监听器
+        return x;                                  // 返回这个按钮
+      }
+
+      /* 按钮点击事件处理函数 */
+      function run(e) {
+        /* 更新点击计数：如果已有计数则加1，否则初始化为1 */
+        if (e.target.clicked)
+          e.target.clicked++;
+        else
+          e.target.clicked = 1;
+        
+        /* 更新按钮显示的文本 */
+        e.target.value = 'Clicked:' + e.target.clicked;
+
+        /* 创建新按钮并插入到当前按钮前面 */
+        let y = foo();
+        div.insertBefore(y, e.target);
+        
+        /* 根据点击次数切换背景颜色 */
+        if (e.target.clicked % 2 == 0)           // 偶数次点击 → 蓝色
+          div.classList.replace('c2','c1');
+        else                                       // 奇数次点击 → 紫色
+          div.classList.replace('c1','c2');
+
+        /* 当点击次数≥2时，移除这个按钮的点击事件监听（该按钮停止响应点击） */
+        if (e.target.clicked >= 2)
+          e.target.removeEventListener('click', run);
+      }
+
+      /* 页面加载完毕后执行 */
+      window.load = function() {
+        div = document.getElementById('div');    // 获取id为'div'的元素
+        div.appendChild(foo());                   // 在div中添加初始按钮
+      }
+    </script>
+  </head>
+  <body>
+    <!-- 主容器div，初始背景为蓝色(c1) -->
+    <div id='div' class='c1'></div>
+  </body>
+</html>

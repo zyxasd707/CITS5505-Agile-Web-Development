@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@page { size: A4; margin: 3mm; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Courier New',monospace; font-size:6.9pt; line-height:1.24; color:#1e293b; background:#fff; }
+.page { width:210mm; height:293mm; padding:2mm; display:grid; grid-template-columns:repeat(4,1fr); gap:3px; align-content:start; page-break-after:always; overflow:hidden; }
+.page:last-child { page-break-after:avoid; }
+.title { grid-column:1/-1; background:#1e3a8a; color:#fff; text-align:center; padding:2px 0; font-size:8.5pt; font-weight:bold; margin-bottom:1px; border-radius:2px; }
+.title small { font-size:6pt; font-weight:normal; opacity:0.85; }
+.col { display:flex; flex-direction:column; gap:2px; }
+.box { border-radius:2px; padding:2px 3px; border-left:2.5px solid; }
+.blue { background:#dbeafe; border-color:#1d4ed8; }
+.green { background:#dcfce7; border-color:#15803d; }
+.yellow { background:#fef9c3; border-color:#a16207; }
+.red { background:#fee2e2; border-color:#b91c1c; }
+.purple { background:#f3e8ff; border-color:#7c3aed; }
+.gray { background:#f1f5f9; border-color:#475569; }
+.orange { background:#ffedd5; border-color:#c2410c; }
+h1 { font-size:7.8pt; margin-bottom:1px; }
+h2 { font-size:7pt; color:#1e3a8a; margin:1px 0 0 0; font-weight:bold; }
+h2.g { color:#14532d; }
+h2.r { color:#7f1d1d; }
+h2.p { color:#4c1d95; }
+pre { font-family:'Courier New',monospace; font-size:6.2pt; background:#f1f5f9; color:#1e293b; border:1px solid #cbd5e1; padding:1px 2px; border-radius:2px; margin:1px 0; white-space:pre-wrap; word-break:break-all; line-height:1.2; overflow:hidden; }
+code { font-family:'Courier New',monospace; font-size:6.5pt; background:rgba(0,0,0,.09); padding:0 2px; border-radius:2px; }
+.kw { color:#1d4ed8; }
+.cm { color:#15803d; }
+.st { color:#a16207; }
+.va { color:#be185d; }
+.op { color:#c2410c; }
+.nb { color:#7c3aed; }
+table { width:100%; border-collapse:collapse; font-size:6.4pt; margin:1px 0; }
+th { background:#e5e7eb; font-weight:bold; }
+th, td { border:0.5px solid #cbd5e1; padding:0.5px 2px; text-align:left; }
+.qa { font-size:6.6pt; margin:1px 0; }
+.q { color:#6d28d9; font-weight:bold; }
+.a { color:#14532d; margin-left:6px; }
+.eg { font-style:italic; color:#0369a1; margin-left:6px; font-size:6.5pt; }
+.warn { background:#fef2f2; border:1px solid #ef4444; padding:1px 2px; border-radius:2px; font-size:6.5pt; margin:1px 0; }
+.tip { background:#f0fdf4; border:1px solid #22c55e; padding:1px 2px; border-radius:2px; font-size:6.5pt; margin:1px 0; }
+ul { margin-left:8px; }
+li { list-style-type:'▸ '; margin:0; }
+hr.d { border:none; border-top:1px dashed #94a3b8; margin:1px 0; }
+.star { color:#b91c1c; font-weight:bold; }
+b { font-weight:bold; }
+.pr { color:#6b7280; font-size:5.5pt; }
+</style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1 (FRONT) ==================== -->
+<div class="page">
+<div class="title">CITS3403/5505 – Ch04: Cascading Style Sheets (CSS) Cheatsheet 考试速查表 <small>Pages 1–45 | Front 正面</small></div>
+
+<!-- ====== COL 1 ====== -->
+<div class="col">
+
+<div class="box blue">
+<h1>★★ What is CSS 什么是CSS <span class="pr">P3</span></h1>
+CSS = Cascading Style Sheets 层叠样式表<br>
+▸ Stylesheet language for the web 网页样式语言<br>
+▸ Specifies presentation (layout &amp; style) of markup 指定标记语言的展示<br>
+▸ Applied to HTML and any XML 可应用于HTML和XML<br>
+▸ Superseded HTML attrs mixing presentation with content 取代了混合表现与内容的HTML属性
+</div>
+
+<div class="box blue">
+<h1>Advantages of CSS CSS优势 <span class="pr">P4</span></h1>
+<b>1. Speed</b>: Stylesheet downloaded once 样式表只需下载一次<br>
+<b>2. Maintainability</b>: Centrally maintained 集中维护<br>
+<b>3. Accessibility</b>: Semantic HTML+CSS for assistive tech 语义化+辅助技术<br>
+<b>4. Portability</b>: Consistent across devices 跨设备一致<br>
+<b>5. Reduced work</b>: No per-element styling 无需逐个设定<br>
+<b>6. Consistency</b>: Uniform look and feel 统一外观
+</div>
+
+<div class="box green">
+<h1>★★ Three Levels 三个层级 <span class="pr">P6</span></h1>
+<table>
+<tr><th>Level 层级</th><th>Scope 范围</th><th>Location 位置</th></tr>
+<tr><td><b>Inline 内联</b></td><td>Single tag 单标签</td><td><code>style="…"</code></td></tr>
+<tr><td><b>Document 文档</b></td><td>Whole doc 整页</td><td><code>&lt;style&gt;</code> in <code>&lt;head&gt;</code></td></tr>
+<tr><td><b>External 外部</b></td><td>Multi docs 多页</td><td><code>&lt;link&gt;</code> in <code>&lt;head&gt;</code></td></tr>
+</table>
+<div class="eg">"Cascading" = styles cascade from multiple sources! 层叠=多来源样式叠加</div>
+</div>
+
+<div class="box yellow">
+<h2>Inline Styles 内联样式 <span class="pr">P7</span></h2>
+<pre>&lt;p <span class="va">style</span>=<span class="st">"color:yellow; background:purple"</span>&gt;
+  I have impeccable style.
+&lt;/p&gt;</pre>
+<div class="warn">⚠ Defeats purpose of stylesheets! 违背样式表初衷！Only for debugging 仅用于调试</div>
+</div>
+
+<div class="box yellow">
+<h2>Document Styles 文档样式 <span class="pr">P8</span></h2>
+<pre>&lt;head&gt;&lt;style&gt;
+  <span class="kw">selector</span> {         <span class="cm">/* 选择器 */</span>
+    <span class="va">property</span>:<span class="st">value</span>; <span class="cm">/* 属性:值 */</span>
+  }
+&lt;/style&gt;&lt;/head&gt;</pre>
+</div>
+
+<div class="box yellow">
+<h2>External Styles 外部样式 <span class="pr">P9</span></h2>
+<pre>&lt;head&gt;
+  &lt;<span class="kw">link</span> <span class="va">rel</span>=<span class="st">"stylesheet"</span>
+    <span class="va">type</span>=<span class="st">"text/css"</span>
+    <span class="va">href</span>=<span class="st">"style.css"</span>&gt;&lt;/link&gt;
+&lt;/head&gt;</pre>
+Format same as &lt;style&gt; contents 格式与style内容相同
+</div>
+
+<div class="box purple">
+<h2 class="p">★★ Selector Details 选择器详解 <span class="pr">P13–19</span></h2>
+<b><code>*</code> Universal 通配</b> <span class="pr">P13</span>: ALL elements 所有元素<br>
+<b><code>p</code> Element 元素</b> <span class="pr">P14</span>: Specific tag type 特定标签<br>
+<b><code>[attr=val]</code> Attribute 属性</b> <span class="pr">P15</span>: Elements with attribute; value optional 含属性的元素;值可省<br>
+<b><code>.cls</code> Class 类</b> <span class="pr">P16</span>: Via <code>class</code> attr, can be on many tags 通过class,可用于多标签<br>
+<b><code>#id</code> ID</b> <span class="pr">P17</span>: Unique element via <code>id</code> attr (must be unique) 唯一元素<br>
+<b><code>:state</code> Pseudo-class 伪类</b> <span class="pr">P18</span>: By state (hover, focus, valid, visited) 按状态<br>
+<b><code>::part</code> Pseudo-element 伪元素</b> <span class="pr">P19</span>: Part of element (first-line, first-letter) 元素的一部分
+</div>
+
+<div class="box purple">
+<h2 class="p">Q&amp;A 练习 <span class="pr">P6–19</span></h2>
+<div class="qa"><div class="q">Q: Which CSS level has narrowest scope? 哪个层级范围最窄？</div>
+<div class="a">A: Inline — single tag only. 内联——仅单个标签</div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q: <code>:hover</code> vs <code>::first-letter</code>?</div>
+<div class="a">A: <code>:hover</code> = pseudo-class (state); <code>::first-letter</code> = pseudo-element (part). 伪类(状态) vs 伪元素(部分)</div></div>
+</div>
+
+</div><!-- end col 1 -->
+
+<!-- ====== COL 2 ====== -->
+<div class="col">
+
+<div class="box blue">
+<h1>★★ CSS Selectors 选择器 <span class="pr">P10–24</span></h1>
+<h2>Basic Selectors 基本选择器 <span class="pr">P11</span></h2>
+<table>
+<tr><th>Selector 选择器</th><th>Syntax</th><th>Example</th></tr>
+<tr><td>Universal 通配</td><td><code>*</code></td><td><code>* {color:red}</code></td></tr>
+<tr><td>Element 元素</td><td><code>elem</code></td><td><code>p {…}</code></td></tr>
+<tr><td>Attribute 属性</td><td><code>[attr=v]</code></td><td><code>[title="x"]{…}</code></td></tr>
+<tr><td>Class 类</td><td><code>.class</code></td><td><code>.important{…}</code></td></tr>
+<tr><td>ID</td><td><code>#id</code></td><td><code>#heading1{…}</code></td></tr>
+<tr><td>Pseudo-class 伪类</td><td><code>:state</code></td><td><code>p:hover{…}</code></td></tr>
+<tr><td>Pseudo-elem 伪元素</td><td><code>::part</code></td><td><code>p::first-letter</code></td></tr>
+</table>
+</div>
+
+<div class="box green">
+<h2 class="g">★★ Combinator Selectors 组合选择器 <span class="pr">P20–24</span></h2>
+<table>
+<tr><th>Combinator</th><th>Syntax</th><th>Meaning 含义</th></tr>
+<tr><td>Group 分组</td><td><code>s1, s2</code></td><td>OR: s1 or s2 匹配s1或s2</td></tr>
+<tr><td>Descendant 后代</td><td><code>s1 s2</code></td><td>s2 inside s1 (any depth) 任意深度</td></tr>
+<tr><td>Direct child 子代</td><td><code>s1 &gt; s2</code></td><td>s2 directly under s1 直接子</td></tr>
+<tr><td>Sibling 兄弟</td><td><code>s1 ~ s2</code></td><td>s2 after s1, same parent 同父后续</td></tr>
+<tr><td>Adjacent 相邻</td><td><code>s1 + s2</code></td><td>s2 immediately after s1 紧邻</td></tr>
+</table>
+</div>
+
+<div class="box orange">
+<h2>★★ Combinator Examples 组合示例 <span class="pr">P20–24</span></h2>
+<pre><span class="cm">/* 分组: h2和b都变红 */</span>
+<span class="kw">h2, b</span> {<span class="va">color</span>:<span class="st">red</span>}
+<span class="cm">/* 后代: p内所有b (任意深度) */</span>
+<span class="kw">p b</span> {<span class="va">color</span>:<span class="st">red</span>}
+<span class="cm">/* 直接子代: p的直接子b (仅一层) */</span>
+<span class="kw">p&gt;b</span> {<span class="va">color</span>:<span class="st">red</span>}
+<span class="cm">/* 兄弟: h1后所有h2 */</span>
+<span class="kw">h1~h2</span> {<span class="va">color</span>:<span class="st">red</span>}
+<span class="cm">/* 相邻: 紧跟h1的h2 */</span>
+<span class="kw">h1+h2</span> {<span class="va">color</span>:<span class="st">red</span>}</pre>
+</div>
+
+<div class="box orange">
+<h2>★ Descendant vs Direct Child <span class="pr">P21–22</span></h2>
+<pre><span class="cm">/* &lt;p&gt;&lt;span&gt;&lt;b&gt;X&lt;/b&gt;&lt;/span&gt;&lt;b&gt;Y&lt;/b&gt;&lt;/p&gt; */</span>
+<span class="kw">p b</span>   → X AND Y <span class="cm">/* 后代:任意深度 */</span>
+<span class="kw">p&gt;b</span>  → only Y  <span class="cm">/* 子代:仅一层 */</span></pre>
+<div class="tip">💡 Descendant = any depth; Direct child = one level only 后代=任意深度; 子代=仅一层</div>
+</div>
+
+<div class="box red">
+<h1>★★ Conflict Resolution 冲突解决 <span class="pr">P25–28</span></h1>
+<b>Three sources 三种来源:</b><br>
+▸ <b>User agent</b>: browser defaults 浏览器默认<br>
+▸ <b>Author</b>: developer's CSS 开发者样式<br>
+▸ <b>User</b>: user browser settings 用户设置<br>
+<code>!important</code> can override priority 可覆盖优先级
+</div>
+
+<div class="box red">
+<h2 class="r">★★ Precedence Rules 优先级规则 <span class="pr">P26</span></h2>
+<b>Step 1: Origin &amp; Importance 来源与重要性</b> (high→low):<br>
+Transition → !important user-agent → !important user → !important author → normal author → normal user → normal user-agent<br><br>
+<b>Step 2: Specificity 特异性</b> (if tied):<br>
+▸ Inline > stylesheet 内联 > 样式表<br>
+▸ Count: IDs → classes/attrs/pseudo-classes → types/pseudo-elements<br><br>
+<b>Step 3: Order 顺序</b>: Last rule wins 后写的胜出
+</div>
+
+<div class="box red">
+<h2 class="r">★★ Specificity Example 特异性示例 <span class="pr">P27–28</span></h2>
+<pre><span class="cm">/* 对 &lt;p id="para" class="paragraph"&gt; */</span>
+<span class="kw">p</span>          {color:<span class="st">yellow</span>} <span class="cm">/* 0-0-1 */</span>
+<span class="kw">.paragraph</span> {color:<span class="st">red</span>}    <span class="cm">/* 0-1-0 */</span>
+<span class="kw">#para</span>      {color:<span class="st">pink</span>}   <span class="cm">/* 1-0-0 */</span>
+<span class="cm">/* Result: pink (ID wins) */</span>
+
+<span class="cm">/* 加 !important → yellow wins! */</span>
+<span class="kw">p</span> {color:<span class="st">yellow</span><span class="op">!important</span>}
+<span class="cm">/* Beats inline! 甚至胜过内联 */</span></pre>
+</div>
+
+<div class="box gray">
+<h2>★ Specificity Calculator 特异性计算 <span class="pr">P26</span></h2>
+<table>
+<tr><th>Selector</th><th>IDs</th><th>Cls</th><th>Elem</th><th>Spec</th></tr>
+<tr><td><code>*</code></td><td>0</td><td>0</td><td>0</td><td>0-0-0</td></tr>
+<tr><td><code>p</code></td><td>0</td><td>0</td><td>1</td><td>0-0-1</td></tr>
+<tr><td><code>.cls</code></td><td>0</td><td>1</td><td>0</td><td>0-1-0</td></tr>
+<tr><td><code>#id</code></td><td>1</td><td>0</td><td>0</td><td>1-0-0</td></tr>
+<tr><td><code>p.cls</code></td><td>0</td><td>1</td><td>1</td><td>0-1-1</td></tr>
+<tr><td><code>#id .c p</code></td><td>1</td><td>1</td><td>1</td><td>1-1-1</td></tr>
+<tr><td><code>style="…"</code></td><td colspan="4">Beats all selectors 胜过所有选择器</td></tr>
+<tr><td><code>!important</code></td><td colspan="4">Beats everything 胜过一切(含inline)</td></tr>
+</table>
+</div>
+
+</div><!-- end col 2 -->
+
+<!-- ====== COL 3 ====== -->
+<div class="col">
+
+<div class="box blue">
+<h1>CSS Properties 属性 <span class="pr">P29–34</span></h1>
+<h2>Property Groups 属性分组 <span class="pr">P30</span></h2>
+Covered 本章涵盖: text文本, background背景, borders边框, box model盒模型, colors颜色, tables表格, lists列表<br>
+Full list: Color, Background/Borders, Basic/Flexible Box, Text, Text Decoration, Fonts, Writing Modes, Table, Lists/Counters, Animation, Transform, Transition, Multi-column, Filter Effects, etc.
+</div>
+
+<div class="box green">
+<h2 class="g">★ Font Properties 字体属性 <span class="pr">P31</span></h2>
+<table>
+<tr><th>Property</th><th>Values 值</th></tr>
+<tr><td><code>font-size</code></td><td>number / <code>smaller</code>, <code>xx-large</code>…</td></tr>
+<tr><td><code>font-style</code></td><td><code>italic</code>, <code>normal</code></td></tr>
+<tr><td><code>font-weight</code></td><td><code>bold</code>, <code>bolder</code>, <code>lighter</code>, <code>normal</code>, 100–900</td></tr>
+<tr><td><code>text-decoration</code></td><td><code>line-through</code>, <code>overline</code>, <code>underline</code>, <code>none</code></td></tr>
+<tr><td><code>letter-spacing</code></td><td>any number</td></tr>
+</table>
+<pre><span class="cm">/* font shorthand 简写 */</span>
+<span class="cm">/* Order: style, weight, size, name(s) */</span>
+<span class="va">font</span>: <span class="st">bolder 14pt Arial Helvetica</span>;</pre>
+</div>
+
+<div class="box green">
+<h2 class="g">★ Text Alignment 文本对齐 <span class="pr">P32</span></h2>
+<code>text-indent</code>: length or % 缩进<br>
+<code>text-align</code>: <code>left</code>(default) | <code>center</code> | <code>right</code> | <code>justify</code><br>
+<code>float</code>: <code>none</code>(default) | <code>left</code> | <code>right</code> — text wraps around element 文本环绕元素
+<pre>&lt;img src=<span class="st">"pic.jpg"</span>
+  style=<span class="st">"float:right"</span>/&gt;
+<span class="cm">&lt;!-- 图片右浮动,文本在左侧环绕 --&gt;</span></pre>
+</div>
+
+<div class="box yellow">
+<h2>List Properties 列表属性 <span class="pr">P33</span></h2>
+<code>list-style-type</code> sets marker 设置标记类型:<br>
+▸ Unordered无序: <code>disc</code>, <code>square</code>, <code>circle</code>, <code>none</code><br>
+▸ Ordered有序: <code>decimal</code>, <code>upper-alpha</code>, <code>upper-roman</code><br>
+Set on <code>&lt;ul&gt;</code>/<code>&lt;ol&gt;</code> (all items) or individual <code>&lt;li&gt;</code>
+<pre>&lt;ul style=<span class="st">"list-style-type:square"</span>&gt;
+  &lt;li&gt;Item&lt;/li&gt; <span class="cm">/* ■ Item */</span>
+&lt;/ul&gt;
+&lt;ol&gt;&lt;li style=<span class="st">"list-style-type:upper-roman"</span>&gt;
+  Item&lt;/li&gt;&lt;/ol&gt; <span class="cm">/* II. Item */</span></pre>
+</div>
+
+<div class="box yellow">
+<h2>★ Colours 颜色 <span class="pr">P34</span></h2>
+<code>color</code>: foreground colour 前景色<br>
+<b>Three ways 三种方式:</b><br>
+▸ 16 basic names: black, white, red, blue, green, yellow…<br>
+▸ 140 named colours (all browsers) 命名色<br>
+▸ Hex: <code>#RRGGBB</code> (16M+ colours)
+<table>
+<tr><th>Name</th><th>Hex</th><th>Name</th><th>Hex</th></tr>
+<tr><td>black</td><td>#000000</td><td>white</td><td>#FFFFFF</td></tr>
+<tr><td>red</td><td>#FF0000</td><td>blue</td><td>#0000FF</td></tr>
+<tr><td>green</td><td>#008000</td><td>yellow</td><td>#FFFF00</td></tr>
+<tr><td>navy</td><td>#000080</td><td>aqua</td><td>#00FFFF</td></tr>
+</table>
+</div>
+
+<div class="box blue">
+<h1>★★ CSS Layout 布局 <span class="pr">P35–41</span></h1>
+<h2>The Box Model 盒模型 <span class="pr">P36–38</span></h2>
+Every element = 4 nested boxes 每个元素=4层嵌套盒子:
+<pre>┌────── Margin 外边距 ──────┐
+│ ┌──── Border 边框 ────┐   │
+│ │ ┌── Padding 内边距──┐│   │
+│ │ │  Content 内容    ││   │
+│ │ └──────────────────┘│   │
+│ └─────────────────────┘   │
+└───────────────────────────┘</pre>
+★ <b>width/height</b> = content area ONLY! 仅内容区!<br>
+★ <b>Total width</b> = content + padding×2 + border×2<br>
+Margin affects spacing but NOT element size 外边距不算入元素尺寸
+</div>
+
+<div class="box green">
+<h2 class="g">★ Margin, Border &amp; Padding <span class="pr">P37–38</span></h2>
+<b>Margin 外边距</b>: outside border, always transparent 边框外,始终透明<br>
+▸ <code>margin</code>, <code>margin-top/right/bottom/left</code><br>
+<b>Border 边框</b>:<br>
+▸ <code>border-style</code>: <code>none</code>|<code>dotted</code>|<code>dashed</code>|<code>solid</code>…<br>
+▸ <code>border-width</code>: <code>thin</code>|<code>medium</code>|<code>thick</code>|px<br>
+▸ <code>border-color</code>: any colour<br>
+<b>Padding 内边距</b>: between border &amp; content 边框与内容间<br>
+▸ <code>padding</code>, <code>padding-top/right/bottom/left</code>
+</div>
+
+</div><!-- end col 3 -->
+
+<!-- ====== COL 4 ====== -->
+<div class="col">
+
+<div class="box orange">
+<h2>★★ Document Flow 文档流 <span class="pr">P39</span></h2>
+Default: <b>normal flow</b> — elements stacked vertically 默认正常流:元素垂直堆叠<br>
+<b>Three ways to override 三种覆盖方式:</b><br>
+<b>1. <code>float</code></b> <span class="pr">P39</span>: <code>none</code>|<code>left</code>|<code>right</code>|<code>inherit</code><br>
+Element shifts to side; text wraps 移到一侧,文本环绕
+</div>
+
+<div class="box orange">
+<h2>★★ Position Property 定位 <span class="pr">P40</span></h2>
+Offset props 偏移: <code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code>
+<table>
+<tr><th>Value</th><th>Behavior 行为</th></tr>
+<tr><td><code>static</code></td><td>Default, normal flow 默认正常流</td></tr>
+<tr><td><code>relative</code></td><td>Offset from normal pos, stays in flow 偏移但保留占位</td></tr>
+<tr><td><code>absolute</code></td><td>Offset from positioned ancestor, removed from flow 相对定位祖先,脱离流</td></tr>
+<tr><td><code>fixed</code></td><td>Offset from viewport, removed from flow 相对视口固定,脱离流</td></tr>
+<tr><td><code>sticky</code></td><td>Switches relative↔fixed on scroll 滚动时切换</td></tr>
+</table>
+</div>
+
+<div class="box gray">
+<h2>Display &amp; Frameworks <span class="pr">P41</span></h2>
+<b>3. <code>display</code></b>: how element treated in flow<br>
+Values: <code>block</code>, <code>inline</code>, <code>flex</code>, <code>grid</code>, <code>inline-flex</code>… (~20 values)<br>
+<div class="warn">⚠ Manual CSS layout is hard! Use a <b>CSS framework</b> (e.g. Bootstrap) 手动布局难！用框架更好</div>
+</div>
+
+<div class="box gray">
+<h2>Vendor Prefixes 厂商前缀 <span class="pr">P43</span></h2>
+<table>
+<tr><th>Engine</th><th>Prefix</th></tr>
+<tr><td>WebKit (Safari)</td><td><code>-webkit-</code></td></tr>
+<tr><td>Mozilla (Firefox)</td><td><code>-moz-</code></td></tr>
+<tr><td>Opera</td><td><code>-o-</code></td></tr>
+<tr><td>Microsoft (IE/Edge)</td><td><code>-ms-</code></td></tr>
+<tr><td>Chrome</td><td><code>-chrome-</code></td></tr>
+</table>
+<pre><span class="kw">.foo</span> {
+  <span class="va">-webkit-border-radius</span>:<span class="st">10px</span>;
+  <span class="va">-moz-border-radius</span>:<span class="st">10px</span>;
+  <span class="va">border-radius</span>:<span class="st">10px</span>; <span class="cm">/* 标准 */</span>
+}</pre>
+For new features before standardization 正式标准化前的新特性
+</div>
+
+<div class="box gray">
+<h2>Validating CSS 验证 <span class="pr">P44</span></h2>
+W3C CSS Validation Service: validate by URI / file upload / direct input W3C验证:通过URI/上传/直接输入
+</div>
+
+<div class="box purple">
+<h2 class="p">★★ Exam Q&amp;A 综合练习</h2>
+<div class="qa"><div class="q">Q1: <code>&lt;p id="x" class="y" style="color:green"&gt;</code> with <code>#x{color:red}</code> <code>.y{color:blue}</code> — what color?</div>
+<div class="a">A: Green. Inline > #id > .class 内联最高(无!important时)</div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q2: <code>p &gt; b</code> vs <code>p b</code>?</div>
+<div class="a">A: <code>p&gt;b</code> = direct child only; <code>p b</code> = any depth 直接子代 vs 任意后代</div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q3: width:200px, padding:10px, border:5px — total width?</div>
+<div class="a">A: 200+10×2+5×2 = <b>230px</b>. Margin不算入!</div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q4: <code>h1~h2</code> vs <code>h1+h2</code>?</div>
+<div class="a">A: <code>~</code> = ALL sibling h2 after h1; <code>+</code> = ONLY immediately next h2 全部 vs 紧邻</div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q5: Which position value removes element from flow but offsets from viewport?</div>
+<div class="a">A: <code>fixed</code>. 固定定位:相对视口,脱离文档流</div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q6: CSS rule with <code>!important</code> on element selector beats inline style?</div>
+<div class="a">A: Yes! <code>!important</code> beats inline styles. !important胜过内联样式</div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q7: Specificity of <code>#nav .item p</code>?</div>
+<div class="a">A: 1 ID + 1 class + 1 element = <b>1-1-1</b></div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q8: <code>position:relative</code> vs <code>absolute</code>?</div>
+<div class="a">A: <code>relative</code>: offset from normal pos, stays in flow 偏移但保留占位; <code>absolute</code>: offset from positioned ancestor, removed from flow 相对祖先,脱离流</div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q9: What does <code>float:right</code> do?</div>
+<div class="a">A: Element moves to right side, text wraps on left 元素移到右侧,文本在左环绕</div></div>
+<hr class="d">
+<div class="qa"><div class="q">Q10: 3 advantages of external stylesheets?</div>
+<div class="a">A: Speed(download once), Maintainability(central), Consistency(uniform look) 速度/可维护/一致性</div></div>
+</div>
+
+<div class="box blue">
+<h2>★ Key Formulas 关键公式</h2>
+<b>Box total width 盒子总宽:</b><br>
+<code>total = content + padding-L + padding-R + border-L + border-R</code><br>
+<b>Specificity 特异性:</b><br>
+<code>(IDs)-(Classes/Attrs/PseudoCls)-(Elements/PseudoElem)</code><br>
+<b>Priority 优先级:</b><br>
+<code>!important > inline > #id > .class > element > *</code>
+</div>
+
+</div><!-- end col 4 -->
+</div><!-- end page 1 -->
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- 不使用Bootstrap的纯HTML页面 | Pure HTML page without Bootstrap -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">                  <!-- 字符编码 | Character encoding -->
+  <meta name="viewport"
+        content="width=device-width,
+                 initial-scale=1">        <!-- 视口设置 | Viewport setting -->
+  <title>Without Bootstrap</title>        <!-- 页面标题 | Page title -->
+  <link rel="stylesheet"
+        href="style.css">                 <!-- 引入外部CSS | Link external CSS -->
+</head>
+<body>
+
+  <!-- 导航栏 | Navigation bar -->
+  <nav class="navbar">
+    <span class="brand">MyWebsite</span>  <!-- 网站名称 | Site brand -->
+    <ul class="nav-links">                <!-- 导航链接列表 | Nav link list -->
+      <li><a href="#">Home</a></li>       <!-- 主页链接 | Home link -->
+      <li><a href="#">About</a></li>      <!-- 关于链接 | About link -->
+      <li><a href="#">Contact</a></li>    <!-- 联系链接 | Contact link -->
+    </ul>
+  </nav>
+
+  <!-- 主容器 | Main container -->
+  <div class="container">
+
+    <!-- 大标题横幅区 | Hero banner section -->
+    <div class="hero">
+      <h1>Welcome to My Page</h1>         <!-- 主标题 | Main heading -->
+      <p>This is built with plain HTML and CSS only.</p>
+      <!-- 说明文字：仅用纯HTML和CSS构建 | Description text -->
+      <button class="btn-primary">
+        Get Started                        <!-- 主按钮 | Primary button -->
+      </button>
+    </div>
+
+    <!-- 三列网格 | Three-column grid -->
+    <div class="grid-3">
+      <div class="card">                  <!-- 卡片1 | Card 1 -->
+        <h3>Column 1</h3>
+        <p>Some content here. 一些内容。</p>
+      </div>
+      <div class="card">                  <!-- 卡片2 | Card 2 -->
+        <h3>Column 2</h3>
+        <p>Some content here. 一些内容。</p>
+      </div>
+      <div class="card">                  <!-- 卡片3 | Card 3 -->
+        <h3>Column 3</h3>
+        <p>Some content here. 一些内容。</p>
+      </div>
+    </div>
+
+    <!-- 数据表格 | Data table -->
+    <table class="my-table">
+      <thead>
+        <tr>
+          <th>First Name 姓</th>          <!-- 表头：姓 | Header: First name -->
+          <th>Last Name 名</th>           <!-- 表头：名 | Header: Last name -->
+          <th>Email 邮箱</th>             <!-- 表头：邮箱 | Header: Email -->
+          <th>Status 状态</th>            <!-- 表头：状态 | Header: Status -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr>                              <!-- 默认行 | Default row -->
+          <td>Alice</td>
+          <td>Smith</td>
+          <td>alice@example.com</td>
+          <td>Active</td>
+        </tr>
+        <tr class="row-danger">           <!-- 危险行（需手动写CSS） | Danger row (manual CSS needed) -->
+          <td>Bob</td>
+          <td>Jones</td>
+          <td>bob@example.com</td>
+          <td>Failed</td>
+        </tr>
+        <tr class="row-success">          <!-- 成功行（需手动写CSS） | Success row (manual CSS needed) -->
+          <td>Carol</td>
+          <td>Lee</td>
+          <td>carol@example.com</td>
+          <td>Success</td>
+        </tr>
+        <tr class="row-warning">          <!-- 警告行（需手动写CSS） | Warning row (manual CSS needed) -->
+          <td>Dave</td>
+          <td>Kim</td>
+          <td>dave@example.com</td>
+          <td>Pending</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div><!-- /container -->
+
+</body>
+</html>

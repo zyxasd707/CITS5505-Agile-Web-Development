@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Ch06 Core JavaScript — A3 Cheatsheet</title>
+<style>
+@page { size: A3 landscape; margin: 3mm; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; font-size:4.8pt; line-height:1.1; color:#111; column-count:6; column-gap:3px; padding:2mm; }
+
+body {
+  column-count: 3 !important;
+}
+h1 { font-size:7.5pt; text-align:center; column-span:all; margin-bottom:0.5px; color:#003; border-bottom:1.5px solid #003; padding-bottom:0.5px; }
+h1 small { font-size:5pt; color:#555; font-weight:normal; }
+h2 { font-size:5.2pt; color:#fff; background:#003366; padding:0.3px 2px; margin:1px 0 0.3px 0; break-after:avoid; border-radius:1px; }
+h3 { font-size:4.9pt; color:#003366; border-bottom:0.4px solid #aaa; margin:0.6px 0 0.2px 0; break-after:avoid; }
+h4 { font-size:4.8pt; color:#c00; margin:0.4px 0 0.2px 0; break-after:avoid; font-weight:700; }
+p { margin-bottom:0.2px; }
+ul { padding-left:6px; margin-bottom:0.2px; }
+li { list-style-type:'• '; margin-bottom:0; }
+code { font-family:Consolas,monospace; font-size:4.2pt; background:#eef; padding:0 0.5px; }
+pre { font-family:Consolas,monospace; font-size:4pt; background:#f5f5fa; padding:0.5px 2px; margin:0.2px 0 0.5px 0; border-left:1.5px solid #036; white-space:pre-wrap; word-break:break-all; line-height:1.08; }
+table { width:100%; border-collapse:collapse; margin:0.2px 0 0.5px 0; font-size:4.2pt; }
+th { background:#dde4ed; text-align:left; padding:0.2px 1px; font-weight:bold; border:0.3px solid #bbb; }
+td { padding:0.2px 1px; border:0.3px solid #ccc; vertical-align:top; }
+.k { color:#c00; font-weight:bold; }
+.w { background:#fde8e8; border-left:1.5px solid #c00; padding:0.2px 1.5px; margin:0.2px 0; font-size:4.5pt; }
+.n { background:#fffde7; border-left:1.5px solid #f5a623; padding:0.2px 1.5px; margin:0.2px 0; font-size:4.5pt; }
+.g { background:#e8fde8; border-left:1.5px solid #090; padding:0.2px 1.5px; margin:0.2px 0; font-size:4.5pt; }
+.qa { background:#f0f0ff; border:0.3px solid #99a; border-radius:2px; padding:0.5px 1.5px; margin:0.2px 0; }
+.section { break-inside:avoid; margin-bottom:0.5px; }
+</style>
+</head>
+<body>
+
+<h1>Core JavaScript Cheatsheet — CITS3403/5505 Ch06 (P1–64, 共64页全覆盖)
+<br><small>A3 Cheatsheet | ★★=核心考点 | 🧠=典型考题 | ⚠=易错陷阱 | 所有代码均有中英注释</small></h1>
+
+<!-- ===== 1 ===== -->
+<div class="section">
+<h2>1. JS简介 What is JS (P2–5)</h2>
+<ul>
+<li><b>ECMAScript</b>标准; 高级/动态/无类型/解释型; <b>原型式prototype-based</b>; 函数一等公民</li>
+<li>三组件: Core JS / Client-side JS / Server-side JS (P2)</li>
+<li><b>事件驱动Event-driven</b>: 用户操作=event, JS=响应事件 (P4)</li>
+<li>环境: ①浏览器(HTML+browser) ②Node.js(本课不用) (P5)</li>
+</ul>
+<div class="w">⚠ 关键验证必须服务器端! 客户端验证可被绕过(P4)</div>
+</div>
+
+<!-- ===== 2 ===== -->
+<div class="section">
+<h2>2. 浏览器中JS (P6–9)</h2>
+<p><b>引入(P7):</b> ①<code>onclick=""</code>内联 ②<code>&lt;script&gt;</code>内嵌 ③<code>&lt;script src=""&gt;</code>外部</p>
+<p><b>调试(P8):</b> DevTools Sources/Console/Breakpoints</p>
+<p><b>IO(P9):</b> <code>console.log()</code>调试✓; <code>alert()</code>弹窗; <code>confirm()</code>→T/F; <code>prompt()</code>→字符串/null</p>
+<div class="w">⚠ <code>document.write()</code>不推荐(P9)</div>
+</div>
+
+<!-- ===== 3 ===== -->
+<div class="section">
+<h2>3. 变量&语法 Variables (P11–13)</h2>
+<p>命名: <code>$/_</code>/字母开头, 大小写敏感, camelCase (P11)</p>
+<pre>let z = x+y;       // 块级,可变 ✓默认
+const x = 6;       // 块级,不可变 ✓✓优先
+var stop = true;    // 函数级 ✗避免
+zz = z;             // 全局! ✗✗坏</pre>
+<div class="n">const不能重赋值，但<b>可修改对象属性</b>: <code>const a={x:1};a.x=2;//✓</code> <code>a={y:3};//✗TypeError</code></div>
+<p>保留字(P12): break/case/class/const/for/function/if/let/return/var/while等</p>
+<p>语法(P13): <code>//</code>单行 <code>/* */</code>多行; <code>;</code>结尾; ASI自动补分号</p>
+<div class="w">⚠ ASI陷阱: <code>return</code>后换行→<code>return;</code>→返回undefined! (P13)</div>
+</div>
+
+<!-- ===== 4 ===== -->
+<div class="section">
+<h2>4. 类型 Types (P14,P21–22)</h2>
+<p><b>原始Primitives:</b> Number,String,Boolean,null,undefined (P14)</p>
+<p><b>对象Objects:</b> Function,Array,Date,Math; 用<code>.</code>访问; 无引用自动GC (P14)</p>
+<p>内存: 原始→值在栈; 对象→栈存引用,堆存数据 (P14 Figure 4.1)</p>
+<p><b>null</b>=故意空值(→0) vs <b>undefined</b>=未声明/未赋值(→NaN) (P21)</p>
+<p><b>动态类型(P22):</b> 同一变量可改类型; <code>typeof</code>返回类型字符串</p>
+<table>
+<tr><td><code>typeof 42</code>→"number"</td><td><code>typeof {}</code>→"object"</td><td><code>typeof null</code>→<span class="k">"object"⚠</span></td></tr>
+<tr><td><code>typeof "s"</code>→"string"</td><td><code>typeof fn</code>→"function"</td><td><code>typeof []</code>→"object"(数组也是!)</td></tr>
+<tr><td><code>typeof true</code>→"boolean"</td><td><code>typeof undef</code>→"undefined"</td><td></td></tr>
+</table>
+</div>
+
+<!-- ===== 5 ===== -->
+<div class="section">
+<h2>5. Number数值 (P15–17)</h2>
+<p>全为<b>64位双精度浮点IEEE754</b>; <code>0.1+0.2≠0.3</code> (P15)</p>
+<p>运算: <code>+ - * / %</code> <code>++ --</code> <code>+= -= *= /= %=</code></p>
+<p>常量(P16): <code>MAX/MIN_VALUE</code> <code>NaN</code> <code>±INFINITY</code> <code>PI</code></p>
+<pre>1/0→Infinity; Math.sin(3.5); parseInt("124")→124
+parseInt("3.99")→3(截断!); parseInt("hello")→NaN</pre>
+<h4>NaN特性(P17)</h4>
+<pre>NaN+5→NaN(传染!); NaN===NaN→false(不等于自己!)
+isNaN(NaN)→true(用这个检测)</pre>
+</div>
+
+<!-- ===== 6 ===== -->
+<div class="section">
+<h2>6. String字符串 (P18–19)</h2>
+<p>Unicode16位; 单双引号无区别; 转义<code>\' \" \\ \n \t</code>; 无char类型 (P18)</p>
+<table>
+<tr><th>方法(P19)</th><th>用途</th><th>方法</th><th>用途</th></tr>
+<tr><td><code>charAt(n)</code></td><td>第n位字符</td><td><code>indexOf(s)</code></td><td>子串位置</td></tr>
+<tr><td><code>substring(a,b)</code></td><td>截取[a,b)</td><td><code>toLowerCase/toUpperCase</code></td><td>大小写</td></tr>
+</table>
+<pre>.length→长度; .toString()→数转串; +"123"→123串转数; "a"+"b"→拼接</pre>
+</div>
+
+<!-- ===== 7 ===== -->
+<div class="section">
+<h2>7. Boolean & null/undefined (P20–21)</h2>
+<p><code>true/false</code>; <code>!</code> <code>&&</code> <code>||</code>; <b>&&和||短路求值</b> (P20)</p>
+<pre>0&&"hi"→0(falsy直接返回); 1&&"hi"→"hi"(truthy返回第二个)
+""||"def"→"def"; "hi"||"def"→"hi"</pre>
+<table>
+<tr><th></th><th>null(P21)</th><th>undefined(P21)</th></tr>
+<tr><td>含义</td><td>故意留空</td><td>未声明/未赋值</td></tr>
+<tr><td>typeof</td><td>"object"⚠</td><td>"undefined"</td></tr>
+<tr><td>→Number</td><td>0</td><td>NaN</td></tr>
+</table>
+</div>
+
+<!-- ===== 8 TYPE COERCION ★★ ===== -->
+<div class="section">
+<h2>8. 隐式类型转换 ★★ (P23–26)</h2>
+<h3>→Number(P23)</h3>
+<p>true→1 false→0; String→数值/NaN; <b>null→0</b>; <b>undefined→NaN</b></p>
+<p>例: <code>4-true→3</code> <code>7*"3"→21</code> <code>4+null→4</code> <code>4+undefined→NaN</code></p>
+<h3>→String(P23)</h3>
+<p>Number→"值" Bool→"true"/"false" null→"null" undefined→"undefined"</p>
+<h3>→Boolean ★★(P24)</h3>
+<div class="w"><b>Falsy(仅5+1个):</b> <code>false 0 "" undefined NaN null</code><br>
+<b>Truthy:</b> 其余一切 <span class="k">包括"0"和"false"和[]和{}!</span></div>
+<pre>// 实用(P24):
+var p=object&&object.getProp(); //安全访问
+let n=otherName||"default";    //默认值
+Number()/String()/Boolean()    //手动转换</pre>
+<h3>== vs === ★★(P25)</h3>
+<pre>"dog"=="dog"→T  1==true→T!   'abc'==['abc']→T!!
+"dog"==="dog"→T 1===true→F   'abc'===['abc']→F</pre>
+<div class="w">⚠ <b>永远用===</b>! ==类型转换→反直觉结果 (P25)</div>
+<h3>经典陷阱(P26)</h3>
+<pre>2-"1"→1(数学) 2+"1"→"21"(拼接!) ← +号两义性!
+"b"+"a"+ +"a"+"a"→"baNaNa"  ← +"a"=NaN
+''==0→T  0=='0'→T  ''=='0'→F ← ==非传递!</pre>
+<div class="qa">
+<b>🧠 考题:</b> <code>"5"+3→"53"</code> <code>"5"-3→2</code> <code>true+true→2</code> <code>Boolean("0")→true!</code> <code>typeof NaN→"number"!</code>
+</div>
+</div>
+
+<!-- ===== 9 ===== -->
+<div class="section">
+<h2>9. 控制结构 (P27–28)</h2>
+<pre>for(let i=0;i&lt;n;i++){...}        //for(P27)
+for(let x in obj){obj[x];}       //for-in遍历属性(P27)
+while(cond){...}                   //while(P27)
+if(a){..}else if(b){..}else{..}  //条件(P28)
+switch(v){case 1:..break;default:..} //switch(P28)
+let r=cond ? valT : valF;        //三元(P28)</pre>
+<div class="w">⚠ switch忘写break→穿透执行下个case! (P28)<br>
+⚠ for...in遍历的是key(字符串索引),不是value!</div>
+</div>
+
+<!-- ===== 10 ===== -->
+<div class="section">
+<h2>10. 数组 Arrays (P29–34)</h2>
+<p>索引从0; length=最高索引+1; 可混合类型; 大小可变 (P30)</p>
+<pre>Array(10)→空len=10; Array()→空len=0 //⚠行为不一致(P31)
+Array(10,2,"hi")→[10,2,"hi"]
+a[99]="x"→len自动100; a[50]→undefined不报错!(P32)</pre>
+<h3>方法★(P33)</h3>
+<table>
+<tr><td><code>push/pop</code></td><td>末尾加/删</td><td><code>unshift/shift</code></td><td>头部加/删</td></tr>
+<tr><td><code>join</code></td><td>→字符串</td><td><code>reverse</code></td><td>反转⚠改原</td></tr>
+<tr><td><code>sort(fn?)</code></td><td>排序⚠改原</td><td><code>concat</code></td><td>连接→新</td></tr>
+<tr><td><code>slice(a,b)</code></td><td>截取→新</td><td><code>splice(i,n,..)</code></td><td>插入⚠改原</td></tr>
+<tr><td><code>delete a[i]</code></td><td>→undef</td><td colspan="2">length不变!</td></tr>
+</table>
+<div class="w">⚠ <code>sort()默认按字符串!</code> [10,9,80,3].sort()→[10,3,80,9]<br>
+正确: <code>.sort((a,b)=>a-b)</code>升序 <code>.sort((a,b)=>b-a)</code>降序</div>
+<p>关联数组(P34): 字符串索引=Object, 无push/pop, .length=0</p>
+</div>
+
+<!-- ===== 11 FUNCTIONS ★ ===== -->
+<div class="section">
+<h2>11. 函数 Functions ★ (P35–42)</h2>
+<pre>function name(p1,p2){return r;} //须先定义(P36)</pre>
+<h3>Call by Value vs Sharing ★★(P37)</h3>
+<div class="g"><b>原始: Call by Value</b> 传副本, 修改不影响外部</div>
+<div class="w"><b>对象: Call by Sharing</b> 传引用副本, push等修改原对象✓, 重赋值不影响✗</div>
+<pre>function run(x){x+=1;return x;}
+let u=1,v=run(u); // u=1,v=2(值传递)
+
+function setOut(p1){
+  p1.push("Ivan");  // ✓修改原数组!
+  p1=newArr;        // ✗重赋值不影响外部!
+}</pre>
+<div class="qa"><b>🧠</b> <code>function f(obj,n){obj.v=99;n=99;}</code> <code>let o={v:1},n=1;f(o,n);</code> → <code>o.v=99, n=1</code></div>
+<h3>参数(P38–39)</h3>
+<p>无类型; 少传→undefined; 多传→arguments获取全部; 形参formal vs 实参actual</p>
+<pre>function findMax(){let m=-Infinity;
+  for(let i=0;i&lt;arguments.length;i++)
+    if(arguments[i]>m) m=arguments[i];
+  return m;}
+findMax(4,5,6); //6 (P39)</pre>
+<h3>一等公民(P40) / 匿名&箭头(P41) / 递归(P42)</h3>
+<pre>let fn=announce;   //不加()→赋值函数本身
+let msg=announce();//加()→调用,赋值返回值
+String(fn);        //→函数源代码文本(P40)
+
+arr.sort(function(a,b){return b-a;}); //匿名(P41)
+arr.sort((a,b)=>{return b-a;});       //箭头(P41)
+//sort: 负→a前, 正→b前, 0→不变
+
+var ninja={yell:function cry(n){ //命名匿名递归(P42)
+  return n>0 ? cry(n-1)+"a":"hiy";}};
+ninja.yell(5); //"hiyaaaaa"</pre>
+</div>
+
+<!-- ===== 12 OBJECTS ===== -->
+<div class="section">
+<h2>12. 对象 Objects (P43–49)</h2>
+<p>对象=名值对(名String,值任意)≈HashMap/Dict (P44); 非原始都是对象(数组函数也是!)</p>
+<pre>let tea={ingredients:["Tea"],taste:"Good",
+  time:function(){return 41;}}; //(P44)
+obj.name; obj["name"]; //两种访问(P45)
+obj.x=1; delete obj.x; for(let k in obj){} //增删遍历(P46)</pre>
+<p>Global(P47): <code>window</code>/<code>globalThis</code>; 全局属性无需前缀</p>
+<h3>this关键字(P48)</h3>
+<table>
+<tr><td>方法中→所属对象</td><td>单独/函数→全局</td><td>严格模式→undefined</td></tr>
+<tr><td>事件中→触发元素</td><td colspan="2">call()/apply()→任意对象</td></tr>
+</table>
+<h3>构造函数+new(P49)</h3>
+<pre>function Drink(p){this.price=p;
+  this.get=function(){return this.price*1.125;}}
+let d=new Drink(10); //⚠每次new创新函数→浪费!</pre>
+</div>
+
+<!-- ===== 13 PROTOTYPES ★★ ===== -->
+<div class="section">
+<h2>13. 原型 Prototype ★★ (P50–54)</h2>
+<p>JS不用class→<b>原型式prototype-based</b>编程(P50); 无类/面向原型/基于实例</p>
+<h3>方法放prototype(最佳)(P51)</h3>
+<pre>function Drink(p){this.price=p;} //数据在实例
+Drink.prototype.get=function(){ //方法在prototype
+  return this.price*1.125;
+} //→所有实例共享同一函数!</pre>
+<h3>原型链★★(P52)</h3>
+<pre>查找: 实例→Drink.prototype→Object.prototype→null</pre>
+<div class="n">prototype被所有实例共享; 赋值给prototype→所有实例通过this可用; 根=Object.prototype</div>
+<h3>运行时扩展(P53)</h3>
+<pre>String.prototype.reversed=function(){
+  let r="";for(let i=this.length-1;i>=0;i--)r+=this[i];return r;}
+"live on".reversed(); //"no evil" ←所有String立刻可用!</pre>
+<p>可用prototype实现继承: 子类prototype=父类实例(P53)</p>
+<h3>new三步★★(P54)</h3>
+<p>①创新对象proto=X.prototype ②调构造this=新对象 ③返回对象(除非显式return另一对象)</p>
+<div class="qa"><b>🧠 原型链shadow:</b>
+<pre>function Cat(n){this.name=n;}
+Cat.prototype.speak=function(){return "Meow";}
+let c=new Cat("M");
+c.speak=function(){return "Woof!";}//实例属性
+c.speak();       //"Woof!"←实例遮蔽prototype
+delete c.speak;  //删实例属性
+c.speak();       //"Meow"←回落到prototype!</pre></div>
+</div>
+
+<!-- ===== 14 SCOPING ★★ ===== -->
+<div class="section">
+<h2>14. 作用域 Scoping ★★ (P55–61)</h2>
+<p>三种(P56): Global(整文档) / Function(函数内) / Block({...}内); 内层可见外层(套娃)</p>
+<p>善恶(P57): 🟩const(纯善)→🟨let(善)→🟧var(恶)→🟥undeclared(纯恶)</p>
+<h3>四种声明对比★★(P58–61)</h3>
+<table>
+<tr><th>声明</th><th>作用域</th><th>可变</th><th>加window</th><th>if块外</th><th>函数外</th></tr>
+<tr><td><code>const</code></td><td><b>Block</b></td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>let</code></td><td><b>Block</b></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>var</code></td><td><b>Function</b></td><td>✓</td><td><b>✓</b></td><td><b>✓泄漏</b></td><td>✗</td></tr>
+<tr><td>未声明</td><td><b>Global!</b></td><td>✓</td><td><b>✓</b></td><td><b>✓</b></td><td><b>✓到处</b></td></tr>
+</table>
+<div class="n">const/let→块外不可见→安全(P58); var→泄漏到函数级→可替代(P59); 未声明→全局泄漏(P60)<br>函数外声明(无论哪种)都可在函数内访问; <b>只有var加到window上</b>(P61)</div>
+<div class="qa"><b>🧠</b> <code>function t(){if(true){var a=1;let b=2;} console.log(a);//1 console.log(b);//Error!}</code></div>
+<h3>★★经典for循环陷阱</h3>
+<pre>var fns=[]; for(var i=0;i&lt;3;i++){fns.push(function(){return i;})}
+fns[0]();fns[1]();fns[2](); //3,3,3←var共享一个i!
+
+let fns2=[];for(let j=0;j&lt;3;j++){fns2.push(function(){return j;})}
+fns2[0]();fns2[1]();fns2[2](); //0,1,2←let每次独立!</pre>
+</div>
+
+<!-- ===== 15 CLOSURES ★★ ===== -->
+<div class="section">
+<h2>15. 闭包 Closures ★★ (P62–64)</h2>
+<p>内部函数可访问外层变量(P62); <b>闭包=函数的局部变量在函数返回后仍存活</b>(P62)</p>
+<h3>经典makeAdder(P63)</h3>
+<pre>function makeAdder(a){       //a被闭包捕获
+  return function(b){return a+b;}; //记住a
+}
+let add5=makeAdder(5),add20=makeAdder(20);
+add5(6)→11; add20(7)→27; //互不干扰!</pre>
+<h3>机制(P63–64)</h3>
+<ul>
+<li>每次执行→新scope object保存局部变量(P63)</li>
+<li>返回的函数持有scope引用→不被GC(P64)</li>
+<li>每次调用→新scope→互不干扰(P64)</li>
+<li>vs全局: ①每次新scope ②不可直接访问(P64)</li>
+</ul>
+<div class="qa"><b>🧠 终极题: var+setTimeout</b>
+<pre>for(var i=0;i&lt;3;i++){setTimeout(function(){console.log(i);},100);}
+//输出3,3,3←var一个i,循环结束=3
+//修复:var→let→每次独立→输出0,1,2</pre></div>
+<h3>实用:私有变量</h3>
+<pre>function makeCounter(){
+  let count=0; //私有!
+  return {inc:function(){return ++count;},
+          get:function(){return count;}};
+}
+let c=makeCounter();c.inc();//1 c.inc();//2 c.get();//2</pre>
+</div>
+
+<!-- ===== 16 易混淆判断 ===== -->
+<div class="section">
+<h2>16. 易混淆知识点: 关键判断</h2>
+<table>
+<tr><th>对比</th><th>A</th><th>B</th><th>判断</th></tr>
+<tr><td>==vs===</td><td>类型转换后比</td><td>类型+值都比</td><td><b>永远===</b></td></tr>
+<tr><td>null vs undef</td><td>故意空→0</td><td>未赋值→NaN</td><td>typeof null="object"⚠</td></tr>
+<tr><td>let vs var</td><td>块级</td><td>函数级</td><td>var泄漏出块!</td></tr>
+<tr><td>push vs 赋值</td><td>改原对象✓</td><td>不影响原参✗</td><td>call by sharing</td></tr>
+<tr><td>slice vs splice</td><td>不改原</td><td>改原</td><td>splice=破坏</td></tr>
+<tr><td>sort默认</td><td>按字符串</td><td>传(a,b)=>a-b</td><td>数字必传比较器</td></tr>
+<tr><td>构造内vs proto</td><td>每实例一份</td><td>共享一份</td><td>proto节省内存</td></tr>
+<tr><td>+号两义</td><td>有Str→拼接</td><td>无Str→数学</td><td>-*/只数学</td></tr>
+</table>
+</div>
+
+<!-- ===== 17 速查 ===== -->
+<div class="section">
+<h2>17. 速查表</h2>
+<h3>Falsy完整(仅6个)</h3>
+<p><code>false 0 "" null undefined NaN</code> — 其余一切truthy(包括"0" "false" [] {})</p>
+<h3>+号行为</h3>
+<pre>Num+Num→加法(3+4=7); Str+任何→拼接("3"+4="34")
+Num+Bool→加法(3+true=4); -*/% →全转Num→数学</pre>
+<h3>常见转换</h3>
+<table>
+<tr><td><code>Number("")→0</code></td><td><code>Number("0")→0</code></td><td><code>Number(true)→1</code></td></tr>
+<tr><td><code>Number(null)→0</code></td><td><code>Number(undefined)→NaN</code></td><td><code>Number("abc")→NaN</code></td></tr>
+<tr><td><code>Boolean("")→F</code></td><td><code>Boolean("0")→<b>T!</b></code></td><td><code>Boolean(0)→F</code></td></tr>
+<tr><td><code>Boolean([])→<b>T!</b></code></td><td><code>Boolean({})→<b>T!</b></code></td><td><code>Boolean(null)→F</code></td></tr>
+</table>
+</div>
+
+<!-- ===== 18 综合考题 ===== -->
+<div class="section">
+<h2>18. 综合考题精选</h2>
+<div class="qa"><b>🧠Q1 const对象</b>: <code>const a=[1,2];a.push(3);//✓</code> <code>a=[4,5];//✗TypeError</code></div>
+<div class="qa"><b>🧠Q2 for...in数组</b>: <code>for(let x in [10,20]){console.log(x,typeof x);}</code> →<code>"0" string, "1" string</code> ←索引的字符串!</div>
+<div class="qa"><b>🧠Q3 prototype共享</b>:
+<pre>function A(x){this.x=x;this.f=function(){return this.x}}
+function B(x){this.x=x;} B.prototype.f=function(){return this.x;}
+new A(1).f===new A(2).f; //false(每次新函数)
+new B(1).f===new B(2).f; //true(prototype共享)</pre></div>
+<div class="qa"><b>🧠Q4 ASI</b>: <code>function f(){return\n{name:"A"}} f()→undefined!</code> (return后换行→ASI→return;)</div>
+<div class="qa"><b>🧠Q5 闭包计数</b>: <code>function m(){let n=0;return function(){return ++n;}} let c1=m(),c2=m(); c1();c1();c1()→1,2,3; c2()→1(独立scope!)</code></div>
+<div class="qa"><b>🧠Q6 +号陷阱</b>: <code>"5"+3+1→"531"</code>(一旦Str一直拼) vs <code>"5"-3+1→3</code>(减法做数学→2+1=3)</div>
+<div class="qa"><b>🧠Q7 null==undefined</b>: <code>null==undefined→true</code> <code>null===undefined→false</code>(类型不同)</div>
+<div class="qa"><b>🧠Q8 this指向</b>:
+<pre>let o={name:"A",greet:function(){return this.name;}};
+o.greet();          //"A" ←this=o(方法的所属对象)
+let fn=o.greet;
+fn();               //undefined ←this=window(函数调用)</pre></div>
+<div class="qa"><b>🧠Q9 Array越界</b>: <code>let a=[1,2];a[10]=99; a.length→11; a[5]→undefined(不报错!)</code></div>
+<div class="qa"><b>🧠Q10 typeof陷阱</b>: <code>typeof null→"object"(bug!)</code> <code>typeof NaN→"number"(NaN是number!)</code> <code>typeof []→"object"(数组是对象!)</code></div>
+</div>
+
+<!-- ===== 19 更多考题 ===== -->
+<div class="section">
+<h2>19. 更多典型考题与代码示例</h2>
+<div class="qa"><b>🧠Q11 完整的构造函数+原型示例</b>
+<pre>// 构造函数定义数据(P49)
+function Student(name, id) {
+  this.name = name;      // 实例属性: 每个学生不同
+  this.id = id;
+}
+// 方法放prototype(P51): 所有Student共享
+Student.prototype.greet = function() {
+  return "Hi, I'm " + this.name + " (#" + this.id + ")";
+};
+Student.prototype.study = function(subject) {
+  return this.name + " is studying " + subject;
+};
+
+let s1 = new Student("Alice", 1001);  // new的三步(P54):
+let s2 = new Student("Bob", 1002);    // ①创对象 ②调构造 ③返回
+console.log(s1.greet());    // "Hi, I'm Alice (#1001)"
+console.log(s2.study("JS")); // "Bob is studying JS"
+s1.greet === s2.greet;       // true ← prototype共享!</pre></div>
+
+<div class="qa"><b>🧠Q12 闭包: 创建多个独立计时器</b>
+<pre>function createTimer(name) {
+  let seconds = 0;             // 闭包私有变量
+  return {
+    tick: function() { seconds++; return name+": "+seconds+"s"; },
+    reset: function() { seconds = 0; }
+  };
+}
+let t1 = createTimer("Timer1");  // 独立scope: {name:"Timer1",seconds:0}
+let t2 = createTimer("Timer2");  // 独立scope: {name:"Timer2",seconds:0}
+t1.tick(); // "Timer1: 1s"
+t1.tick(); // "Timer1: 2s"
+t2.tick(); // "Timer2: 1s" ← 互不影响!
+t1.reset(); t1.tick(); // "Timer1: 1s" ← 重置后重新开始</pre></div>
+
+<div class="qa"><b>🧠Q13 综合: 类型转换链式推导</b>
+<pre>// 逐步求值(从左到右):
+"" + 1 + 0     → "1" + 0 → "10"      // ""是Str→一直拼接
+"" - 1 + 0     → -1 + 0 → -1          // -只做数学
+true + false   → 1 + 0 → 1            // Bool→Num
+"2" * "3"      → 6                     // *只做数学
+4 + 5 + "px"   → 9 + "px" → "9px"     // 先数学后拼接
+"$" + 4 + 5    → "$4" + 5 → "$45"     // 先拼接一直拼接
+"4" - 2        → 2                     // -只做数学
+"4px" - 2      → NaN                   // "4px"→NaN
+7 / 0          → Infinity              // 除以0=正无穷
+typeof typeof 1 → "string"            // typeof 1→"number"(字符串), typeof "number"→"string"</pre></div>
+
+<div class="qa"><b>🧠Q14 作用域综合题</b>
+<pre>let x = 10;
+function outer() {
+  let x = 20;           // 遮蔽外层x
+  function inner() {
+    let x = 30;         // 再遮蔽
+    console.log(x);     // 30 ← 最近的x
+  }
+  inner();
+  console.log(x);       // 20 ← outer的x
+}
+outer();
+console.log(x);         // 10 ← 全局的x</pre></div>
+
+<div class="qa"><b>🧠Q15 对象属性动态计算</b>
+<pre>let key = "name";
+let obj = {};
+obj[key] = "Alice";      // 等价于 obj.name = "Alice"
+obj["age"] = 20;
+for(let k in obj) {
+  console.log(k + ":" + obj[k]); // "name:Alice" "age:20"
+}
+delete obj.age;
+console.log(obj.age);    // undefined (已删除)</pre></div>
+</div>
+
+<!-- ===== 20 代码模式 ===== -->
+<div class="section">
+<h2>20. 常见代码模式速查</h2>
+<h3>安全属性访问(P24)</h3>
+<pre>let val = obj && obj.prop && obj.prop.sub;
+// 如果obj是null→短路→不报错→val=null</pre>
+<h3>默认参数值(P24+P38)</h3>
+<pre>function greet(name) {
+  name = name || "World"; // 未传参→undefined→falsy→用默认
+  return "Hello, " + name;
+}</pre>
+<h3>IIFE立即执行函数</h3>
+<pre>(function() {
+  let private = "secret"; // 不污染全局
+  console.log(private);
+})(); // 立即执行</pre>
+<h3>数组操作链</h3>
+<pre>let arr = [3,1,4,1,5,9];
+arr.sort((a,b)=>a-b)    // [1,1,3,4,5,9] 排序
+   .reverse()            // [9,5,4,3,1,1] 反转
+   .slice(0,3);          // [9,5,4]       取前3个</pre>
+<h3>for...in vs for循环(遍历数组)</h3>
+<pre>// ✓ 推荐: 传统for
+for(let i=0;i&lt;arr.length;i++){arr[i];}
+// ⚠ for...in得到的是字符串索引"0","1"!
+for(let i in arr){typeof i;} // "string"!</pre>
+<h3>检测类型</h3>
+<pre>typeof x === "number"    // 检测数字
+typeof x === "string"    // 检测字符串
+typeof x === "function"  // 检测函数
+Array.isArray(x)         // 检测数组(typeof不行!)
+x === null               // 检测null(typeof返回"object"!)</pre>
+</div>
+
+<!-- ===== 21 完整事件示例 ===== -->
+<div class="section">
+<h2>21. 完整HTML+JS示例(P4,P7,P9,P36)</h2>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;script&gt;
+function validate() {                 // P36:定义函数
+  let name = document.getElementById("name").value;
+  if (name === "") {                  // P25:===严格比较
+    alert("Name required!");          // P9:alert输出
+    return false;                     // 阻止表单提交
+  }
+  return true;
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form onsubmit="return validate()"&gt;  &lt;!-- P4:事件驱动 --&gt;
+  &lt;input id="name" type="text"&gt;
+  &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+&lt;p id="demo"&gt;&lt;/p&gt;
+&lt;button onclick="document.getElementById('demo').innerHTML='Changed!'"&gt;
+  Click me                            &lt;!-- P7:onclick内联 --&gt;
+&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+
+<!-- ===== 22 原型链图 ===== -->
+<div class="section">
+<h2>22. 原型链可视化(P52)</h2>
+<pre>
+┌─────────────┐
+│  coffee     │ ← new Drink("Coffee",5)
+│  name:"Coffee"│ ← 实例自身属性
+│  price: 5    │
+└──────┬──────┘
+       │ __proto__
+       ▼
+┌──────────────────┐
+│ Drink.prototype  │ ← 所有Drink实例共享
+│ getPrice:function│
+│ describe:function│
+└──────┬───────────┘
+       │ __proto__
+       ▼
+┌──────────────────┐
+│ Object.prototype │ ← 原型链的根
+│ toString:function│
+│ hasOwnProperty:fn│
+└──────┬───────────┘
+       │ __proto__
+       ▼
+     null              ← 链的终点
+</pre>
+<p>查找 <code>coffee.getPrice()</code>: 自身没有→在Drink.prototype找到✓<br>
+查找 <code>coffee.toString()</code>: 自身没有→Drink.prototype没有→Object.prototype找到✓<br>
+查找 <code>coffee.xyz</code>: 全部没有→返回undefined</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Ch07 Client-side JavaScript Cheatsheet</title>
+<style>
+@page { size: A4 portrait; margin: 3mm; }
+@media print { .page-break { page-break-before: always; } }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Courier New', monospace; font-size: 7.1pt; line-height: 1.26; color: #1e293b; }
+.page { width: 210mm; min-height: 297mm; padding: 3mm; }
+.title { background: #1e3a8a; color: #fff; text-align: center; padding: 2px 0; font-size: 9pt; font-weight: bold; margin-bottom: 3px; border-radius: 2px; }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.box { border-radius: 3px; padding: 3px 4px; margin-bottom: 3px; border-left: 3px solid; }
+.blue { background: #dbeafe; border-color: #1d4ed8; }
+.green { background: #dcfce7; border-color: #15803d; }
+.yellow { background: #fef9c3; border-color: #a16207; }
+.purple { background: #f3e8ff; border-color: #7c3aed; }
+.gray { background: #f1f5f9; border-color: #475569; }
+.orange { background: #ffedd5; border-color: #c2410c; }
+.red { background: #fee2e2; border-color: #b91c1c; }
+h1 { font-size: 8.2pt; color: #1e3a8a; margin-bottom: 1px; }
+h2 { font-size: 7.2pt; color: #1e3a8a; margin-bottom: 1px; border-bottom: 0.5px solid #93c5fd; padding-bottom: 1px; }
+h2.g { color: #14532d; border-color: #86efac; }
+h2.r { color: #7f1d1d; border-color: #fca5a5; }
+h2.p { color: #4c1d95; border-color: #c4b5fd; }
+pre { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; padding: 2px 3px; font-size: 6.4pt; line-height: 1.22; border-radius: 2px; overflow: hidden; white-space: pre-wrap; word-break: break-all; margin: 1px 0; }
+code { background: rgba(0,0,0,.09); padding: 0 2px; border-radius: 2px; font-size: 6.8pt; }
+.kw { color: #1d4ed8; }
+.cm { color: #15803d; }
+.st { color: #a16207; }
+.va { color: #be185d; }
+.op { color: #c2410c; }
+.nb { color: #7c3aed; }
+.qa { font-size: 6.9pt; margin: 1px 0; }
+.q { color: #6d28d9; font-weight: bold; }
+.a { color: #14532d; margin-left: 7px; }
+.eg { font-style: italic; color: #0369a1; margin-left: 7px; font-size: 6.8pt; }
+.warn { background: #fef2f2; border: 1px solid #ef4444; padding: 2px 3px; border-radius: 2px; margin: 1px 0; font-size: 6.8pt; }
+.tip { background: #f0fdf4; border: 1px solid #22c55e; padding: 2px 3px; border-radius: 2px; margin: 1px 0; font-size: 6.8pt; }
+table { width: 100%; border-collapse: collapse; font-size: 6.7pt; margin: 1px 0; }
+th { background: #e5e7eb; font-weight: bold; }
+th, td { border: 0.5px solid #cbd5e1; padding: 1px 3px; }
+ul { list-style: none; padding-left: 8px; }
+ul li::before { content: "▸ "; color: #1d4ed8; }
+hr.d { border: none; border-top: 1px dashed #cbd5e1; margin: 2px 0; }
+.star { color: #dc2626; font-weight: bold; }
+.col { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1 ==================== -->
+<div class="page">
+<div class="title">Ch07 Client-side JavaScript 客户端JavaScript · CITS3403/5505 Cheatsheet (P1–44) · Page 1/2</div>
+<div class="grid">
+
+<!-- ===== COLUMN 1 ===== -->
+<div>
+
+<div class="box blue">
+<h2>★★ DOM 概述 P2–5</h2>
+<div class="qa"><span class="q">Q: 什么是DOM？</span><br>
+<span class="a">DOM (Document Object Model) 是平台/语言无关的接口，允许程序动态访问和更新文档的内容、结构和样式。它是HTML文档与程序之间的API。</span></div>
+<div class="qa"><span class="q">Q: DOM树结构是什么？</span><br>
+<span class="a">DOM将HTML文档描述为树结构，document节点反映HTML层次结构。每个HTML元素→树中一个节点。</span></div>
+<div class="qa"><span class="q">Q: 为什么JS对Web特别有用？</span><br>
+<span class="a">客户端JS添加了对象/方法/属性的集合，通过绑定DOM实现：动态文档(dynamic documents)、客户端编程(client-side programming)。</span></div>
+</div>
+
+<div class="box green">
+<h2 class="g">★★ BOM 浏览器对象模型 P6–7</h2>
+<div class="qa"><span class="q">Q: BOM和DOM的区别？</span><br>
+<span class="a">DOM树只是BOM树的子部分。BOM包含浏览器执行环境节点，不特定于当前页面：浏览器类型(navigator)、用户历史(history)、Cookies、屏幕尺寸(screen)、地理位置(geolocation)、本地存储(localStorage)。BOM无固定标准，但有通用特性集。</span></div>
+<pre><span class="cm">// BOM层次结构 (P7)</span>
+window
+ ├── navigator  <span class="cm">// 浏览器信息</span>
+ ├── history    <span class="cm">// 浏览历史</span>
+ ├── location   <span class="cm">// 当前URL</span>
+ ├── screen     <span class="cm">// 屏幕信息</span>
+ ├── console    <span class="cm">// 控制台</span>
+ └── document   <span class="cm">// DOM树根节点</span>
+      ├── forms[]
+      ├── images[]
+      └── links[]</pre>
+</div>
+
+<div class="box blue">
+<h2>★★ DOM中的元素对象 P9</h2>
+<div class="qa"><span class="q">Q: HTML元素如何映射到JS？</span><br>
+<span class="a">HTML元素→JS元素对象(element objects)。元素的属性(attributes)→对象的命名属性(named properties)。</span></div>
+<pre><span class="cm">// 例: &lt;input type="text" name="address"&gt;</span>
+<span class="cm">// 对应对象有两个属性:</span>
+<span class="cm">// type属性 → 值"text"</span>
+<span class="cm">// name属性 → 值"address"</span></pre>
+<p>访问元素对象三种方式：按类型和位置(type&amp;position)、按名称(name)、按ID(id)</p>
+</div>
+
+<div class="box green">
+<h2 class="g">★★ 方法1: 按类型&索引访问 P10</h2>
+<pre><span class="cm">// document对象包含各类元素的类数组对象</span>
+<span class="cm">// 如 forms, images, links</span>
+document.images[<span class="st">0</span>]; <span class="cm">// 第1张图片</span>
+document.images[<span class="st">1</span>]; <span class="cm">// 第2张图片</span>
+
+<span class="cm">// 更通用方法: getElementsByTagName</span>
+x.getElementsByTagName(<span class="st">"p"</span>);
+<span class="cm">// 返回x节点内所有&lt;p&gt;元素</span></pre>
+</div>
+
+<div class="box yellow">
+<h2>方法2: 按name访问 P11</h2>
+<pre><span class="cm">// 给元素添加name属性后，可作为</span>
+<span class="cm">// 父元素对象的属性直接访问</span>
+&lt;form name=<span class="st">"pets"</span>&gt;
+  &lt;input type=<span class="st">"text"</span> name=<span class="st">"catName"</span>&gt;
+&lt;/form&gt;
+<span class="cm">// 访问: document.pets.catName</span></pre>
+</div>
+
+<div class="box yellow">
+<h2>★★ 方法3: 按id访问 P12</h2>
+<pre><span class="kw">var</span> x = document.forms[<span class="st">"frm1"</span>];
+<span class="kw">for</span> (<span class="kw">var</span> i=<span class="st">0</span>; i&lt;x.length; i++) {
+  text += x.elements[i].value + <span class="st">"&lt;br&gt;"</span>;
+}
+document.getElementById(<span class="st">"demo"</span>)
+  .innerHTML = text;
+<span class="cm">// getElementById找到匹配id的元素</span></pre>
+</div>
+
+</div>
+
+<!-- ===== COLUMN 2 ===== -->
+<div>
+
+<div class="box purple">
+<h2 class="p">元素专用访问 P13</h2>
+<pre><span class="cm">// checkbox/radio有隐式数组，以name为数组名</span>
+&lt;form id=<span class="st">"topGroup"</span>&gt;
+  &lt;input type=<span class="st">"checkbox"</span>
+    name=<span class="st">"toppings"</span> value=<span class="st">"olives"</span>/&gt;
+  &lt;input type=<span class="st">"checkbox"</span>
+    name=<span class="st">"toppings"</span> value=<span class="st">"tomatoes"</span>/&gt;
+&lt;/form&gt;
+<span class="kw">let</span> form = document.getElementById(<span class="st">"topGroup"</span>);
+<span class="kw">for</span> (<span class="kw">let</span> i=<span class="st">0</span>; i&lt;form.toppings.length; i++) {
+  <span class="kw">if</span> (form.toppings[i].checked)
+    toppingsSelected++;  <span class="cm">// 计数选中项</span>
+}</pre>
+</div>
+
+<div class="box blue">
+<h2>★★ DOM遍历 P14</h2>
+<table>
+<tr><th>属性</th><th>说明</th></tr>
+<tr><td><code>parentNode</code></td><td>父节点</td></tr>
+<tr><td><code>previousSibling</code></td><td>前一个兄弟</td></tr>
+<tr><td><code>nextSibling</code></td><td>后一个兄弟</td></tr>
+<tr><td><code>firstChild</code></td><td>第一个子节点</td></tr>
+<tr><td><code>lastChild</code></td><td>最后一个子节点</td></tr>
+<tr><td><code>childNodes</code></td><td>子节点NodeList(类数组)</td></tr>
+</table>
+</div>
+
+<div class="box purple">
+<h2 class="p">DOM遍历示例 P15</h2>
+<pre><span class="kw">function</span> countTags(n) {   <span class="cm">// n是Node</span>
+  <span class="kw">var</span> numtags = <span class="st">0</span>;       <span class="cm">// 初始化计数器</span>
+  <span class="kw">if</span> (n.nodeType == <span class="st">1</span>)   <span class="cm">// 1=ELEMENT_NODE</span>
+    numtags++;            <span class="cm">// 是元素则+1</span>
+  <span class="kw">var</span> children = n.childNodes; <span class="cm">// 获取子节点</span>
+  <span class="kw">for</span>(<span class="kw">var</span> i=<span class="st">0</span>;i&lt;children.length;i++){
+    numtags += countTags(children[i]);
+  }                       <span class="cm">// 递归遍历</span>
+  <span class="kw">return</span> numtags;
+}
+<span class="cm">// 调用: countTags(document) → 整棵DOM树</span></pre>
+</div>
+
+<div class="box green">
+<h2 class="g">★★ DOM修改 P16–17</h2>
+<table>
+<tr><th>方法</th><th>功能</th></tr>
+<tr><td><code>insertBefore(new,ref)</code></td><td>在ref前插入new子节点</td></tr>
+<tr><td><code>replaceChild(new,old)</code></td><td>替换子节点</td></tr>
+<tr><td><code>removeChild(node)</code></td><td>移除子节点</td></tr>
+<tr><td><code>appendChild(node)</code></td><td>末尾添加子节点</td></tr>
+</table>
+<p>文档写入方法: <code>open()</code> <code>close()</code> <code>write()</code> <code>writeln()</code></p>
+<pre><span class="cm">// document.write示例 P17</span>
+setTimeout(
+  () =&gt; document.write(<span class="st">"&lt;h1&gt;Hello!&lt;/h1&gt;"</span>),
+  <span class="st">2000</span>  <span class="cm">// 2秒后覆盖整个文档</span>
+);</pre>
+<div class="warn">⚠ Angular/React等前端框架就是用这些方法在客户端动态构建整个文档！</div>
+</div>
+
+<div class="box gray">
+<h2>BOM对象详解 P18–21</h2>
+<div class="qa"><span class="q">Q: navigator对象包含什么？</span><br>
+<span class="a">浏览器信息：appName, appVersion, userAgent, platform, language, geolocation等。geolocation需用户授权。</span></div>
+<div class="qa"><span class="q">Q: history对象的方法？</span><br>
+<span class="a"><code>history.back()</code>后退, <code>history.forward()</code>前进, <code>history.go(n)</code>跳转。</span></div>
+<p>其他: <code>window.console</code>, <code>window.screen</code>, <code>window.location</code></p>
+</div>
+
+</div>
+
+<!-- ===== COLUMN 3 ===== -->
+<div>
+
+<div class="box orange">
+<h2>★★ 持久化状态 P22</h2>
+<div class="qa"><span class="q">Q: HTTP请求为何是无状态的？</span><br>
+<span class="a">默认情况下，服务器和客户端在用户离开页面后不保留信息。两种存储方式：Cookie和localStorage。</span></div>
+<table>
+<tr><th>特性</th><th>Cookie</th><th>Web Storage</th></tr>
+<tr><td>大小</td><td>≤4KB</td><td>≤10MB</td></tr>
+<tr><td>发送到服务器</td><td>✓ 每次HTTP请求</td><td>✗ 仅客户端</td></tr>
+<tr><td>过期</td><td>可设过期日期</td><td>持久/会话</td></tr>
+<tr><td>域限制</td><td>✓ 同域</td><td>✓ 同域</td></tr>
+<tr><td>数据类型</td><td>字符串键值对</td><td>字符串键值对</td></tr>
+</table>
+</div>
+
+<div class="box yellow">
+<h2>★★ Cookie操作 P23</h2>
+<pre><span class="cm">// 设置Cookie（含过期时间）</span>
+document.cookie = <span class="st">"username=John Doe; "</span>
+  + <span class="st">"expires=Thu,18 Dec 2025 12:00:00 UTC"</span>;
+
+<span class="cm">// setCookie函数</span>
+<span class="kw">function</span> setCookie(cname, cvalue, exdays){
+  <span class="kw">var</span> d = <span class="kw">new</span> Date();       <span class="cm">// 当前日期</span>
+  d.setTime(d.getTime()
+    + (exdays*<span class="st">24</span>*<span class="st">60</span>*<span class="st">60</span>*<span class="st">1000</span>)); <span class="cm">// 加天数</span>
+  <span class="kw">var</span> expires = <span class="st">"expires="</span>
+    + d.toUTCString();      <span class="cm">// 转UTC</span>
+  document.cookie = cname + <span class="st">"="</span>
+    + cvalue + <span class="st">";"</span> + expires + <span class="st">";path=/"</span>;
+}
+
+<span class="cm">// getCookie函数</span>
+<span class="kw">function</span> getCookie(cname) {
+  <span class="kw">var</span> name = cname + <span class="st">"="</span>;
+  <span class="kw">var</span> ca = decodeURIComponent(
+    document.cookie).split(<span class="st">';'</span>);
+  <span class="kw">for</span>(<span class="kw">var</span> i=<span class="st">0</span>;i&lt;ca.length;i++){
+    <span class="kw">var</span> c = ca[i];
+    <span class="kw">while</span>(c.charAt(<span class="st">0</span>)==<span class="st">' '</span>) c=c.substring(<span class="st">1</span>);
+    <span class="kw">if</span>(c.indexOf(name)==<span class="st">0</span>)
+      <span class="kw">return</span> c.substring(
+        name.length, c.length);
+  }
+  <span class="kw">return</span> <span class="st">""</span>;
+}</pre>
+</div>
+
+<div class="box green">
+<h2 class="g">★★ Web Storage P24</h2>
+<pre><span class="cm">// localStorage 持久存储示例</span>
+<span class="kw">if</span> (localStorage.clickcount) {
+  localStorage.clickcount =
+    Number(localStorage.clickcount) + <span class="st">1</span>;
+    <span class="cm">// 值自动转字符串，需Number()转回</span>
+} <span class="kw">else</span> {
+  localStorage.clickcount = <span class="st">1</span>;
+    <span class="cm">// 首次访问初始化为1</span>
+}
+document.getElementById(<span class="st">"result"</span>)
+  .innerHTML = <span class="st">"You clicked "</span>
+  + localStorage.clickcount + <span class="st">" time(s)."</span>;</pre>
+<div class="tip">💡 Web Storage比Cookie更安全、容量更大(10MB)。适合大表单临时保存。</div>
+</div>
+
+<div class="box blue">
+<h2>★★ 事件驱动编程概念 P25–28</h2>
+<div class="qa"><span class="q">Q: 什么是事件驱动编程？</span><br>
+<span class="a">程序流程由用户操作(鼠标点击、按键)或消息决定的编程范式。不限于Web：硬件中断、多进程OS、分布式编程、Java监听器等。</span></div>
+<div class="qa"><span class="q">Q: 事件循环的两部分？</span><br>
+<span class="a">1. 事件检测(event detection) 2. 事件处理(event handling)。浏览器自动实现事件循环，程序员只需关注事件处理。</span></div>
+<div class="qa"><span class="q">Q: 浏览器如何处理事件？</span><br>
+<span class="a">浏览器监听事件(轮询或中断)→识别事件→调用已注册的事件监听器(event listener)。事件处理代码必须注册到特定事件。</span></div>
+</div>
+
+</div>
+
+<!-- ===== COLUMN 4 ===== -->
+<div>
+
+<div class="box purple">
+<h2 class="p">★★ 常见事件表 P29</h2>
+<table>
+<tr><th>Event</th><th>Tag Attr</th><th>说明</th></tr>
+<tr><td>blur</td><td>onblur</td><td>失去焦点</td></tr>
+<tr><td>change</td><td>onchange</td><td>值改变</td></tr>
+<tr><td>click</td><td>onclick</td><td>点击</td></tr>
+<tr><td>dblclick</td><td>ondblclick</td><td>双击</td></tr>
+<tr><td>focus</td><td>onfocus</td><td>获得焦点</td></tr>
+<tr><td>keydown</td><td>onkeydown</td><td>键按下</td></tr>
+<tr><td>keyup</td><td>onkeyup</td><td>键抬起</td></tr>
+<tr><td>load</td><td>onload</td><td>页面加载完</td></tr>
+<tr><td>mousedown</td><td>onmousedown</td><td>鼠标按下</td></tr>
+<tr><td>mouseover</td><td>onmouseover</td><td>鼠标进入</td></tr>
+<tr><td>mouseout</td><td>onmouseout</td><td>鼠标离开</td></tr>
+<tr><td>submit</td><td>onsubmit</td><td>表单提交</td></tr>
+</table>
+</div>
+
+<div class="box orange">
+<h2>★★ 三种注册事件处理器 P30–31</h2>
+<pre><span class="cm">// 方法1: HTML事件属性 (不推荐)</span>
+&lt;button <span class="va">onclick</span>=<span class="st">"alert('Hi!')"</span>&gt;
+  Greetings&lt;/button&gt;
+<span class="cm">// 或调用函数:</span>
+&lt;button <span class="va">onclick</span>=<span class="st">"myHandler()"</span>&gt;
+
+<span class="cm">// 方法2: 元素对象属性</span>
+document.getElementById(<span class="st">"myButton"</span>)
+  .onclick = myHandler;
+<span class="cm">// 注意：传引用myHandler，不是调用()</span>
+
+<span class="cm">// ★★方法3: addEventListener (推荐!)</span>
+<span class="kw">var</span> btn = document.getElementById(<span class="st">"myButton"</span>);
+btn.addEventListener(<span class="st">"click"</span>,
+  myHandler, <span class="kw">false</span>);
+<span class="cm">// 参数: 事件类型, 处理函数, 是否捕获阶段</span></pre>
+<div class="tip">💡 addEventListener优点：①关注点分离 ②同一事件可加多个handler ③可循环批量注册</div>
+</div>
+
+<div class="box red">
+<h2 class="r">★★ 事件流 (3阶段) P32–33</h2>
+<pre><span class="cm">// 事件流: 事件传递到DOM树各节点的顺序</span>
+Document → HTML → BODY → DIV → BUTTON(target)
+<span class="cm">// Phase 1 捕获: root→target (从上到下)</span>
+<span class="cm">// Phase 2 目标: target节点处理器执行</span>
+<span class="cm">// Phase 3 冒泡: target→root (从下到上,默认)</span></pre>
+<div class="qa"><span class="q">Q: event对象关键属性？</span>
+<span class="a"><code>target</code>:事件目标节点; <code>currentTarget</code>:handler注册节点; <code>stopPropagation()</code>:阻止冒泡; 鼠标事件含鼠标位置信息。</span></div>
+<p>不冒泡的事件: <code>load</code>, <code>unload</code>, <code>blur</code>, <code>focus</code></p>
+</div>
+
+<div class="box gray">
+<h2>重要事件说明 P34</h2>
+<ul>
+<li><code>load</code> 页面及所有依赖资源(CSS/JS/图片)加载完成</li>
+<li><code>mouseover/mousemove/mouseout</code> 鼠标进入/移动/离开</li>
+<li><code>keydown</code> 按键按下</li>
+<li><code>focus/blur</code> 元素获得/失去焦点</li>
+</ul>
+</div>
+
+<div class="box yellow">
+<h2>★★ 表单验证 P35</h2>
+<pre><span class="cm">// 通过submit事件验证表单</span>
+form.addEventListener(<span class="st">"submit"</span>, (e) =&gt; {
+  <span class="kw">if</span> (!isValid(form.email)) {
+    showError();           <span class="cm">// 显示错误</span>
+    e.preventDefault();    <span class="cm">// 阻止提交!</span>
+  }
+});</pre>
+<div class="warn">⚠ 客户端验证可被绕过(删除代码/模拟HTTP请求)→服务器端必须再次验证！</div>
+</div>
+
+</div>
+</div><!-- grid end -->
+</div><!-- page1 end -->
+
+<!-- ==================== PAGE 2 ==================== -->
+<div class="page page-break">
+<div class="title">Ch07 Client-side JavaScript 客户端JavaScript · jQuery & 综合复习 · Page 2/2</div>
+<div class="grid">
+
+<!-- ===== COLUMN 1 ===== -->
+<div>
+
+<div class="box blue">
+<h2>★★ jQuery简介 P36–38</h2>
+<div class="qa"><span class="q">Q: 为什么需要jQuery？</span><br>
+<span class="a">原生DOM操作函数名冗长(verbose)、组合困难、早期缺少有用函数。jQuery(2006, MIT许可)使DOM操作更简洁。</span></div>
+<p>jQuery功能: HTML/DOM操作、CSS操作、事件处理、效果/动画、AJAX消息、实用工具</p>
+<pre><span class="cm">// CDN引入jQuery</span>
+&lt;script src=<span class="st">"https://code.jquery.com/
+jquery-3.7.1.min.js"</span>&gt;&lt;/script&gt;
+
+<span class="cm">// 基本语法: $(selector).action()</span>
+<span class="cm">// $ = jQuery的简写</span>
+<span class="cm">// selector = CSS选择器(超集)</span>
+<span class="cm">// action = 对选中元素执行的操作</span></pre>
+</div>
+
+<div class="box green">
+<h2 class="g">★★ jQuery选择器 P38</h2>
+<table>
+<tr><th>语法</th><th>描述</th></tr>
+<tr><td><code>$("*")</code></td><td>选择所有元素</td></tr>
+<tr><td><code>$(this)</code></td><td>当前HTML元素</td></tr>
+<tr><td><code>$("p.intro")</code></td><td>class="intro"的&lt;p&gt;</td></tr>
+<tr><td><code>$("p:first")</code></td><td>第一个&lt;p&gt;</td></tr>
+<tr><td><code>$("ul li:first")</code></td><td>首个&lt;ul&gt;的首个&lt;li&gt;</td></tr>
+<tr><td><code>$("ul li:first-child")</code></td><td>每个&lt;ul&gt;的首个&lt;li&gt;</td></tr>
+</table>
+<div class="tip">💡 jQuery选择器语法是CSS选择器的超集(superset)!</div>
+</div>
+
+<div class="box purple">
+<h2 class="p">★★ jQuery DOM元素操作 P39</h2>
+<table>
+<tr><th>方法</th><th>说明</th></tr>
+<tr><td><code>.text()</code></td><td>获取/设置文本内容</td></tr>
+<tr><td><code>.html()</code></td><td>获取/设置原始HTML</td></tr>
+<tr><td><code>.val()</code></td><td>获取/设置表单字段值</td></tr>
+<tr><td><code>.attr()</code></td><td>获取/设置属性值</td></tr>
+</table>
+<pre><span class="cm">// 获取(无参数→返回当前值)</span>
+$(<span class="st">"#test"</span>).text();    <span class="cm">// 获取文本</span>
+$(<span class="st">"#test"</span>).html();    <span class="cm">// 获取HTML</span>
+$(<span class="st">"input"</span>).val();     <span class="cm">// 获取输入值</span>
+
+<span class="cm">// 设置(有参数→设置新值)</span>
+$(<span class="st">"#test"</span>).text(<span class="st">"Hello"</span>);  <span class="cm">// 设文本</span>
+$(<span class="st">"#test"</span>).html(<span class="st">"&lt;b&gt;Hi&lt;/b&gt;"</span>);
+$(<span class="st">"input"</span>).val(<span class="st">"new"</span>);
+$(<span class="st">"#link"</span>).attr(<span class="st">"href"</span>, <span class="st">"url"</span>);</pre>
+</div>
+
+<div class="box orange">
+<h2>★★ jQuery DOM树操作 P40</h2>
+<table>
+<tr><th>方法</th><th>功能</th></tr>
+<tr><td><code>a.prepend(b)</code></td><td>b作为a的第一个子元素</td></tr>
+<tr><td><code>a.append(b)</code></td><td>b作为a的最后一个子元素</td></tr>
+<tr><td><code>a.before(b)</code></td><td>b作为a的前一个兄弟</td></tr>
+<tr><td><code>a.after(b)</code></td><td>b作为a的后一个兄弟</td></tr>
+</table>
+<div class="eg">类比: prepend/append操作子节点(内部), before/after操作兄弟节点(外部)</div>
+</div>
+
+</div>
+
+<!-- ===== COLUMN 2 ===== -->
+<div>
+
+<div class="box blue">
+<h2>★★ jQuery事件 P41</h2>
+<table>
+<tr><th>Mouse</th><th>Keyboard</th><th>Form</th><th>Doc/Win</th></tr>
+<tr><td>click</td><td>keypress</td><td>submit</td><td>load</td></tr>
+<tr><td>dblclick</td><td>keydown</td><td>change</td><td>resize</td></tr>
+<tr><td>mouseenter</td><td>keyup</td><td>focus</td><td>scroll</td></tr>
+<tr><td>mouseleave</td><td></td><td>blur</td><td>unload</td></tr>
+</table>
+<pre><span class="cm">// 单事件绑定</span>
+$(<span class="st">"p"</span>).click(() =&gt; {
+  <span class="cm">// 点击段落时执行的代码</span>
+});
+
+<span class="cm">// ★★ on()方法: 多事件绑定</span>
+$(<span class="st">"p"</span>).on({
+  mouseenter: <span class="kw">function</span>(){
+    $(this).css(<span class="st">"background-color"</span>,
+      <span class="st">"lightgray"</span>);   <span class="cm">// 鼠标进入变灰</span>
+  },
+  mouseleave: <span class="kw">function</span>(){
+    $(this).css(<span class="st">"background-color"</span>,
+      <span class="st">"lightblue"</span>);   <span class="cm">// 鼠标离开变蓝</span>
+  }
+});</pre>
+</div>
+
+<div class="box yellow">
+<h2>★★ $(document).ready() P42</h2>
+<pre><span class="cm">// 等文档完全加载后再执行jQuery代码</span>
+<span class="cm">// 这是最佳实践，应包裹所有jQuery代码</span>
+$(document).ready(() =&gt; {
+  <span class="cm">// jQuery代码写在这里</span>
+  $(<span class="st">"#btn"</span>).click(() =&gt; {
+    alert(<span class="st">"clicked!"</span>);
+  });
+});</pre>
+<div class="warn">⚠ 若不等待文档加载完成，选择器可能找不到尚未渲染的DOM元素！</div>
+</div>
+
+<div class="box green">
+<h2 class="g">★★ jQuery效果 P43</h2>
+<p>效果方法: <code>hide()</code> <code>show()</code> <code>fadeIn()</code> <code>fadeOut()</code> <code>slideUp()</code> <code>slideDown()</code> <code>animate()</code></p>
+<pre><span class="cm">// slideDown效果示例</span>
+$(document).ready(() =&gt; {
+  $(<span class="st">"#flip"</span>).click(() =&gt; {
+    $(<span class="st">"#panel"</span>).slideDown(<span class="st">"slow"</span>);
+    <span class="cm">// 点击后面板缓慢滑下显示</span>
+  });
+});</pre>
+</div>
+
+<div class="box purple">
+<h2 class="p">★★ jQuery链式调用 P44</h2>
+<div class="qa"><span class="q">Q: 什么是链式调用(chaining)？</span><br>
+<span class="a">大多数jQuery修改方法返回修改后的元素对象(而非返回void)，因此可以在一条语句中连续应用多个操作。</span></div>
+<pre><span class="cm">// 链式调用示例</span>
+$(<span class="st">"li"</span>)
+  .filter(<span class="st">".first, .last"</span>)  <span class="cm">// 过滤出first/last类</span>
+  .css(<span class="st">"color"</span>, <span class="st">"red"</span>)      <span class="cm">// 设前景色</span>
+  .css(<span class="st">"background"</span>, <span class="st">"blue"</span>); <span class="cm">// 设背景色</span>
+<span class="cm">// 步骤: 选li→过滤→设色→设背景</span></pre>
+</div>
+
+</div>
+
+<!-- ===== COLUMN 3 ===== -->
+<div>
+
+<div class="box red">
+<h2 class="r">★★ 原生JS vs jQuery 对比</h2>
+<table>
+<tr><th>操作</th><th>原生JS</th><th>jQuery</th></tr>
+<tr><td>选ID</td><td><code>document.getElementById("x")</code></td><td><code>$("#x")</code></td></tr>
+<tr><td>选class</td><td><code>document.getElementsByClassName("x")</code></td><td><code>$(".x")</code></td></tr>
+<tr><td>选标签</td><td><code>document.getElementsByTagName("p")</code></td><td><code>$("p")</code></td></tr>
+<tr><td>设内容</td><td><code>el.innerHTML="hi"</code></td><td><code>$(el).html("hi")</code></td></tr>
+<tr><td>事件</td><td><code>el.addEventListener("click",fn)</code></td><td><code>$(el).click(fn)</code></td></tr>
+<tr><td>添加子</td><td><code>el.appendChild(node)</code></td><td><code>$(el).append(node)</code></td></tr>
+</table>
+</div>
+
+<div class="box blue">
+<h2>★★ 综合：DOM访问方法汇总</h2>
+<table>
+<tr><th>方法</th><th>返回</th><th>页码</th></tr>
+<tr><td><code>document.images[n]</code></td><td>第n+1个img</td><td>P10</td></tr>
+<tr><td><code>document.forms[n]</code></td><td>第n+1个form</td><td>P10</td></tr>
+<tr><td><code>getElementsByTagName()</code></td><td>HTMLCollection</td><td>P10</td></tr>
+<tr><td><code>document.formName.elName</code></td><td>命名元素</td><td>P11</td></tr>
+<tr><td><code>getElementById()</code></td><td>单个元素</td><td>P12</td></tr>
+<tr><td>DOM遍历属性</td><td>父/子/兄弟节点</td><td>P14</td></tr>
+</table>
+</div>
+
+<div class="box green">
+<h2 class="g">★★ 事件流三阶段详解 考试重点</h2>
+<pre><span class="cm">// addEventListener第3参数决定阶段</span>
+el.addEventListener(<span class="st">"click"</span>, fn, <span class="kw">true</span>);
+<span class="cm">// true → 捕获阶段触发</span>
+el.addEventListener(<span class="st">"click"</span>, fn, <span class="kw">false</span>);
+<span class="cm">// false(默认) → 冒泡阶段触发</span>
+
+<span class="cm">// 事件对象关键方法/属性</span>
+e.target;           <span class="cm">// 实际触发事件的元素</span>
+e.currentTarget;    <span class="cm">// handler注册的元素</span>
+e.stopPropagation();<span class="cm">// 阻止继续传播</span>
+e.preventDefault(); <span class="cm">// 阻止默认行为</span></pre>
+</div>
+
+<div class="box yellow">
+<h2>★★ Cookie vs localStorage vs sessionStorage</h2>
+<table>
+<tr><th></th><th>Cookie</th><th>localStorage</th><th>sessionStorage</th></tr>
+<tr><td>容量</td><td>4KB</td><td>10MB</td><td>5MB</td></tr>
+<tr><td>生命周期</td><td>设置过期</td><td>永久</td><td>标签页关闭</td></tr>
+<tr><td>服务器</td><td>每次发送</td><td>不发送</td><td>不发送</td></tr>
+<tr><td>API</td><td>字符串操作</td><td>setItem/getItem</td><td>同左</td></tr>
+</table>
+</div>
+
+</div>
+
+<!-- ===== COLUMN 4 ===== -->
+<div>
+
+<div class="box purple">
+<h2 class="p">★★ 典型考题 Q&A</h2>
+<div class="qa"><span class="q">Q1: addEventListener比onclick好在哪里？</span><br>
+<span class="a">①关注点分离(JS与HTML分离) ②同一事件可注册多个handler ③可循环批量添加</span></div>
+<hr class="d">
+<div class="qa"><span class="q">Q2: event.target和event.currentTarget区别？</span><br>
+<span class="a">target=事件实际发生的元素; currentTarget=handler绑定的元素。冒泡时两者可能不同。</span></div>
+<hr class="d">
+<div class="qa"><span class="q">Q3: 为什么客户端验证不够？</span><br>
+<span class="a">可通过DevTools删除验证代码或直接构造HTTP请求绕过。服务器必须再次验证。</span></div>
+<hr class="d">
+<div class="qa"><span class="q">Q4: jQuery中$("ul li:first")和$("ul li:first-child")区别？</span><br>
+<span class="a">:first只选第一个匹配的li; :first-child选每个ul的第一个li子元素。</span></div>
+<hr class="d">
+<div class="qa"><span class="q">Q5: jQuery链式调用的原理？</span><br>
+<span class="a">大多数jQuery方法返回修改后的jQuery对象(return this)，允许连续调用。</span></div>
+<hr class="d">
+<div class="qa"><span class="q">Q6: 事件冒泡阶段的默认行为是什么？</span><br>
+<span class="a">默认在冒泡阶段处理(子→父)。addEventListener第3参数false=冒泡。某些事件(load,blur,focus)不冒泡。</span></div>
+</div>
+
+<div class="box orange">
+<h2>★★ 代码追踪练习</h2>
+<pre><span class="cm">// 问: 以下代码输出什么?</span>
+&lt;div id=<span class="st">"outer"</span>&gt;
+  &lt;button id=<span class="st">"inner"</span>&gt;Click&lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;
+document.getElementById(<span class="st">"outer"</span>)
+  .addEventListener(<span class="st">"click"</span>,
+  ()=&gt;console.log(<span class="st">"outer-capture"</span>), <span class="kw">true</span>);
+document.getElementById(<span class="st">"inner"</span>)
+  .addEventListener(<span class="st">"click"</span>,
+  ()=&gt;console.log(<span class="st">"inner"</span>), <span class="kw">false</span>);
+document.getElementById(<span class="st">"outer"</span>)
+  .addEventListener(<span class="st">"click"</span>,
+  ()=&gt;console.log(<span class="st">"outer-bubble"</span>), <span class="kw">false</span>);
+&lt;/script&gt;
+<span class="cm">// 答: 点击button输出顺序:</span>
+<span class="cm">// 1. "outer-capture" (捕获阶段,从上到下)</span>
+<span class="cm">// 2. "inner"         (目标阶段)</span>
+<span class="cm">// 3. "outer-bubble"  (冒泡阶段,从下到上)</span></pre>
+</div>
+
+<div class="box gray">
+<h2>关键术语速查</h2>
+<table>
+<tr><th>术语</th><th>中文</th></tr>
+<tr><td>DOM</td><td>文档对象模型</td></tr>
+<tr><td>BOM</td><td>浏览器对象模型</td></tr>
+<tr><td>Event Bubbling</td><td>事件冒泡</td></tr>
+<tr><td>Event Capturing</td><td>事件捕获</td></tr>
+<tr><td>Event Delegation</td><td>事件委托</td></tr>
+<tr><td>Chaining</td><td>链式调用</td></tr>
+<tr><td>Separation of Concerns</td><td>关注点分离</td></tr>
+<tr><td>Stateless</td><td>无状态</td></tr>
+</table>
+</div>
+
+</div>
+</div><!-- grid end -->
+</div><!-- page2 end -->
+
+</body>
+</html>

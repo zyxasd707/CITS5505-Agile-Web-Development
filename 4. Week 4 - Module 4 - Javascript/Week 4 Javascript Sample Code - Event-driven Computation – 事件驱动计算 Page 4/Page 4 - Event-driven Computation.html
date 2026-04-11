@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<!-- ===== 示例1: 响应点击事件 ===== -->
+<button onclick="document.getElementById('out').innerHTML = 'Href href!'">
+  Tell me!
+</button>
+<p id="out"></p>
+
+<!-- ===== 示例2: 表单提交前验证 ===== -->
+<script>
+function validateForm() {
+  let name = document.getElementById("name").value;
+  if (name === "") {
+    alert("Name cannot be empty! 名字不能为空!");
+    return false;  // 阻止提交
+  }
+  return true;  // 允许提交
+}
+</script>
+
+<!-- ← 这部分原代码缺了！ -->
+<form onsubmit="return validateForm()">
+  <input type="text" id="name" placeholder="输入名字">
+  <button type="submit">提交</button>
+</form>
+
+</html>

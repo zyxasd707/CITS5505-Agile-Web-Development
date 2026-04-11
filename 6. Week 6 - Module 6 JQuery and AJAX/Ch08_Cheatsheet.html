@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Ch08 Communicating with a Server Cheatsheet</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Courier New',monospace;font-size:7.1pt;line-height:1.26;color:#1e293b;background:#fff;}
+.page{width:210mm;min-height:297mm;padding:4mm;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;page-break-after:always;align-content:start;}
+.page:last-child{page-break-after:auto;}
+.title{grid-column:1/-1;background:#1e3a8a;color:#fff;text-align:center;padding:3px 0;font-size:8.2pt;font-weight:bold;border-radius:3px;margin-bottom:2px;letter-spacing:1px;}
+.title small{font-size:6.4pt;font-weight:normal;opacity:.85;display:block;}
+.box{border-radius:3px;padding:3px 4px;margin-bottom:3px;border-left:2.5px solid;}
+.blue{background:#dbeafe;border-color:#1d4ed8;}
+.green{background:#dcfce7;border-color:#15803d;}
+.yellow{background:#fef9c3;border-color:#a16207;}
+.purple{background:#f3e8ff;border-color:#7c3aed;}
+.gray{background:#f1f5f9;border-color:#475569;}
+.orange{background:#ffedd5;border-color:#c2410c;}
+.red{background:#fee2e2;border-color:#b91c1c;}
+h1{font-size:8.2pt;margin-bottom:1px;}
+h2{font-size:7.2pt;color:#1e3a8a;margin:2px 0 1px;border-bottom:0.5px solid #cbd5e1;padding-bottom:1px;}
+h2.g{color:#14532d;} h2.r{color:#7f1d1d;} h2.p{color:#4c1d95;}
+pre{background:#f1f5f9;color:#1e293b;font-size:6.4pt;line-height:1.3;padding:2px 3px;border-radius:2px;border:0.5px solid #cbd5e1;overflow-x:auto;margin:1px 0;white-space:pre-wrap;word-break:break-all;}
+code{background:rgba(0,0,0,.09);padding:0 2px;border-radius:2px;font-size:6.8pt;}
+.kw{color:#1d4ed8;font-weight:bold;} .cm{color:#15803d;} .st{color:#a16207;} .va{color:#be185d;} .op{color:#c2410c;} .nb{color:#7c3aed;}
+table{width:100%;border-collapse:collapse;font-size:6.7pt;margin:1px 0;}
+th{background:#e5e7eb;font-weight:bold;text-align:left;}
+th,td{border:0.5px solid #cbd5e1;padding:1px 3px;}
+.qa{font-size:6.8pt;margin:1px 0;}
+.q{color:#6d28d9;font-weight:bold;}
+.a{color:#14532d;margin-left:7px;}
+.eg{font-style:italic;color:#0369a1;margin-left:7px;font-size:6.8pt;}
+.warn{background:#fef2f2;border:0.5px solid #ef4444;border-radius:2px;padding:1px 3px;font-size:6.8pt;margin:1px 0;}
+.tip{background:#f0fdf4;border:0.5px solid #22c55e;border-radius:2px;padding:1px 3px;font-size:6.8pt;margin:1px 0;}
+ul{list-style:none;padding-left:8px;}
+ul li::before{content:"▸ ";color:#64748b;}
+hr.d{border:none;border-top:0.5px dashed #94a3b8;margin:2px 0;}
+.star{color:#ea580c;font-weight:bold;}
+@media print{
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .page{min-height:auto;height:297mm;overflow:hidden;}
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1 (正面) ==================== -->
+<div class="page">
+<div class="title">Ch08 Communicating with a Server 与服务器通信 – Cheatsheet (Page 1/2)<small>CITS3403/5505 · Page 1–15 · HTTP请求 · XMLHttpRequest · jQuery · Fetch API</small></div>
+
+<!-- COL 1 -->
+<div>
+
+<div class="box blue">
+<h2>P1–3: 课程概览 &amp; 动机 Overview</h2>
+<ul>
+<li>前半段：HTML/CSS/JS前端；后半段：服务器</li>
+<li>W6通信 W8创建服务器 W9数据库 W10安全 W11测试</li>
+<li>之前：JS响应本地事件(local browser events)如点击、加载</li>
+<li>现在：页面加载后仍需与服务器通信(communicate after page loaded)</li>
+</ul>
+<div class="qa"><span class="q">Q: 两种与服务器通信的方式？</span><br><span class="a">① HTTP requests（请求-响应模式）② Web sockets（持久双向连接，后续讲）</span></div>
+</div>
+
+<div class="box blue">
+<h2>P5: HTTP请求/响应结构 ★★</h2>
+<ul>
+<li><b>Client-server architecture</b>（客户端-服务器架构）</li>
+<li>客户端发request→服务器返response→<b>遗忘一切=无状态stateless</b></li>
+</ul>
+<b>Request 请求结构：</b>
+<pre><span class="kw">GET</span> /doc/test.html HTTP/1.1  <span class="cm">← 请求行(方法+URL+版本)</span>
+Host: www.test101.com         <span class="cm">← 请求头(键值对)</span>
+Accept: image/gif, */*
+Content-Length: 35
+                              <span class="cm">← 空行分隔header/body</span>
+bookId=12345&amp;author=Tan       <span class="cm">← 请求体(数据)</span></pre>
+<b>Response 响应结构：</b>
+<pre>HTTP/1.1 <span class="kw">200 OK</span>             <span class="cm">← 状态行(版本+状态码+文本)</span>
+Server: Apache/1.3.29         <span class="cm">← 响应头</span>
+Content-Type: text/html
+                              <span class="cm">← 空行</span>
+&lt;h1&gt;My Home page&lt;/h1&gt;       <span class="cm">← 响应体(HTML等)</span></pre>
+<div class="qa"><span class="q">Q: HTTP为什么是"无状态"的？影响？</span><br><span class="a">服务器不记得之前的请求。需cookie/session维持状态。</span></div>
+</div>
+
+<div class="box green">
+<h2>P6: HTTP请求方法 Methods ★★</h2>
+<table>
+<tr><th>Method</th><th>用途</th><th>幂等</th></tr>
+<tr><td><b>GET</b></td><td>获取数据(retrieve)</td><td>✅</td></tr>
+<tr><td><b>POST</b></td><td>创建/修改数据(create/alter)</td><td>❌</td></tr>
+<tr><td><b>PUT</b></td><td>替换数据(replace)，执行2次=1次</td><td>✅</td></tr>
+<tr><td><b>DELETE</b></td><td>删除数据(delete)</td><td>✅</td></tr>
+</table>
+<div class="warn">⚠ HTTP method字段只是字符串，可自定义，只要客户端/服务器约定好含义即可。</div>
+<div class="qa"><span class="q">Q: PUT vs POST？</span><br><span class="a">PUT幂等(idempotent)：重复执行效果相同；POST不幂等：可能创建多条记录。</span></div>
+</div>
+
+<div class="box yellow">
+<h2>P7: 响应状态码 Status Codes ★★</h2>
+<table>
+<tr><th>类</th><th>含义</th><th>重点码</th></tr>
+<tr><td>1xx</td><td>信息性 Info</td><td>100 Continue</td></tr>
+<tr><td><b>2xx</b></td><td>成功 Success</td><td><b>200</b> OK, <b>201</b> Created, <b>204</b> No Content</td></tr>
+<tr><td>3xx</td><td>重定向 Redirect</td><td>301 Moved, <b>304</b> Not Modified</td></tr>
+<tr><td><b>4xx</b></td><td>客户端错误</td><td><b>400</b> Bad Req, <b>401</b> Unauth, <b>403</b> Forbidden, <b>404</b> Not Found</td></tr>
+<tr><td><b>5xx</b></td><td>服务器错误</td><td><b>500</b> Internal Error</td></tr>
+</table>
+<div class="tip">💡 口诀：2成功 3跳转 4你错 5我错</div>
+</div>
+
+</div>
+
+<!-- COL 2 -->
+<div>
+
+<div class="box purple">
+<h2>P9: 异步通信 Async Communication ★★</h2>
+<ul>
+<li>发请求时<b>不知道服务器何时/是否响应</b></li>
+<li>JS是<b>单线程(single-threaded)</b>，按序执行</li>
+<li>但<b>运行环境(浏览器)不是单线程</b>→回调机制</li>
+</ul>
+<pre><span class="cm">// 异步函数模式</span>
+Object.asyncFn(params, callbackFn)
+<span class="cm">// callback接收(error, response)参数</span></pre>
+<b>Event Loop 事件循环：</b>
+<pre>请求Requests → [<span class="kw">EVENT LOOP</span>] → 耗时操作
+               (单线程JS)    (文件/数据库/计算)
+                    ↑               ↓
+            触发Callback ← 操作完成</pre>
+<b>回调示例(P9)：</b>
+<pre><span class="kw">function</span> big_Request(data, callback){
+  <span class="kw">var</span> req = request_to_server(data); <span class="cm">// 发请求</span>
+  callback(req.error, req.response); <span class="cm">// 触发回调</span>
+}
+big_Request(myData, <span class="kw">function</span>(error,data){
+  <span class="kw">if</span>(error) alert(error);  <span class="cm">// 有错弹窗</span>
+  <span class="kw">else</span> render(data);       <span class="cm">// 成功渲染</span>
+});</pre>
+<div class="qa"><span class="q">Q: JS单线程如何实现"不阻塞"？</span><br><span class="a">浏览器Event Loop：网络请求由底层线程处理，完成后回调进队列，主线程空闲时取出执行。</span></div>
+</div>
+
+<div class="box orange">
+<h2>P10: XMLHttpRequest 对象 ★★</h2>
+<b>方法 Methods：</b>
+<table>
+<tr><th>方法</th><th>说明</th></tr>
+<tr><td><code>new XMLHttpRequest()</code></td><td>创建XHR对象</td></tr>
+<tr><td><code>open(method,url,async)</code></td><td>配置(方法/URL/异步)</td></tr>
+<tr><td><code>send()</code></td><td>发送(GET用)</td></tr>
+<tr><td><code>send(string)</code></td><td>发送+数据(POST用)</td></tr>
+<tr><td><code>setRequestHeader()</code></td><td>设置请求头</td></tr>
+<tr><td><code>abort()</code></td><td>取消请求</td></tr>
+</table>
+<b>属性 Properties：</b>
+<table>
+<tr><th>属性</th><th>说明</th></tr>
+<tr><td><code>readyState</code></td><td>0未初始化 1已连接 2已接收 3处理中 <b>4完成★</b></td></tr>
+<tr><td><code>status</code></td><td>200=OK, 403=Forbidden, 404=Not Found</td></tr>
+<tr><td><code>responseText</code></td><td>响应文本(字符串)</td></tr>
+<tr><td><code>responseXML</code></td><td>响应XML数据</td></tr>
+<tr><td><code>onreadystatechange</code></td><td>readyState变化时的回调</td></tr>
+</table>
+</div>
+
+<div class="box orange">
+<h2>P11: 发送HTTP请求 Sending Request</h2>
+<b>GET（参数在URL上）：</b>
+<pre>xhttp.open(<span class="st">"GET"</span>,
+  <span class="st">"demo.asp?fname=Henry&amp;lname=Ford"</span>,
+  <span class="kw">true</span>);             <span class="cm">// true=异步</span>
+xhttp.send();           <span class="cm">// GET无body</span></pre>
+<b>POST（数据在body中）：</b>
+<pre>xhttp.open(<span class="st">"POST"</span>, <span class="st">"test.asp"</span>, <span class="kw">true</span>);
+xhttp.setRequestHeader(<span class="st">"Content-type"</span>,
+  <span class="st">"application/x-www-form-urlencoded"</span>);
+xhttp.send(<span class="st">"fname=Henry&amp;lname=Ford"</span>);</pre>
+<div class="qa"><span class="q">Q: open()第3个参数？</span><br><span class="a">是否异步：true=异步(不阻塞), false=同步(阻塞)。</span></div>
+</div>
+
+</div>
+
+<!-- COL 3 -->
+<div>
+
+<div class="box orange">
+<h2>P12: 接收响应 Receiving Response ★★</h2>
+<pre><span class="kw">function</span> loadDoc() {
+  <span class="kw">var</span> xhttp = <span class="kw">new</span> XMLHttpRequest(); <span class="cm">// 创建</span>
+  xhttp.onreadystatechange = <span class="kw">function</span>() {
+    <span class="kw">if</span>(<span class="kw">this</span>.readyState==<span class="va">4</span>      <span class="cm">// 完成</span>
+     &amp;&amp; <span class="kw">this</span>.status==<span class="va">200</span>) {   <span class="cm">// 成功</span>
+      document.getElementById(<span class="st">"demo"</span>)
+        .innerHTML=<span class="kw">this</span>.responseText;
+    }                          <span class="cm">// 写入DOM</span>
+  };
+  xhttp.open(<span class="st">"GET"</span>,<span class="st">"info.txt"</span>,<span class="kw">true</span>);
+  xhttp.send();                <span class="cm">// 发送</span>
+}</pre>
+<div class="warn">⚠ 核心判断：<code>readyState==4 &amp;&amp; status==200</code></div>
+</div>
+
+<div class="box gray">
+<h2>P14: jQuery HTTP请求</h2>
+<b>$.get() — GET请求：</b>
+<pre>$(<span class="st">"button"</span>).click(<span class="kw">function</span>(){
+  $.get(<span class="st">"demo.asp"</span>,<span class="kw">function</span>(data,status){
+    alert(<span class="st">"Data:"</span>+data); <span class="cm">// 响应数据</span>
+  });
+});</pre>
+<b>$.post() — POST请求：</b>
+<pre>$(<span class="st">"button"</span>).click(<span class="kw">function</span>(){
+  $.post(<span class="st">"demo.asp"</span>,
+  {name:<span class="st">"Donald"</span>,city:<span class="st">"Duckburg"</span>},
+  <span class="kw">function</span>(data,status){    <span class="cm">// 回调</span>
+    alert(<span class="st">"Data:"</span>+data);
+  });
+});</pre>
+<div class="tip">💡 jQuery简化XHR：不需手动管理readyState。</div>
+</div>
+
+<div class="box blue">
+<h2>P16: Fetch API ★★ (2017新方法)</h2>
+<pre>fetch(<span class="st">"https://api.com/drinks"</span>) <span class="cm">// 默认GET</span>
+  .then(resp => resp.json())   <span class="cm">// 解析JSON</span>
+  .then(data => {              <span class="cm">// 处理数据</span>
+    console.log(data);
+  })
+  .catch(err =>                <span class="cm">// 捕获错误</span>
+    console.error(err));</pre>
+<div class="qa"><span class="q">Q: 为什么两个.then()？</span><br><span class="a">第1个拿Response对象，.json()返回新Promise；第2个才拿实际数据。</span></div>
+</div>
+
+<div class="box blue">
+<h2>P17: Fetch + POST配置</h2>
+<pre>fetch(<span class="st">'https://api.com/order'</span>, {
+  method: <span class="st">'POST'</span>,           <span class="cm">// 方法</span>
+  headers: {
+    <span class="st">'Accept'</span>:<span class="st">'application/json'</span>,
+    <span class="st">'Content-Type'</span>:<span class="st">'application/json'</span>
+  },
+  body: JSON.stringify(     <span class="cm">// 必须转字符串!</span>
+    {quantity:1,drink:<span class="st">'Tea'</span>})
+});</pre>
+<div class="warn">⚠ body不能直接传JS对象，必须JSON.stringify()！</div>
+</div>
+
+<div class="box purple">
+<h2>P18: async/await ★★</h2>
+<pre><span class="kw">async function</span> load() {   <span class="cm">// async声明</span>
+  <span class="kw">try</span> {
+    <span class="kw">const</span> r = <span class="kw">await</span> fetch(url);<span class="cm">// 等待完成</span>
+    <span class="kw">const</span> d = <span class="kw">await</span> r.json(); <span class="cm">// 等待解析</span>
+    console.log(d);
+  } <span class="kw">catch</span>(e) {              <span class="cm">// = .catch()</span>
+    console.error(e);
+  }
+}</pre>
+<div class="qa"><span class="q">Q: await只能在哪用？</span><br><span class="a">只能在async函数内部。</span></div>
+</div>
+
+<div class="box gray">
+<h2>P19: CORS 跨域资源共享</h2>
+<ul>
+<li>Fetch API<b>内置CORS机制</b></li>
+<li>原始服务器控制浏览器能从哪些其他域加载资源</li>
+<li>需响应头<code>Access-Control-Allow-Origin</code></li>
+<li>遇CORS问题→可用旧XMLHttpRequest</li>
+</ul>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== PAGE 2 (反面) ==================== -->
+<div class="page">
+<div class="title">Ch08 Communicating with a Server 与服务器通信 – Cheatsheet (Page 2/2)<small>CITS3403/5505 · Page 20–27 · AJAX · XML · JSON · jQuery AJAX · 对比 · 考题</small></div>
+
+<!-- COL 1 -->
+<div>
+
+<div class="box blue">
+<h2>P21: AJAX 动机 Motivation ★★</h2>
+<ul>
+<li><b>AJAX</b> = <b>A</b>synchronous <b>J</b>avaScript <b>A</b>nd <b>X</b>ML</li>
+<li>是一种<b>方法/理念(approach)</b>而非具体技术</li>
+<li>名字有误导：实际常用JSON而非XML</li>
+<li>2005年 Jesse James Garrett 提出</li>
+<li>核心：异步HTTP请求→接收结构化数据→<b>JS解析+DOM局部更新</b></li>
+<li>每个AJAX请求=一次HTTP交换，异步不冻结环境</li>
+<li>服务器返回<b>数据对象(XML/JSON)</b>→融入当前页面</li>
+</ul>
+<div class="qa"><span class="q">Q: AJAX核心价值？</span><br><span class="a">不需重载整页就能更新部分内容！如Gmail收发邮件不刷新。</span></div>
+<div class="qa"><span class="q">Q: AJAX一定用XML？</span><br><span class="a">不一定。虽名含XML，但更常用JSON或纯文本。</span></div>
+</div>
+
+<div class="box green">
+<h2>P22: AJAX时序图 Sequence Diagram ★★</h2>
+<pre>HTML页面    JavaScript   XHR对象       Server
+  |           |           |            |
+  |--事件---->|           |            |
+  |           |--create-->|            |
+  |           |--URL+回调->|            |
+  |           |           |--GET请求-->|
+  |           |           |            |(处理)
+  |           |           |<--XML/JSON-|
+  |           |<-调回调---|            |
+  |<--更新DOM--|           |            |</pre>
+<b>AJAX完整7步流程：</b>
+<ul>
+<li>① 用户触发事件(如onkeyup)</li>
+<li>② JS创建XHR对象(或fetch)</li>
+<li>③ 配置URL+回调，发送请求</li>
+<li>④ 异步等待(JS不阻塞)</li>
+<li>⑤ 服务器返回JSON/XML</li>
+<li>⑥ 回调触发，JS解析数据</li>
+<li>⑦ DOM操作<b>局部更新</b>(不整页刷新)</li>
+</ul>
+<div class="qa"><span class="q">Q: 为何用onkeyup而非提交按钮？</span><br><span class="a">自动补全(autocomplete)场景：每敲一键就请求，实时获取建议。如Google搜索建议。</span></div>
+</div>
+
+<div class="box yellow">
+<h2>P23: XML 数据格式</h2>
+<ul>
+<li><b>XML</b> = eXtensible Markup Language</li>
+<li>类似HTML，数据在<b>命名标签树</b>中</li>
+<li>设计通用；只含数据，<b>不可执行</b></li>
+</ul>
+<pre>&lt;<span class="kw">employees</span>&gt;           <span class="cm">&lt;!-- 根元素 --&gt;</span>
+  &lt;<span class="kw">employee</span>&gt;
+    &lt;firstName&gt;John&lt;/firstName&gt;
+    &lt;lastName&gt;Doe&lt;/lastName&gt;
+  &lt;/<span class="kw">employee</span>&gt;
+  &lt;<span class="kw">employee</span>&gt;
+    &lt;firstName&gt;Anna&lt;/firstName&gt;
+    &lt;lastName&gt;Smith&lt;/lastName&gt;
+  &lt;/<span class="kw">employee</span>&gt;
+&lt;/<span class="kw">employees</span>&gt;</pre>
+</div>
+
+<div class="box yellow">
+<h2>P24: JSON 数据格式 ★★</h2>
+<ul>
+<li><b>JSON</b> = JavaScript Object Notation</li>
+<li>用JS语法存储数据(对象字面量)</li>
+<li>比XML更<b>简洁(succinct)</b>，原生支持数组</li>
+<li><b>不应包含函数</b></li>
+</ul>
+<pre>{"employees":[              <span class="cm">// 对象含数组</span>
+  {"firstName":"John",      <span class="cm">// 元素=对象</span>
+   "lastName":"Doe"},
+  {"firstName":"Anna",
+   "lastName":"Smith"}
+]}</pre>
+<b>解析/序列化：</b>
+<pre><span class="kw">var</span> obj = JSON.parse(str);   <span class="cm">// 字符串→对象</span>
+<span class="kw">var</span> s = JSON.stringify(obj);  <span class="cm">// 对象→字符串</span></pre>
+<div class="tip">💡 解析后的JS对象可直接更新DOM。</div>
+</div>
+
+</div>
+
+<!-- COL 2 -->
+<div>
+
+<div class="box green">
+<h2>XML vs JSON 对比 ★★</h2>
+<table>
+<tr><th>特性</th><th>XML</th><th>JSON</th></tr>
+<tr><td>语法</td><td>&lt;tag&gt;val&lt;/tag&gt;</td><td>{"key":"val"}</td></tr>
+<tr><td>简洁</td><td>冗长(标签重复)</td><td><b>★ 简洁</b></td></tr>
+<tr><td>数组</td><td>嵌套标签模拟</td><td><b>★ 原生[]</b></td></tr>
+<tr><td>可执行</td><td>❌</td><td>❌(不含函数)</td></tr>
+<tr><td>JS解析</td><td>较复杂</td><td><b>★ JSON.parse()</b></td></tr>
+</table>
+<div class="qa"><span class="q">Q: JSON键与JS对象键区别？</span><br><span class="a">JSON键<b>必须双引号</b>；JS对象键可不加。JSON值不能是函数/undefined。</span></div>
+</div>
+
+<div class="box purple">
+<h2>P25: jQuery $.ajax() 函数</h2>
+<pre>$(<span class="st">"#btn"</span>).click(<span class="kw">function</span>() {
+  $.ajax({
+    url: <span class="st">'employees/data'</span>,<span class="cm">// 请求URL</span>
+    dataType: <span class="st">'json'</span>,     <span class="cm">// 期望JSON</span>
+    success: <span class="kw">function</span>(data){
+      <span class="kw">var</span> html = <span class="st">''</span>;
+      <span class="kw">for</span>(<span class="kw">var</span> i=0;i&lt;data.length;i++){
+        html += <span class="st">'&lt;tr&gt;&lt;td&gt;'</span>
+          + data[i].name   <span class="cm">// 动态构建</span>
+          + <span class="st">'&lt;/td&gt;&lt;/tr&gt;'</span>;
+      }
+      $(<span class="st">'#tbl'</span>).html(html);<span class="cm">// 插入DOM</span>
+    },
+    error: <span class="kw">function</span>(d){} <span class="cm">// 失败回调</span>
+  });
+});</pre>
+</div>
+
+<div class="box purple">
+<h2>P26: jQuery .load() 函数</h2>
+<pre>$(<span class="st">"button"</span>).click(<span class="kw">function</span>(){
+  $(<span class="st">"#div1"</span>).load(       <span class="cm">// 选择器.load()</span>
+    <span class="st">"demo_test.txt"</span>,    <span class="cm">// 加载URL内容</span>
+    <span class="kw">function</span>(resp,status,xhr){
+      <span class="kw">if</span>(status==<span class="st">"success"</span>)
+        alert(<span class="st">"OK!"</span>);     <span class="cm">// 成功</span>
+      <span class="kw">if</span>(status==<span class="st">"error"</span>)
+        alert(xhr.status); <span class="cm">// 失败</span>
+    });
+});</pre>
+<div class="tip">💡 load()最简便——一行把远程内容塞进DOM元素。</div>
+</div>
+
+<div class="box gray">
+<h2>jQuery AJAX 三方法对比</h2>
+<table>
+<tr><th>方法</th><th>特点</th><th>适用</th></tr>
+<tr><td><code>$.get/$.post</code></td><td>简单快速</td><td>基本请求</td></tr>
+<tr><td><code>$.ajax()</code></td><td>完全控制(headers等)</td><td>复杂需求</td></tr>
+<tr><td><code>$().load()</code></td><td>直接填充DOM</td><td>HTML片段</td></tr>
+</table>
+</div>
+
+<div class="box gray">
+<h2>P27: 个人项目 Project</h2>
+<ul>
+<li>CITS5505学生需展示AJAX请求</li>
+<li>调用<b>公共API(无需API key)</b></li>
+<li>API列表：github.com/public-apis/public-apis</li>
+</ul>
+<pre><span class="kw">async function</span> getJoke() {
+  <span class="kw">const</span> r = <span class="kw">await</span> fetch(
+    <span class="st">"https://joke-api.com/random"</span>);
+  <span class="kw">const</span> joke = <span class="kw">await</span> r.json();
+  document.getElementById(<span class="st">"out"</span>)
+    .textContent = joke.setup;
+}</pre>
+</div>
+
+</div>
+
+<!-- COL 3 -->
+<div>
+
+<div class="box blue">
+<h2 class="p">三种HTTP请求方式总对比 ★★</h2>
+<table>
+<tr><th></th><th>XMLHttpRequest</th><th>jQuery</th><th>Fetch API</th></tr>
+<tr><td>年代</td><td>最早(旧式)</td><td>中期</td><td><b>2017(现代)</b></td></tr>
+<tr><td>语法</td><td>冗长(手动state)</td><td>简洁</td><td><b>Promise/async</b></td></tr>
+<tr><td>CORS</td><td>❌ 无内置</td><td>部分</td><td><b>✅ 内置</b></td></tr>
+<tr><td>错误</td><td>readyState判断</td><td>success/error</td><td><b>.catch/try-catch</b></td></tr>
+</table>
+</div>
+
+<div class="box red">
+<h2 class="r">★★ 典型考题 Practice Questions</h2>
+
+<div class="qa"><span class="q">Q1: 哪些HTTP方法是幂等的？</span><br><span class="a">GET, PUT, DELETE。POST不是。幂等=执行多次与一次效果相同。</span></div>
+<hr class="d">
+
+<div class="qa"><span class="q">Q2: readyState==4 &amp;&amp; status==200各表示？</span><br><span class="a">readyState==4：请求完成。status==200：服务器OK。两者同时满足才处理响应。</span></div>
+<hr class="d">
+
+<div class="qa"><span class="q">Q3: .then()链→async/await改写：</span></div>
+<pre>fetch(<span class="st">"/api"</span>).then(r=>r.json())
+  .then(d=>show(d)).catch(e=>log(e))
+<span class="cm">// ↓ 等价：</span>
+<span class="kw">async function</span> f(){
+  <span class="kw">try</span>{
+    <span class="kw">const</span> r=<span class="kw">await</span> fetch(<span class="st">"/api"</span>);
+    <span class="kw">const</span> d=<span class="kw">await</span> r.json();
+    show(d);
+  }<span class="kw">catch</span>(e){log(e);}
+}</pre>
+<hr class="d">
+
+<div class="qa"><span class="q">Q4: 用JSON表示两本书？</span><br><span class="a"><code>{"books":[{"title":"JS","year":2020},{"title":"CSS","year":2019}]}</code></span></div>
+<hr class="d">
+
+<div class="qa"><span class="q">Q5: fetch()默认HTTP方法？</span><br><span class="a">GET。POST需指定method:'POST'。</span></div>
+<hr class="d">
+
+<div class="qa"><span class="q">Q6: AJAX vs 传统页面请求？</span><br><span class="a">AJAX=异步+局部更新(不刷新)；传统=同步+整页重载。</span></div>
+<hr class="d">
+
+<div class="qa"><span class="q">Q7: JSON.parse vs JSON.stringify？</span><br><span class="a">parse：字符串→对象。stringify：对象→字符串。</span></div>
+<hr class="d">
+
+<div class="qa"><span class="q">Q8: CORS由谁控制？</span><br><span class="a">由<b>提供原始页面的服务器</b>通过响应头控制浏览器能访问哪些其他域。</span></div>
+<hr class="d">
+
+<div class="qa"><span class="q">Q9: 为什么fetch body必须stringify？</span><br><span class="a">HTTP传输的是文本/字节流，JS对象不能直接传输，需序列化为JSON字符串。</span></div>
+<hr class="d">
+
+<div class="qa"><span class="q">Q10: XHR的readyState有哪5个值？</span><br><span class="a">0=UNSENT未初始化 1=OPENED已连接 2=HEADERS_RECEIVED已接收 3=LOADING处理中 4=DONE完成。</span></div>
+</div>
+
+<div class="box green">
+<h2 class="g">Summary 全章总结 P1–27</h2>
+<ul>
+<li>HTTP无状态协议：request→response→遗忘 <span class="star">P5</span></li>
+<li>四方法：GET读/POST写/PUT替换(幂等)/DELETE删 <span class="star">P6</span></li>
+<li>状态码：2xx成功 4xx客户端错 5xx服务器错 <span class="star">P7</span></li>
+<li>JS单线程+Event Loop→回调实现异步 <span class="star">P9</span></li>
+<li>XHR旧式：open→send→onreadystatechange <span class="star">P10-12</span></li>
+<li>jQuery：$.get/$.post/$.ajax/$().load <span class="star">P14,25-26</span></li>
+<li>Fetch现代：.then().then().catch() <span class="star">P16-17</span></li>
+<li>async/await：异步代码像同步写 <span class="star">P18</span></li>
+<li>CORS：浏览器安全，控制跨域 <span class="star">P19</span></li>
+<li>AJAX=异步+结构化数据+DOM局部更新 <span class="star">P21-22</span></li>
+<li>XML(标签树) vs JSON(键值对★首选) <span class="star">P23-24</span></li>
+<li>CITS5505项目需展示AJAX请求 <span class="star">P27</span></li>
+</ul>
+</div>
+
+</div>
+</div>
+
+</body>
+</html>

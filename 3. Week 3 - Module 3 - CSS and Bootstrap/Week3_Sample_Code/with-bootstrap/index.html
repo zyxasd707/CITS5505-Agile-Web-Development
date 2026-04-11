@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!-- 使用Bootstrap的页面 | Page using Bootstrap -->
+<!-- ✅ 对比：所有样式都通过Bootstrap类名完成，无需写任何CSS -->
+<!-- ✅ Compare: All styling done via Bootstrap class names, zero CSS written -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">                  <!-- 字符编码 | Character encoding -->
+  <meta name="viewport"
+        content="width=device-width,
+                 initial-scale=1">        <!-- 移动端视口 | Mobile viewport -->
+  <title>With Bootstrap</title>           <!-- 页面标题 | Page title -->
+
+  <!-- ✅ Bootstrap CSS — CDN一行引入，取代整个style.css -->
+  <!-- ✅ Bootstrap CSS — One CDN line replaces the entire style.css -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+</head>
+<body>
+
+  <!-- ✅ 导航栏 Navbar -->
+  <!-- 对比：无需手写.navbar样式，Bootstrap类名直接搞定 -->
+  <!-- Compare: No manual .navbar CSS needed; Bootstrap classes handle everything -->
+  <nav class="navbar navbar-expand-sm
+              navbar-dark bg-dark px-3">  <!-- navbar-dark:白字 bg-dark:深色背景 px-3:左右padding -->
+    <span class="navbar-brand">
+      MyWebsite                           <!-- 网站品牌名 | Site brand -->
+    </span>
+    <ul class="navbar-nav ml-auto">       <!-- ml-auto：自动左边距，推到右侧 | Push links to right -->
+      <li class="nav-item">
+        <a class="nav-link"
+           href="#">Home</a>              <!-- 导航链接 | Nav link -->
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+           href="#">About</a>             <!-- 导航链接 | Nav link -->
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+           href="#">Contact</a>           <!-- 导航链接 | Nav link -->
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ✅ 主容器 Main container -->
+  <!-- 对比：.container一行 vs 手写max-width+margin+padding -->
+  <!-- Compare: .container one class vs manual max-width + margin + padding -->
+  <div class="container mt-4">           <!-- container:响应式容器 mt-4:上外边距 -->
+
+    <!-- ✅ 英雄横幅 Hero Banner (Jumbotron) -->
+    <!-- 对比：Bootstrap一个class，vs 手写整个.hero样式块 -->
+    <!-- Compare: One Bootstrap class vs entire manual .hero style block -->
+    <div class="jumbotron text-center">  <!-- jumbotron:大横幅 text-center:文字居中 -->
+      <h1 class="display-4">
+        Welcome to My Page               <!-- 主标题 | Main heading -->
+      </h1>
+      <p class="lead text-muted">
+        This is built with Bootstrap.    <!-- lead:大字段落 text-muted:灰色文字 -->
+        使用Bootstrap构建。
+      </p>
+      <!-- ✅ 按钮 Button -->
+      <!-- 对比：btn btn-primary两个class vs 手写整个.btn-primary样式 -->
+      <!-- Compare: Two Bootstrap classes vs entire manual .btn-primary style block -->
+      <a href="#"
+         class="btn btn-primary">
+        Get Started                      <!-- 主按钮 | Primary button -->
+      </a>
+    </div>
+
+    <!-- ✅ 三列网格 Three-column Grid -->
+    <!-- 对比：row+col-md-4 vs 手写flex布局+媒体查询 -->
+    <!-- Compare: row + col-md-4 vs manual flex layout + media queries -->
+    <div class="row mb-4">               <!-- row:行容器 mb-4:底部外边距 -->
+
+      <div class="col-md-4">            <!-- col-md-4：中屏及以上占1/3，小屏自动全宽 -->
+        <div class="card p-3">          <!-- card:卡片组件 p-3:内边距 -->
+          <h3>Column 1</h3>
+          <p>Some content here. 一些内容。</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">            <!-- col-md-4：占1/3 -->
+        <div class="card p-3">
+          <h3>Column 2</h3>
+          <p>Some content here. 一些内容。</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">            <!-- col-md-4：占1/3，三列合计12 ✓ -->
+        <div class="card p-3">
+          <h3>Column 3</h3>
+          <p>Some content here. 一些内容。</p>
+        </div>
+      </div>
+
+    </div><!-- /row -->
+
+    <!-- ✅ 数据表格 Data Table -->
+    <!-- 对比：class="table"一行 vs 手写.my-table全部样式 -->
+    <!-- Compare: class="table" one line vs entire manual .my-table style block -->
+    <table class="table
+                  table-bordered
+                  table-hover">          <!-- table:基础样式 table-bordered:边框 table-hover:悬停高亮 -->
+      <thead class="thead-dark">         <!-- thead-dark：深色表头，无需手写背景色 -->
+        <tr>
+          <th>First Name 姓</th>
+          <th>Last Name 名</th>
+          <th>Email 邮箱</th>
+          <th>Status 状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>                             <!-- 默认行 | Default row -->
+          <td>Alice</td>
+          <td>Smith</td>
+          <td>alice@example.com</td>
+          <td>Active</td>
+        </tr>
+
+        <!-- ✅ 上下文颜色：只需一个class，无需自定义CSS颜色 -->
+        <!-- ✅ Contextual color: just one class, no custom CSS color needed -->
+        <tr class="table-danger：自动红色，对应">        <!-- table-danger：自动红色，对应"危险"状态 -->
+          <td>Bob</td>
+          <td>Jones</td>
+          <td>bob@example.com</td>
+          <td>Failed</td>
+        </tr>
+        <tr class="table-success">       <!-- table-success：自动绿色，对应"成功"状态 -->
+          <td>Carol</td>
+          <td>Lee</td>
+          <td>carol@example.com</td>
+          <td>Success</td>
+        </tr>
+        <tr class="table-warning">       <!-- table-warning：自动黄色，对应"警告"状态 -->
+          <td>Dave</td>
+          <td>Kim</td>
+          <td>dave@example.com</td>
+          <td>Pending</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div><!-- /container -->
+
+  <!-- ✅ Bootstrap JS（jQuery依赖） | Bootstrap JS (requires jQuery) -->
+  <script src="https://code.jquery.com/
+    jquery-3.6.0.min.js">               <!-- jQuery：Bootstrap JS的依赖 | jQuery: required by Bootstrap JS -->
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/
+    bootstrap@4.6.2/dist/js/
+    bootstrap.bundle.min.js">           <!-- Bootstrap JS：模态框、轮播等交互组件 | Bootstrap JS for interactive components -->
+  </script>
+
+</body>
+</html>
