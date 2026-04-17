@@ -1,0 +1,49 @@
+<!DOCTYPE html>                                                         <!-- 声明 HTML5 文档 -->
+<html lang="zh">                                                       <!-- 根元素,语言设为中文 -->
+<head>                                                                  <!-- 文档头部 -->
+    <meta charset="UTF-8">                                              <!-- 字符编码 UTF-8,支持中文 -->
+    <title>P9 异步通信演示 Async Communication</title>                  <!-- 浏览器标签页标题 -->
+    <link rel="stylesheet" href="style.css">                            <!-- 引入外部 CSS 样式 -->
+    <!-- 引入 jQuery CDN,$.get 等函数由它提供 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>                                                                 <!-- 头部结束 -->
+
+<body>                                                                  <!-- 页面主体 -->
+
+    <h1>P9: 异步通信 + 回调函数</h1>                                    <!-- 主标题 -->
+    <p class="subtitle">Asynchronous Communication with Callback</p>    <!-- 英文副标题 -->
+
+    <!-- ============ 左侧: 异步请求区域 ============ -->
+    <div class="panel">                                                 <!-- 左侧面板 -->
+        <h2>① 异步请求 Async Request</h2>                               <!-- 小标题 -->
+
+        <!-- 用户ID输入框:1 或 2 能查到,其他触发 error 回调 -->
+        <label>用户ID User ID: </label>                                 <!-- 输入框标签 -->
+        <input id="userId" type="text" value="1">                       <!-- 输入框,默认值 1 -->
+
+        <!-- 发起请求的按钮 -->
+        <button id="fetchBtn">big_Request 发起请求</button>             <!-- 发起请求按钮 -->
+
+        <!-- 显示结果的区域 -->
+        <div id="output">点击按钮发起异步请求...</div>                  <!-- 结果展示区 -->
+    </div>                                                              <!-- 左侧面板结束 -->
+
+    <!-- ============ 右侧: 证明主线程未阻塞 ============ -->
+    <div class="panel">                                                 <!-- 右侧面板 -->
+        <h2>② 主线程仍响应 Main Thread Alive</h2>                       <!-- 小标题 -->
+
+        <!-- 说明文字:等待响应的 1 秒里,右侧按钮仍可点击 -->
+        <p>等待响应的同时,点下面的按钮证明 UI 没被冻结:</p>              <!-- 说明 -->
+
+        <!-- 计数按钮,每点一次数字 +1 -->
+        <button id="countBtn">点我 +1</button>                          <!-- 计数按钮 -->
+
+        <!-- 计数显示 -->
+        <div id="counter">点击次数: <span id="count">0</span></div>     <!-- 计数区 -->
+    </div>                                                              <!-- 右侧面板结束 -->
+
+    <!-- 最后引入自己写的 JS(必须放在 jQuery 之后) -->
+    <script src="app.js"></script>                                      <!-- 引入主逻辑脚本 -->
+
+</body>                                                                 <!-- 主体结束 -->
+</html>                                                                 <!-- HTML 结束 -->

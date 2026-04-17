@@ -1,0 +1,4 @@
+{
+  "1": { "name": "Alice", "age": 22, "city": "Perth" },
+  "2": { "name": "Bob",   "age": 25, "city": "Sydney" }
+}

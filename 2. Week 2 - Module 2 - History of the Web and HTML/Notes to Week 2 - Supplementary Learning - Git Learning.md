@@ -1020,3 +1020,291 @@ git reset origin/main
 
 # 5. 设置跟踪关系
 git branch --set-upstream-to=origin/main main
+
+
+
+我用的是 Claude Code 的 **Write** 和 **Edit** 工具直接编辑了 `.gitignore` 文件，等价于你手动操作的话，就是：
+
+### 第一次：创建 .gitignore
+
+用任何文本编辑器（VS Code、记事本等）在仓库根目录创建 `.gitignore`，写入内容。等价命令：
+
+
+
+```bash
+cat > .gitignore << 'EOF'
+.obsidian/
+.trash/
+.claude/
+.claudian/
+.makemd/
+.space/
+**/venv/
+**/__pycache__/
+*.pyc
+Web开发基础.pdf
+软件工程与UML.pdf
+Thumbs.db
+.DS_Store
+desktop.ini
+EOF
+```
+
+### 第二次：追加嵌套仓库
+
+发现嵌套 Git 仓库后，我用 Edit 工具往 `.gitignore` 里追加了三行。等价命令：
+
+
+
+```bash
+cat >> .gitignore << 'EOF'
+Archieved/cits5505-project/
+Assessments/Group Project 30%/uwa-marketplace/
+Assessments/Individual Project 20%/CITS5505 Individual Project/CITS5505-Individual-Project-New/
+EOF
+```
+
+就这些 — 没有特殊的 Git 命令，就是**往 `.gitignore` 这个文本文件里写入路径**，Git 会自动识别。
+
+
+
+# 查看已合并到 main 的远程分支
+git branch -r --merged main
+
+# 查看未合并到 main 的远程分支
+git branch -r --no-merged main
+
+这个文件夹目前还不是 Git 仓库。以下是关联远程仓库的步骤：
+
+**方案一：如果远程仓库是空的或你想以本地内容为准**
+
+
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/zyxasd707/CITS5206-Information-Technology-Capstone.git
+git push -u origin main
+```
+
+**方案二：如果远程仓库已有内容，你想先拉取再合并**
+
+
+
+```bash
+git init
+git remote add origin https://github.com/zyxasd707/CITS5206-Information-Technology-Capstone.git
+git fetch origin
+git merge origin/main --allow-unrelated-histories
+git push -u origin main
+```
+
+你想让我帮你执行哪个方案？另外，远程仓库目前是空的还是已经有内容了？
+
+
+
+
+
+# GitHub Pull Request 冲突完整示例
+
+## 场景设定
+
+假设你和同事都在修改同一个文件 `config.py`。
+
+------
+
+## 第一步：冲突是怎么发生的
+
+**main 分支上的 `config.py`（同事已合并）：**
+
+```python
+DEBUG = False
+DATABASE = "postgres://prod-server/mydb"
+```
+
+**你的分支 `feature/my-settings` 上的 `config.py`：**
+
+```python
+DEBUG = True
+DATABASE = "postgres://dev-server/mydb"
+```
+
+同一行，两边改了不同的内容 → **冲突产生**
+
+------
+
+## 第二步：GitHub 如何显示冲突
+
+当你发起 Pull Request 后，GitHub 页面会显示一个红色警告：
+
+```
+❌ This branch has conflicts that must be resolved
+```
+
+点击 **"Resolve conflicts"** 按钮，GitHub 会打开在线编辑器，显示冲突文件内容如下：
+
+```python
+<<<<<<< feature/my-settings
+DEBUG = True
+DATABASE = "postgres://dev-server/mydb"
+=======
+DEBUG = False
+DATABASE = "postgres://prod-server/mydb"
+>>>>>>> main
+```
+
+### 三段标记的含义：
+
+| 标记                          | 含义                    |
+| ----------------------------- | ----------------------- |
+| `<<<<<<< feature/my-settings` | **你的分支**的内容开始  |
+| `=======`                     | 分隔线                  |
+| `>>>>>>> main`                | **main 分支**的内容开始 |
+
+------
+
+## 第三步：解决冲突（两种方式）
+
+### 方式一：直接在 GitHub 网页上解决
+
+1. 点击 **"Resolve conflicts"**
+2. 手动编辑文件，**删除所有冲突标记**，保留你想要的内容
+
+例如，你决定合并两者的意图：
+
+```python
+# 改成这样（删掉所有 <<<, ===, >>> 标记）
+DEBUG = False          # 生产环境用 False
+DATABASE = "postgres://prod-server/mydb"
+```
+
+1. 点击右上角 **"Mark as resolved"**
+2. 点击 **"Commit merge"**
+
+------
+
+### 方式二：在本地终端解决（更推荐）
+
+```bash
+# 1. 切换到你的分支
+git checkout feature/my-settings
+
+# 2. 拉取最新的 main 分支
+git fetch origin
+
+# 3. 将 main 合并进来（触发冲突提示）
+git merge origin/main
+```
+
+终端会提示：
+
+```
+CONFLICT (content): Merge conflict in config.py
+Automatic merge failed; fix conflicts and then commit the result.
+# 4. 用编辑器打开 config.py，手动修改成最终版本
+#    （同上，删掉冲突标记，保留正确内容）
+
+# 5. 标记冲突已解决
+git add config.py
+
+# 6. 提交
+git commit -m "resolve conflict: use prod config"
+
+# 7. 推送回你的分支
+git push origin feature/my-settings
+```
+
+推送完成后，GitHub 的 Pull Request 页面会**自动刷新**，红色警告消失，变成：
+
+```
+✅ This branch has no conflicts with the base branch
+```
+
+------
+
+## 整体流程一图总结
+
+```
+你的分支改了 config.py
+        ↓
+同事的改动先合并进了 main
+        ↓
+你发起 PR → GitHub 检测到同一行有不同修改
+        ↓
+显示红色 ❌ 冲突警告
+        ↓
+手动编辑：删掉标记，保留正确内容
+        ↓
+git add → git commit → git push
+        ↓
+PR 页面变绿 ✅ → 可以正常合并
+```
+
+------
+
+**核心原则：** 解决冲突就是"人工裁判"——Git 不知道该听谁的，你来决定最终代码长什么样，然后告诉 Git "我决定好了"。
+
+
+
+非常好的问题！你的理解是对的，来深入解释一下。
+
+------
+
+## `origin/main` 是什么？
+
+当你执行 `git fetch origin` 时，Git 会把远程的内容下载到本地，但**不会直接修改你的本地 `main` 分支**。
+
+它存放在一个叫做**远程跟踪分支**的地方：
+
+```
+origin/main   ← 本地的一份"远程快照"，fetch 之后更新
+```
+
+这个 `origin/main` 就在你**本地**，只不过它是远程的镜像。
+
+------
+
+## `origin/main` vs `origin main` 的区别
+
+| 写法                    | 含义                                                         |
+| ----------------------- | ------------------------------------------------------------ |
+| `git merge origin/main` | 合并**本地的远程跟踪分支**（一个分支名）                     |
+| `git merge origin main` | 错误用法，Git 会把 `origin` 和 `main` 当成**两个独立参数**解析，通常报错 |
+
+`origin/main` 是一个**完整的分支名**，斜杠是名字的一部分，表示"来自 origin 的 main 分支的本地副本"。
+
+------
+
+## 用一个比喻理解
+
+> `git fetch origin` 就像你去图书馆**复印**了一份最新资料，带回了家。
+>  `origin/main` 就是那份**复印件**，放在你家里。
+>  `git merge origin/main` 是把这份复印件的内容合并进你的工作。
+>
+> 真正的"图书馆原件"（真正的远程仓库）你无法直接操作，只能通过 fetch/push 来同步。
+
+------
+
+## 验证这一点
+
+你可以运行：
+
+```bash
+git branch -a
+```
+
+输出会看到：
+
+```
+* feature/my-settings
+  main
+  remotes/origin/main     ← 这就是 origin/main 的真实存储位置
+  remotes/origin/feature/my-settings
+```
+
+`remotes/origin/main` 和 `origin/main` 是同一个东西，只是简写。
+
+------
+
+**总结一句话：** `origin/main` 是 fetch 之后存在你**本地**的远程镜像分支，斜杠是分支名的一部分，不是命令参数的分隔。

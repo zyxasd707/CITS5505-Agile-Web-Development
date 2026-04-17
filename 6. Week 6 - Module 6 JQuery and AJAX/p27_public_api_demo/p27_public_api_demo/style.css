@@ -1,0 +1,146 @@
+/* ===== 全局重置 ===== */
+* {                                             /* 通用选择器 */
+    box-sizing: border-box;                     /* 边框计入宽度 */
+    margin: 0;                                  /* 清除默认外边距 */
+    padding: 0;                                 /* 清除默认内边距 */
+}
+
+body {                                          /* 页面主体 */
+    font-family: "Segoe UI", sans-serif;        /* 字体 */
+    background: linear-gradient(135deg,         /* 渐变背景 */
+        #667eea 0%, #764ba2 100%);              /* 蓝紫渐变 */
+    min-height: 100vh;                          /* 最小高度=视口高度 */
+    padding: 20px;                              /* 四周留白 */
+}
+
+/* ===== 中央容器 ===== */
+.container {                                    /* 主容器 */
+    max-width: 600px;                           /* 最大宽度 */
+    margin: 0 auto;                             /* 水平居中 */
+    background: white;                          /* 白色背景 */
+    padding: 24px;                              /* 内边距 */
+    border-radius: 12px;                        /* 圆角 */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);    /* 阴影效果 */
+}
+
+h1 {                                            /* 主标题 */
+    color: #4c1d95;                             /* 深紫色 */
+    margin-bottom: 4px;                         /* 底部间距 */
+}
+
+.subtitle {                                     /* 副标题 */
+    color: #64748b;                             /* 灰色 */
+    font-style: italic;                         /* 斜体 */
+    margin-bottom: 16px;                        /* 底部间距 */
+    font-size: 14px;                            /* 字号 */
+}
+
+/* ===== API 信息框 ===== */
+.api-info {                                    /* API 信息展示 */
+    background: #f1f5f9;                        /* 浅灰背景 */
+    border-left: 4px solid #2563eb;             /* 左侧蓝色粗线 */
+    padding: 12px;                              /* 内边距 */
+    border-radius: 4px;                         /* 圆角 */
+    margin-bottom: 16px;                        /* 底部间距 */
+    font-size: 13px;                            /* 字号 */
+}
+
+.api-info code {                                /* API 地址的代码样式 */
+    background: #e2e8f0;                        /* 背景 */
+    padding: 2px 6px;                           /* 内边距 */
+    border-radius: 3px;                         /* 圆角 */
+    font-family: "Courier New", monospace;      /* 等宽字体 */
+    font-size: 12px;                            /* 更小字号 */
+    color: #1e293b;                             /* 文字颜色 */
+}
+
+/* ===== 按钮 ===== */
+button {                                        /* 按钮通用样式 */
+    background: #7c3aed;                        /* 紫色背景 */
+    color: white;                               /* 白色文字 */
+    border: none;                               /* 无边框 */
+    padding: 12px 24px;                         /* 内边距 */
+    border-radius: 6px;                         /* 圆角 */
+    cursor: pointer;                            /* 鼠标指针 */
+    font-size: 15px;                            /* 字号 */
+    font-weight: 600;                           /* 粗体 */
+    width: 100%;                                /* 占满宽度 */
+    transition: all 0.2s;                       /* 过渡动画 */
+}
+
+button:hover:not(:disabled) {                   /* 悬停(非禁用) */
+    background: #6d28d9;                        /* 更深的紫 */
+    transform: translateY(-1px);                /* 轻微上浮 */
+}
+
+button:disabled {                               /* 禁用状态 */
+    background: #94a3b8;                        /* 灰色 */
+    cursor: not-allowed;                        /* 禁止指针 */
+}
+
+/* ===== 状态区 ===== */
+#status {                                       /* 状态文字 */
+    padding: 10px;                              /* 内边距 */
+    margin: 16px 0;                             /* 上下间距 */
+    border-radius: 4px;                         /* 圆角 */
+    text-align: center;                         /* 居中 */
+    font-size: 14px;                            /* 字号 */
+    background: #f8fafc;                        /* 浅灰背景 */
+    color: #475569;                             /* 中灰文字 */
+}
+
+#status.loading {                               /* 加载中状态 */
+    background: #fef9c3;                        /* 浅黄背景 */
+    color: #a16207;                             /* 琥珀色 */
+}
+
+#status.success {                               /* 成功状态 */
+    background: #dcfce7;                        /* 浅绿背景 */
+    color: #15803d;                             /* 深绿 */
+}
+
+#status.error {                                 /* 错误状态 */
+    background: #fee2e2;                        /* 浅红背景 */
+    color: #b91c1c;                             /* 深红 */
+}
+
+/* ===== 图片区 ===== */
+#imageBox {                                     /* 图片容器 */
+    text-align: center;                         /* 居中 */
+    min-height: 100px;                          /* 最小高度 */
+}
+
+#dogImage {                                     /* 狗狗图片 */
+    max-width: 100%;                            /* 最大宽度=容器 */
+    max-height: 400px;                          /* 最大高度 */
+    border-radius: 8px;                         /* 圆角 */
+    display: none;                              /* 初始隐藏,加载后显示 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);    /* 图片阴影 */
+}
+
+#dogImage.visible {                             /* 可见状态 */
+    display: inline-block;                      /* 显示出来 */
+}
+
+/* ===== 原始 JSON 面板 ===== */
+.raw-panel {                                    /* 原始响应面板 */
+    margin-top: 20px;                           /* 顶部间距 */
+    background: #0f172a;                        /* 深色背景(模拟控制台) */
+    color: #e2e8f0;                             /* 浅色文字 */
+    padding: 14px;                              /* 内边距 */
+    border-radius: 6px;                         /* 圆角 */
+}
+
+.raw-panel h3 {                                 /* 小标题 */
+    color: #facc15;                             /* 黄色 */
+    font-size: 13px;                            /* 字号 */
+    margin-bottom: 6px;                         /* 底部间距 */
+}
+
+#rawJson {                                      /* JSON 显示区 */
+    font-family: "Courier New", monospace;      /* 等宽字体 */
+    font-size: 12px;                            /* 字号 */
+    color: #86efac;                             /* 浅绿色(类似终端) */
+    white-space: pre-wrap;                      /* 保留空白 + 换行 */
+    word-break: break-all;                      /* 长字符串断行 */
+}

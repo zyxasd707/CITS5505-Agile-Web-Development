@@ -1,0 +1,103 @@
+/* ===== 全局样式 ===== */
+body {                                          /* 页面主体样式 */
+    font-family: "Segoe UI", sans-serif;        /* 字体 */
+    background: #f1f5f9;                        /* 浅灰背景 */
+    padding: 20px;                              /* 内边距 */
+    max-width: 900px;                           /* 最大宽度 */
+    margin: 0 auto;                             /* 水平居中 */
+}
+
+h1 {                                            /* 主标题 */
+    color: #1e3a8a;                             /* 深蓝色 */
+    margin-bottom: 4px;                         /* 底部外边距 */
+}
+
+.subtitle {                                     /* 副标题 */
+    color: #64748b;                             /* 灰色 */
+    font-style: italic;                         /* 斜体 */
+    margin-top: 0;                              /* 取消上外边距 */
+}
+
+/* ===== 面板布局:左右并排 ===== */
+.panel {                                        /* 面板通用样式 */
+    display: inline-block;                      /* 行内块,让两个面板并排 */
+    vertical-align: top;                        /* 顶部对齐 */
+    width: 48%;                                 /* 各占一半宽 */
+    background: white;                          /* 白色背景 */
+    padding: 16px;                              /* 内边距 */
+    border-radius: 8px;                         /* 圆角 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);     /* 轻微阴影 */
+    margin: 8px;                                /* 外边距 */
+    box-sizing: border-box;                     /* 边框计入宽度 */
+}
+
+h2 {                                            /* 小标题 */
+    color: #15803d;                             /* 深绿色 */
+    font-size: 16px;                            /* 字号 */
+    margin-top: 0;                              /* 取消上外边距 */
+}
+
+/* ===== 输入框和按钮 ===== */
+input {                                         /* 输入框样式 */
+    padding: 6px 10px;                          /* 内边距 */
+    border: 1px solid #cbd5e1;                  /* 浅灰边框 */
+    border-radius: 4px;                         /* 圆角 */
+    width: 60px;                                /* 固定宽度 */
+}
+
+button {                                        /* 按钮通用样式 */
+    background: #2563eb;                        /* 蓝色背景 */
+    color: white;                               /* 白色文字 */
+    border: none;                               /* 无边框 */
+    padding: 8px 14px;                          /* 内边距 */
+    border-radius: 4px;                         /* 圆角 */
+    cursor: pointer;                            /* 鼠标指针 */
+    margin: 6px 0;                              /* 上下外边距 */
+    font-size: 14px;                            /* 字号 */
+}
+
+button:hover {                                  /* 鼠标悬停 */
+    background: #1d4ed8;                        /* 深蓝 */
+}
+
+button:disabled {                               /* 禁用状态 */
+    background: #94a3b8;                        /* 灰色 */
+    cursor: not-allowed;                        /* 禁止指针 */
+}
+
+/* ===== 结果输出区 ===== */
+#output {                                       /* 请求结果显示区 */
+    background: #f8fafc;                        /* 更浅的灰 */
+    border-left: 3px solid #2563eb;             /* 左侧蓝色粗边 */
+    padding: 10px;                              /* 内边距 */
+    margin-top: 10px;                           /* 上外边距 */
+    min-height: 50px;                           /* 最小高度 */
+    font-family: "Courier New", monospace;      /* 等宽字体 */
+    font-size: 13px;                            /* 字号 */
+}
+
+/* ===== 三种状态的特殊样式 ===== */
+.loading {                                      /* 加载中状态 */
+    color: #a16207;                             /* 琥珀色 */
+}
+.success {                                      /* 成功状态 */
+    color: #15803d;                             /* 绿色 */
+    background: #dcfce7 !important;             /* 浅绿背景 */
+    border-left-color: #15803d !important;     /* 绿色左边 */
+}
+.error {                                        /* 错误状态 */
+    color: #b91c1c;                             /* 红色 */
+    background: #fee2e2 !important;             /* 浅红背景 */
+    border-left-color: #b91c1c !important;     /* 红色左边 */
+}
+
+#counter {                                      /* 计数器显示 */
+    margin-top: 10px;                           /* 上外边距 */
+    font-size: 18px;                            /* 大字号 */
+    color: #7c3aed;                             /* 紫色 */
+}
+
+#count {                                        /* 数字本身 */
+    font-weight: bold;                          /* 粗体 */
+    font-size: 24px;                            /* 更大 */
+}

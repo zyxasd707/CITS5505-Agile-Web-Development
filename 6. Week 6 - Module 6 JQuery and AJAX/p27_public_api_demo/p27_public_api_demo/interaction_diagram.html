@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P27 Public API Demo — Interaction Diagram</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      min-height: 100vh;
+      padding: 2rem;
+      color: white;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { margin-bottom: 2rem; }
+    .header-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .pulse-dot {
+      width: 12px; height: 12px; background: #22d3ee;
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+    .subtitle { color: #94a3b8; font-size: 0.875rem; margin-left: 1.75rem; }
+    .diagram-container {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 1rem;
+      border: 1px solid #1e293b;
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    svg { width: 100%; min-width: 960px; display: block; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 0.75rem;
+      border: 1px solid #1e293b;
+      padding: 1.25rem;
+    }
+    .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-dot.cyan { background: #22d3ee; }
+    .card-dot.emerald { background: #34d399; }
+    .card-dot.violet { background: #a78bfa; }
+    .card-dot.amber { background: #fbbf24; }
+    .card-dot.rose { background: #fb7185; }
+    .card h3 { font-size: 0.875rem; font-weight: 600; }
+    .card ul { list-style: none; color: #94a3b8; font-size: 0.75rem; }
+    .card li { margin-bottom: 0.375rem; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #475569; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>P27 Public API Demo — Interaction / Sequence Diagram</h1>
+      </div>
+      <p class="subtitle">CITS5505 · Module 6 jQuery &amp; AJAX · 四方参与者交互时序图</p>
+    </div>
+
+    <!-- Main Diagram -->
+    <div class="diagram-container">
+      <svg viewBox="0 0 1000 980">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+          </marker>
+          <marker id="arrowhead-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee" />
+          </marker>
+          <marker id="arrowhead-emerald" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#34d399" />
+          </marker>
+          <marker id="arrowhead-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24" />
+          </marker>
+          <marker id="arrowhead-rose" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#fb7185" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background Grid -->
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- ============================================================
+             LIFELINES (drawn early so they sit behind boxes/arrows)
+             ============================================================ -->
+        <line x1="105" y1="100" x2="105" y2="900" stroke="#475569" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="340" y1="100" x2="340" y2="900" stroke="#475569" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="590" y1="100" x2="590" y2="900" stroke="#475569" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="860" y1="100" x2="860" y2="900" stroke="#475569" stroke-width="1" stroke-dasharray="4,4"/>
+
+        <!-- ============================================================
+             ACTIVATION BARS (light thin rectangles on lifelines)
+             ============================================================ -->
+        <!-- Browser/DOM activated during DOM updates -->
+        <rect x="336" y="160" width="8" height="110" fill="rgba(8, 51, 68, 0.6)" stroke="#22d3ee" stroke-width="0.8"/>
+        <rect x="336" y="375" width="8" height="205" fill="rgba(8, 51, 68, 0.6)" stroke="#22d3ee" stroke-width="0.8"/>
+        <rect x="336" y="645" width="8" height="225" fill="rgba(8, 51, 68, 0.6)" stroke="#22d3ee" stroke-width="0.8"/>
+        <!-- jQuery + app.js activated after script loads -->
+        <rect x="586" y="230" width="8" height="50" fill="rgba(6, 78, 59, 0.6)" stroke="#34d399" stroke-width="0.8"/>
+        <rect x="586" y="335" width="8" height="245" fill="rgba(6, 78, 59, 0.6)" stroke="#34d399" stroke-width="0.8"/>
+        <rect x="586" y="685" width="8" height="185" fill="rgba(6, 78, 59, 0.6)" stroke="#34d399" stroke-width="0.8"/>
+        <!-- Dog CEO API activated briefly per request -->
+        <rect x="856" y="415" width="8" height="65" fill="rgba(120, 53, 15, 0.6)" stroke="#fbbf24" stroke-width="0.8"/>
+        <rect x="856" y="765" width="8" height="50" fill="rgba(120, 53, 15, 0.6)" stroke="#fbbf24" stroke-width="0.8"/>
+
+        <!-- ============================================================
+             PARTICIPANT HEADER BOXES
+             ============================================================ -->
+        <!-- User (External / slate) -->
+        <rect x="40" y="50" width="130" height="50" rx="6" fill="rgba(30, 41, 59, 0.8)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="105" y="72" fill="white" font-size="12" font-weight="600" text-anchor="middle">User 用户</text>
+        <text x="105" y="88" fill="#94a3b8" font-size="9" text-anchor="middle">Human actor</text>
+
+        <!-- Browser / index.html (Frontend / cyan) -->
+        <rect x="245" y="50" width="190" height="50" rx="6" fill="rgba(8, 51, 68, 0.8)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="340" y="72" fill="white" font-size="12" font-weight="600" text-anchor="middle">Browser · index.html</text>
+        <text x="340" y="88" fill="#94a3b8" font-size="9" text-anchor="middle">HTML + DOM</text>
+
+        <!-- jQuery + app.js (Backend-ish / emerald — client logic) -->
+        <rect x="490" y="50" width="200" height="50" rx="6" fill="rgba(6, 78, 59, 0.8)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="590" y="72" fill="white" font-size="12" font-weight="600" text-anchor="middle">jQuery + app.js</text>
+        <text x="590" y="88" fill="#94a3b8" font-size="9" text-anchor="middle">Client-side JavaScript</text>
+
+        <!-- Dog CEO API (Cloud / amber) -->
+        <rect x="760" y="50" width="200" height="50" rx="6" fill="rgba(120, 53, 15, 0.8)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="860" y="68" fill="white" font-size="12" font-weight="600" text-anchor="middle">Dog CEO API</text>
+        <text x="860" y="82" fill="#94a3b8" font-size="8" text-anchor="middle">dog.ceo/api/breeds/image/random</text>
+        <text x="860" y="94" fill="#fbbf24" font-size="8" text-anchor="middle">Public · no API key</text>
+
+        <!-- ============================================================
+             PHASE A — Initial Load
+             ============================================================ -->
+        <rect x="30" y="115" width="940" height="22" rx="4" fill="rgba(251, 113, 133, 0.12)" stroke="#fb7185" stroke-width="0.8" stroke-dasharray="4,4"/>
+        <text x="42" y="130" fill="#fb7185" font-size="10" font-weight="600">A · Initial Load 初始加载</text>
+
+        <!-- A1: User -> Browser -->
+        <line x1="105" y1="160" x2="336" y2="160" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="220" y="154" fill="#e2e8f0" font-size="9" text-anchor="middle">1. 打开 index.html (HTTP GET)</text>
+
+        <!-- A2: Browser self-msg (CDN/script loading) -->
+        <path d="M 344 195 Q 420 195 420 210 Q 420 225 344 225" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+        <text x="430" y="204" fill="#e2e8f0" font-size="9">2. &lt;script src="jquery...CDN"&gt;</text>
+        <text x="430" y="218" fill="#94a3b8" font-size="8">载入 jQuery,提供 $.get / $.ajax</text>
+
+        <!-- A3: Browser -> jQuery+app.js -->
+        <line x1="344" y1="255" x2="586" y2="255" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+        <text x="465" y="249" fill="#e2e8f0" font-size="9" text-anchor="middle">3. &lt;script src="app.js"&gt; 执行客户端逻辑</text>
+
+        <!-- A4: jQuery+app.js self-msg (ready + cache selectors) -->
+        <path d="M 594 285 Q 680 285 680 300 Q 680 315 594 315" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="690" y="294" fill="#e2e8f0" font-size="9">4. $(document).ready(...)</text>
+        <text x="690" y="308" fill="#94a3b8" font-size="8">缓存 $btn / $status / $image / $raw</text>
+
+        <!-- ============================================================
+             PHASE B — AJAX Request Flow (first call, automatic)
+             ============================================================ -->
+        <rect x="30" y="335" width="940" height="22" rx="4" fill="rgba(251, 191, 36, 0.12)" stroke="#fbbf24" stroke-width="0.8" stroke-dasharray="4,4"/>
+        <text x="42" y="350" fill="#fbbf24" font-size="10" font-weight="600">B · AJAX Request Flow 异步请求流程 (fetchRandomDog 首次自动调用)</text>
+
+        <!-- B0: self-msg on jQuery+app.js: auto invoke -->
+        <path d="M 594 375 Q 680 375 680 390 Q 680 405 594 405" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="690" y="384" fill="#e2e8f0" font-size="9">5. fetchRandomDog() 自动调用</text>
+        <text x="690" y="398" fill="#94a3b8" font-size="8">[app.js:84] 页面加载即发第一次请求</text>
+
+        <!-- B1: jQuery+app.js -> Browser  (Step1 UI prep) -->
+        <line x1="586" y1="428" x2="344" y2="428" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="465" y="422" fill="#e2e8f0" font-size="9" text-anchor="middle">6. Step1 · DOM 操作</text>
+        <text x="465" y="434" fill="#94a3b8" font-size="8" text-anchor="middle">$btn.disabled=true · status="loading" · 隐藏旧图</text>
+
+        <!-- B2: jQuery+app.js -> API  (Step2 $.get) -->
+        <line x1="594" y1="460" x2="855" y2="460" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#arrowhead-amber)"/>
+        <text x="724" y="454" fill="#fbbf24" font-size="9" text-anchor="middle" font-weight="600">7. Step2 · $.get(API_URL) — 异步 GET</text>
+        <text x="724" y="475" fill="#94a3b8" font-size="8" text-anchor="middle">非阻塞: 浏览器主线程继续响应 UI 事件</text>
+
+        <!-- B3: API -> jQuery+app.js  (JSON response) — dashed -->
+        <line x1="855" y1="500" x2="594" y2="500" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowhead-amber)"/>
+        <text x="724" y="493" fill="#e2e8f0" font-size="9" text-anchor="middle">8. 200 OK · JSON 响应 (异步回调)</text>
+        <text x="724" y="514" fill="#94a3b8" font-size="8" text-anchor="middle">{ message: "https://images.dog.ceo/...", status: "success" }</text>
+
+        <!-- B4: jQuery+app.js -> Browser  (Step3 .done DOM update) -->
+        <line x1="586" y1="545" x2="344" y2="545" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="465" y="539" fill="#e2e8f0" font-size="9" text-anchor="middle">9. Step3 .done · 更新 DOM</text>
+        <text x="465" y="551" fill="#94a3b8" font-size="8" text-anchor="middle">$image.attr("src", data.message) · #rawJson ← JSON.stringify</text>
+
+        <!-- B5: jQuery+app.js -> Browser  (Step5 .always restore button) -->
+        <line x1="586" y1="575" x2="344" y2="575" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="465" y="569" fill="#e2e8f0" font-size="9" text-anchor="middle">10. Step5 .always · 按钮恢复可点击</text>
+
+        <!-- Failure note (Step4 .fail alt path) -->
+        <rect x="680" y="592" width="280" height="24" rx="4" fill="rgba(136, 19, 55, 0.3)" stroke="#fb7185" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="820" y="608" fill="#fb7185" font-size="8" text-anchor="middle">alt · Step4 .fail(): 网络错误/4xx/5xx → status="error" 红色提示</text>
+
+        <!-- ============================================================
+             PHASE C — User Interaction (subsequent click)
+             ============================================================ -->
+        <rect x="30" y="620" width="940" height="22" rx="4" fill="rgba(34, 211, 238, 0.12)" stroke="#22d3ee" stroke-width="0.8" stroke-dasharray="4,4"/>
+        <text x="42" y="635" fill="#22d3ee" font-size="10" font-weight="600">C · User Interaction 用户交互 (按钮点击 → 重复 AJAX 流程)</text>
+
+        <!-- C1: User -> Browser -->
+        <line x1="105" y1="665" x2="336" y2="665" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="220" y="659" fill="#e2e8f0" font-size="9" text-anchor="middle">11. click [Fetch Random Dog]</text>
+
+        <!-- C2: Browser -> jQuery+app.js -->
+        <line x1="344" y1="705" x2="586" y2="705" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+        <text x="465" y="699" fill="#e2e8f0" font-size="9" text-anchor="middle">12. $btn.click 事件 → fetchRandomDog()</text>
+
+        <!-- C3: jQuery+app.js -> Browser (Step1 again) -->
+        <line x1="586" y1="745" x2="344" y2="745" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="465" y="739" fill="#e2e8f0" font-size="9" text-anchor="middle">13. 重复 Step1 · UI 置 loading</text>
+
+        <!-- C4: jQuery+app.js -> API -->
+        <line x1="594" y1="782" x2="855" y2="782" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#arrowhead-amber)"/>
+        <text x="724" y="776" fill="#fbbf24" font-size="9" text-anchor="middle" font-weight="600">14. $.get(API_URL) — 第二次异步请求</text>
+
+        <!-- C5: API -> jQuery+app.js -->
+        <line x1="855" y1="820" x2="594" y2="820" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowhead-amber)"/>
+        <text x="724" y="814" fill="#e2e8f0" font-size="9" text-anchor="middle">15. 200 OK · 新 JSON(不同 URL)</text>
+
+        <!-- C6: jQuery+app.js -> Browser (swap image) -->
+        <line x1="586" y1="860" x2="344" y2="860" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="465" y="854" fill="#e2e8f0" font-size="9" text-anchor="middle">16. #dogImage.src 切换为新狗狗图 + .always 恢复按钮</text>
+
+        <!-- ============================================================
+             LEGEND (below lifelines)
+             ============================================================ -->
+        <rect x="30" y="915" width="940" height="50" rx="6" fill="rgba(15, 23, 42, 0.7)" stroke="#1e293b" stroke-width="1"/>
+        <text x="42" y="934" fill="white" font-size="10" font-weight="600">Legend 图例</text>
+
+        <!-- Sync arrow -->
+        <line x1="42" y1="952" x2="82" y2="952" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="90" y="955" fill="#94a3b8" font-size="8">同步 DOM 调用 (sync)</text>
+
+        <!-- Async response (dashed) -->
+        <line x1="220" y1="952" x2="260" y2="952" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowhead-amber)"/>
+        <text x="268" y="955" fill="#94a3b8" font-size="8">异步响应 (async)</text>
+
+        <!-- Self-message -->
+        <path d="M 390 948 Q 410 948 410 952 Q 410 956 390 956" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="418" y="955" fill="#94a3b8" font-size="8">自回环 (self-msg)</text>
+
+        <!-- Activation bar -->
+        <rect x="540" y="946" width="6" height="12" fill="rgba(6, 78, 59, 0.6)" stroke="#34d399" stroke-width="0.8"/>
+        <text x="552" y="955" fill="#94a3b8" font-size="8">生命线激活 (activation)</text>
+
+        <!-- Phase bar samples -->
+        <rect x="720" y="946" width="30" height="10" rx="2" fill="rgba(251, 113, 133, 0.12)" stroke="#fb7185" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <text x="755" y="955" fill="#94a3b8" font-size="8">阶段分组 (phase)</text>
+      </svg>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot emerald"></div>
+          <h3>jQuery Deferred / Promise 链式回调</h3>
+        </div>
+        <ul>
+          <li>• $.get() 返回 jqXHR — 同时是 Promise</li>
+          <li>• .done() → 200 OK &amp; 有响应体</li>
+          <li>• .fail() → 网络错误 / 4xx / 5xx</li>
+          <li>• .always() → 无论成败都执行</li>
+          <li>• 链式写法避免回调金字塔</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>Dog CEO Public API</h3>
+        </div>
+        <ul>
+          <li>• 端点: /api/breeds/image/random</li>
+          <li>• 方法: GET · 无需 API key</li>
+          <li>• 响应: {message: URL, status: "success"}</li>
+          <li>• 支持 CORS → 浏览器可直连</li>
+          <li>• 同类: PokéAPI / JSONPlaceholder / Open-Meteo</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot cyan"></div>
+          <h3>为什么"不冻结 UI"</h3>
+        </div>
+        <ul>
+          <li>• XHR/Fetch 走浏览器网络线程</li>
+          <li>• 主线程可继续处理事件循环</li>
+          <li>• loading 态 + .always 恢复按钮</li>
+          <li>• 防重入: $btn.disabled=true</li>
+          <li>• P21 要点: Does not freeze env</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <p class="footer">
+      CITS5505 · Week 6 Module 6 · p27_public_api_demo · interaction_diagram.html
+    </p>
+  </div>
+</body>
+</html>
